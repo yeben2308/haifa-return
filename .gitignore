@@ -1,0 +1,33 @@
+﻿# Data files - do NOT commit to GitHub
+*.xlsx
+*.pbix
+*.pbiviz
+*.pptx
+*.docx
+*.csv
+*.pdf
+dashboard.html
+
+# OS
+desktop.ini
+Thumbs.db
+
+# Images (large)
+*.png
+*.jpg
+*.jpeg
+
+# Scripts (local only)
+update_dashboard.ps1
+update.bat
+CLAUDE.md
+.claude/
+.vscode/
+
+# Subdirectories with local data
+12-4-26/
+
+# Exceptions - what IS tracked:
+!index.html
+!.nojekyll
+!.gitignore
