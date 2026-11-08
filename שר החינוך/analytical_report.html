@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דוח אנליטי מורחב – קרייתות מחוז חיפה | מרץ 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --blue: #003F8A; --blue-light: #1a5ea8; --blue-pale: #e8f0fc;
+      --gold: #C8972A; --green: #1a8a4a; --green-bg: #e6f4ed;
+      --red: #c0392b; --red-bg: #fdf0ef; --orange: #e67e22; --orange-bg: #fef3e2;
+      --gray: #6b7280; --gray-light: #f3f4f6; --border: #d1d5db; --text: #1f2937;
+      --purple: #6b21a8; --purple-bg: #f3eafe;
+    }
+    body { font-family: 'Heebo', Arial, sans-serif; background: #e9edf5; color: var(--text); font-size: 13px; line-height: 1.6; }
+    .report-container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+    /* HEADER */
+    .report-header {
+      background: var(--blue); color: white; border-radius: 10px;
+      padding: 24px 28px; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .report-header h1 { font-size: 22px; font-weight: 800; }
+    .report-header .sub { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+    .report-header .meta { text-align: left; font-size: 11px; opacity: 0.75; }
+    .gold-bar { height: 4px; background: linear-gradient(90deg, var(--gold), #f0c44a, var(--gold)); border-radius: 2px; margin-bottom: 20px; }
+
+    /* SECTION */
+    .section { background: white; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; }
+    .section-title {
+      background: var(--blue); color: white; padding: 10px 16px;
+      font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title.red-bg { background: #8b1a1a; }
+    .section-title.green-bg { background: #2c5f2e; }
+    .section-title.orange-bg { background: #7c3a00; }
+    .section-title.purple-bg { background: #5b21b6; }
+    .section-body { padding: 14px 16px; }
+
+    /* SUMMARY CARDS */
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .city-card {
+      border-radius: 8px; padding: 14px 16px; border: 2px solid var(--border);
+      background: var(--blue-pale);
+    }
+    .city-card h3 { font-size: 16px; color: var(--blue); font-weight: 800; margin-bottom: 8px; }
+    .city-card .kpi-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
+    .city-card .kpi-val { font-weight: 700; color: var(--blue); }
+    .city-card .kpi-warn { font-weight: 700; color: var(--red); }
+    .city-card .kpi-ok { font-weight: 700; color: var(--green); }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: var(--gray-light); padding: 7px 10px; text-align: right; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; text-align: right; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .th-blue { background: var(--blue); color: white; }
+    .th-dark { background: #1f2937; color: white; }
+
+    /* COMPARISON TABLE */
+    .compare-table th { text-align: center; }
+    .compare-table td { text-align: center; }
+    .compare-table td:first-child { text-align: right; font-weight: 600; }
+    .compare-table .best { background: var(--green-bg); color: var(--green); font-weight: 700; }
+    .compare-table .worst { background: var(--red-bg); color: var(--red); font-weight: 700; }
+    .compare-table .mid { background: var(--orange-bg); color: var(--orange); font-weight: 600; }
+
+    /* TREND */
+    .trend-row { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-bottom: 6px; }
+    .trend-bar-wrap { flex: 1; height: 18px; background: #f0f0f0; border-radius: 9px; overflow: hidden; }
+    .trend-bar { height: 100%; border-radius: 9px; display: flex; align-items: center; padding-right: 6px; font-size: 10px; font-weight: 700; color: white; }
+    .trend-label { width: 80px; font-weight: 600; color: var(--gray); font-size: 11px; text-align: right; }
+    .trend-pct { width: 45px; font-weight: 700; font-size: 11px; text-align: left; }
+
+    /* FLAGS */
+    .flag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .flag-red { background: var(--red-bg); color: var(--red); border: 1px solid #f5b7b1; }
+    .flag-orange { background: var(--orange-bg); color: var(--orange); border: 1px solid #f5c98c; }
+    .flag-green { background: var(--green-bg); color: var(--green); border: 1px solid #a3d9b8; }
+    .flag-blue { background: var(--blue-pale); color: var(--blue); border: 1px solid #c4d4ef; }
+    .flag-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid #c084fc; }
+
+    /* INSIGHT BOXES */
+    .insight { padding: 10px 14px; border-radius: 7px; margin-bottom: 10px; border-right: 4px solid; }
+    .insight-red { background: var(--red-bg); border-color: var(--red); }
+    .insight-orange { background: var(--orange-bg); border-color: var(--orange); }
+    .insight-green { background: var(--green-bg); border-color: var(--green); }
+    .insight-blue { background: var(--blue-pale); border-color: var(--blue); }
+    .insight h4 { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+    .insight p { font-size: 11px; line-height: 1.5; }
+
+    /* GRID 2 COL */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+
+    /* KPI BOX */
+    .kpi-box { background: var(--blue-pale); border: 1px solid #c4d4ef; border-radius: 8px; padding: 10px 12px; text-align: center; }
+    .kpi-box .num { font-size: 26px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .kpi-box .lbl { font-size: 10px; color: var(--gray); margin-top: 3px; }
+    .kpi-box.kpi-red { background: var(--red-bg); border-color: #f5b7b1; }
+    .kpi-box.kpi-red .num { color: var(--red); }
+    .kpi-box.kpi-orange { background: var(--orange-bg); border-color: #f5c98c; }
+    .kpi-box.kpi-orange .num { color: var(--orange); }
+    .kpi-box.kpi-green { background: var(--green-bg); border-color: #a3d9b8; }
+    .kpi-box.kpi-green .num { color: var(--green); }
+
+    /* SHELTER VISUAL */
+    .shelter-row { margin-bottom: 8px; }
+    .shelter-row label { font-size: 11px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 2px; }
+    .bar-bg { height: 14px; background: #f0f0f0; border-radius: 7px; overflow: hidden; border: 1px solid var(--border); }
+    .bar-fill { height: 100%; border-radius: 7px; }
+
+    /* PRINT */
+    @media print {
+      body { background: white; }
+      .report-container { max-width: 100%; padding: 8px; }
+      .section { page-break-inside: avoid; }
+    }
+
+    /* TOC */
+    .toc { background: var(--gray-light); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+    .toc h3 { font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 8px; }
+    .toc ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+    .toc a { font-size: 11px; color: var(--blue); text-decoration: none; background: white; padding: 3px 10px; border-radius: 12px; border: 1px solid #c4d4ef; font-weight: 600; }
+    .toc a:hover { background: var(--blue-pale); }
+
+    /* FOOTNOTE */
+    .footnote { font-size: 10px; color: var(--gray); margin-top: 4px; font-style: italic; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+  </style>
+</head>
+<body>
+<div class="report-container">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div>
+      <h1>📊 דוח אנליטי מורחב — הקרייתות</h1>
+      <div class="sub">קרית אתא · קרית ביאליק · קרית ים | מחוז חיפה – משרד החינוך</div>
+      <div class="sub" style="margin-top:6px;">נתונים ליום: 12.03.2026 | שבוע דיווח: 08–12/03/2026</div>
+    </div>
+    <div class="meta">
+      <div>מסמך: דוח אנליטי מורחב</div>
+      <div style="margin-top:4px;">הופק: מרץ 2026</div>
+      <div style="margin-top:4px;">בסיס: דף מידע ביקור שר</div>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>תוכן עניינים</h3>
+    <ul>
+      <li><a href="#summary">1. סיכום מנהלים</a></li>
+      <li><a href="#general">2. נתונים כלליים</a></li>
+      <li><a href="#attendance">3. ניתוח נוכחות</a></li>
+      <li><a href="#absence3">4. היעדרות ממושכת</a></li>
+      <li><a href="#shelter">5. מצב מיגון</a></li>
+      <li><a href="#staff">6. כוח אדם – מגויסים ושוהים בחו"ל</a></li>
+      <li><a href="#facilities">7. פינוי מוסדות ושמרטפייה</a></li>
+      <li><a href="#risks">8. ממצאים בולטים וסיכונים</a></li>
+      <li><a href="#recommendations">9. המלצות</a></li>
+    </ul>
+  </div>
+
+  <!-- ═══════════════════════════════ 1. SUMMARY ═══════════════════════════════ -->
+  <div id="summary" class="section">
+    <div class="section-title">🔍 1. סיכום מנהלים</div>
+    <div class="section-body">
+
+      <div class="summary-grid">
+        <!-- קרית אתא -->
+        <div class="city-card">
+          <h3>🏙️ קרית אתא</h3>
+          <div class="kpi-row"><span>תלמידים</span><span class="kpi-val">10,560</span></div>
+          <div class="kpi-row"><span>נוכחות 12/03</span><span class="kpi-warn">57%</span></div>
+          <div class="kpi-row"><span>היעדרות ממושכת</span><span class="kpi-warn">244 ↑</span></div>
+          <div class="kpi-row"><span>מיגון גנים</span><span class="kpi-warn">38% ✗</span></div>
+          <div class="kpi-row"><span>מיגון בתי"ס</span><span class="kpi-warn">59%</span></div>
+          <hr style="margin:8px 0;">
+          <div style="font-size:10px;color:var(--red);font-weight:700;">⚠ נוכחות ירודה + היעדרות ממושכת עולה</div>
+        </div>
+        <!-- קרית ביאליק -->
+        <div class="city-card">
+          <h3>🏙️ קרית ביאליק</h3>
+          <div class="kpi-row"><span>תלמידים</span><span class="kpi-val">9,398</span></div>
+          <div class="kpi-row"><span>נוכחות 12/03</span><span class="kpi-warn">62%</span></div>
+          <div class="kpi-row"><span>היעדרות ממושכת</span><span class="kpi-val">97</span></div>
+          <div class="kpi-row"><span>מיגון גנים</span><span style="font-weight:700;color:var(--orange);">46%</span></div>
+          <div class="kpi-row"><span>מיגון בתי"ס</span><span class="kpi-warn">50% ✗</span></div>
+          <hr style="margin:8px 0;">
+          <div style="font-size:10px;color:var(--red);font-weight:700;">⚠ חוסר מיגון חמור בבתי"ס (1,234 מ"ר)</div>
+        </div>
+        <!-- קרית ים -->
+        <div class="city-card">
+          <h3>🏙️ קרית ים</h3>
+          <div class="kpi-row"><span>תלמידים</span><span class="kpi-val">6,196</span></div>
+          <div class="kpi-row"><span>נוכחות 12/03</span><span class="kpi-warn">61%</span></div>
+          <div class="kpi-row"><span>היעדרות ממושכת</span><span class="kpi-warn">174 ↑</span></div>
+          <div class="kpi-row"><span>מיגון גנים</span><span class="kpi-ok">62% ✓</span></div>
+          <div class="kpi-row"><span>מיגון בתי"ס</span><span class="kpi-ok">83% ✓</span></div>
+          <hr style="margin:8px 0;">
+          <div style="font-size:10px;color:var(--orange);font-weight:700;">⚠ חטיבה – נוכחות 30% בלבד (חריג)</div>
+        </div>
+      </div>
+
+      <div class="insight insight-red">
+        <h4>🚨 ממצא מרכזי</h4>
+        <p>שלושת הרשויות מציגות נוכחות של <strong>57%–62%</strong> ביום חמישי 12/03 — נמוך משמעותית מרף הנורמה. קרית אתא מציגה מגמת ירידה מתמשכת בנוכחות לצד עלייה חדה בהיעדרות ממושכת (244 תלמידים נעדרים 3 ימים ברצף). קרית ביאליק סובלת מחוסר מיגון חמור בבתי"ס (1,234 מ"ר – הגבוה בין הרשויות). קרית ים בולטת לטובה במיגון אך עם חריגה קיצונית בחטיבת הביניים (30% נוכחות).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 2. GENERAL ═══════════════════════════════ -->
+  <div id="general" class="section">
+    <div class="section-title">🏫 2. נתונים כלליים — השוואה בין רשויות</div>
+    <div class="section-body">
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="th-blue">מדד</th>
+            <th class="th-blue">קרית אתא</th>
+            <th class="th-blue">קרית ביאליק</th>
+            <th class="th-blue">קרית ים</th>
+            <th class="th-blue">סה"כ 3 רשויות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>סה"כ מוסדות</td>
+            <td class="best">113</td>
+            <td>95</td>
+            <td class="worst">65</td>
+            <td><strong>273</strong></td>
+          </tr>
+          <tr>
+            <td>גנים</td>
+            <td class="best">96</td>
+            <td>79</td>
+            <td class="worst">53</td>
+            <td><strong>228</strong></td>
+          </tr>
+          <tr>
+            <td>בתי ספר</td>
+            <td class="best">17</td>
+            <td>16</td>
+            <td class="worst">12</td>
+            <td><strong>45</strong></td>
+          </tr>
+          <tr>
+            <td>סה"כ תלמידים</td>
+            <td class="best">10,560</td>
+            <td>9,398</td>
+            <td class="worst">6,196</td>
+            <td><strong>26,154</strong></td>
+          </tr>
+          <tr>
+            <td>ילדי גנים</td>
+            <td class="best">2,231</td>
+            <td>1,963</td>
+            <td class="worst">1,241</td>
+            <td><strong>5,435</strong></td>
+          </tr>
+          <tr>
+            <td>תלמידי בתי"ס</td>
+            <td class="best">8,329</td>
+            <td>7,435</td>
+            <td class="worst">4,955</td>
+            <td><strong>20,719</strong></td>
+          </tr>
+          <tr>
+            <td>גנים מיוחד</td>
+            <td>22</td>
+            <td>17</td>
+            <td>11</td>
+            <td><strong>50</strong></td>
+          </tr>
+          <tr>
+            <td>% גני מיוחד מסה"כ גנים</td>
+            <td>22.9%</td>
+            <td>21.5%</td>
+            <td>20.8%</td>
+            <td><strong>~21.9%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="footnote" style="margin-top:8px;">* "מוסד מוגן" = כיסוי מיגון ≥ 100% | תלמידים: כולל בתי"ס בלבד, ללא ילדי גנים</p>
+
+      <div class="grid-3" style="margin-top:14px;">
+        <div class="kpi-box"><div class="num">273</div><div class="lbl">סה"כ מוסדות ב-3 רשויות</div></div>
+        <div class="kpi-box"><div class="num">26,154</div><div class="lbl">סה"כ תלמידים + ילדי גנים</div></div>
+        <div class="kpi-box kpi-orange"><div class="num">50</div><div class="lbl">גני חינוך מיוחד (22% מסה"כ גנים)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 3. ATTENDANCE ═══════════════════════════════ -->
+  <div id="attendance" class="section">
+    <div class="section-title">📊 3. ניתוח נוכחות — שבוע 08–12/03/2026</div>
+    <div class="section-body">
+
+      <div class="grid-2">
+        <!-- WEEKLY TREND TABLE -->
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">נוכחות מלאה יומית (% מסה"כ תלמידים)</div>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th class="th-blue">יום</th>
+                <th class="th-blue">קרית אתא</th>
+                <th class="th-blue">קרית ביאליק</th>
+                <th class="th-blue">קרית ים</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td class="worst">57%</td>
+                <td class="best">66%</td>
+                <td>63%</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td class="mid">64%</td>
+                <td class="mid">65%</td>
+                <td class="best">66%</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td class="worst">59%</td>
+                <td class="mid">64%</td>
+                <td class="best">63%</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td class="mid">61%</td>
+                <td class="best">71%</td>
+                <td>65%</td>
+              </tr>
+              <tr style="font-weight:700;background:#f8f9ff;">
+                <td>ה' 12/03</td>
+                <td class="worst">57%</td>
+                <td class="mid">62%</td>
+                <td class="mid">61%</td>
+              </tr>
+              <tr style="background:var(--blue-pale);">
+                <td><strong>ממוצע שבועי</strong></td>
+                <td class="worst"><strong>59.6%</strong></td>
+                <td class="best"><strong>65.6%</strong></td>
+                <td><strong>63.6%</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="footnote" style="margin-top:6px;">הנוכחות המלאה כוללת את מוסדות שדיווחו. "לא דווחו" אינם נכנסים לחישוב האחוזים.</p>
+        </div>
+
+        <!-- ABSENCE RATE TABLE -->
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">היעדרות מלאה יומית (%)</div>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th class="th-blue">יום</th>
+                <th class="th-blue">קרית אתא</th>
+                <th class="th-blue">קרית ביאליק</th>
+                <th class="th-blue">קרית ים</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td>11%</td>
+                <td class="best">9%</td>
+                <td class="worst">13%</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td>10%</td>
+                <td class="best">9%</td>
+                <td class="worst">13%</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td class="mid">11%</td>
+                <td class="best">8%</td>
+                <td class="worst">12%</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td class="mid">10%</td>
+                <td class="best">6%</td>
+                <td class="worst">12%</td>
+              </tr>
+              <tr style="font-weight:700;background:#fdf0ef;">
+                <td>ה' 12/03</td>
+                <td class="mid">13%</td>
+                <td class="mid">14%</td>
+                <td class="worst">16%</td>
+              </tr>
+              <tr style="background:var(--red-bg);">
+                <td><strong>ממוצע שבועי</strong></td>
+                <td class="mid"><strong>11%</strong></td>
+                <td class="best"><strong>9.2%</strong></td>
+                <td class="worst"><strong>13.2%</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="footnote" style="margin-top:6px;">קרית ים: גבוהה ביותר בהיעדרות מלאה (ממוצע שבועי 13.2%)</p>
+        </div>
+      </div>
+
+      <!-- BY STAGE TABLE -->
+      <div style="margin-top:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">נוכחות לפי שלב חינוך — 12/03 (בתי"ס בלבד)</div>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th class="th-dark">שלב חינוך</th>
+              <th class="th-blue" colspan="2">קרית אתא</th>
+              <th class="th-blue" colspan="2">קרית ביאליק</th>
+              <th class="th-blue" colspan="2">קרית ים</th>
+            </tr>
+            <tr>
+              <th style="background:#f8f9ff;"></th>
+              <th style="background:#f8f9ff;font-size:10px;">תלמידים</th>
+              <th style="background:#f8f9ff;font-size:10px;">נוכחות</th>
+              <th style="background:#f8f9ff;font-size:10px;">תלמידים</th>
+              <th style="background:#f8f9ff;font-size:10px;">נוכחות</th>
+              <th style="background:#f8f9ff;font-size:10px;">תלמידים</th>
+              <th style="background:#f8f9ff;font-size:10px;">נוכחות</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>יסודי</td>
+              <td>4,476</td><td class="best">63%</td>
+              <td>3,819</td><td class="best">73%</td>
+              <td>2,510</td><td class="best">72%</td>
+            </tr>
+            <tr>
+              <td>חטיבת ביניים</td>
+              <td>1,670</td><td class="mid">49%</td>
+              <td>1,788</td><td class="mid">46%</td>
+              <td>400</td><td class="worst" style="background:#c0392b;color:white;">30%</td>
+            </tr>
+            <tr>
+              <td>תיכון (חט"ע)</td>
+              <td>2,093</td><td class="mid">51%</td>
+              <td>1,531</td><td class="mid">49%</td>
+              <td>1,964</td><td class="mid">53%</td>
+            </tr>
+            <tr>
+              <td>חינוך מיוחד</td>
+              <td>124</td><td class="mid">52%</td>
+              <td>102</td><td class="best">~100%</td>
+              <td>107</td><td class="best">64%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- VISUAL BARS -->
+      <div style="margin-top:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;">ממוצע נוכחות שבועית — ויזואליזציה</div>
+        <div class="trend-row">
+          <span class="trend-label">קרית אתא</span>
+          <div class="trend-bar-wrap">
+            <div class="trend-bar" style="width:59.6%;background:var(--orange);">59.6%</div>
+          </div>
+          <span class="trend-pct" style="color:var(--orange);">59.6%</span>
+        </div>
+        <div class="trend-row">
+          <span class="trend-label">קרית ביאליק</span>
+          <div class="trend-bar-wrap">
+            <div class="trend-bar" style="width:65.6%;background:var(--green);">65.6%</div>
+          </div>
+          <span class="trend-pct" style="color:var(--green);">65.6%</span>
+        </div>
+        <div class="trend-row">
+          <span class="trend-label">קרית ים</span>
+          <div class="trend-bar-wrap">
+            <div class="trend-bar" style="width:63.6%;background:var(--blue-light);">63.6%</div>
+          </div>
+          <span class="trend-pct" style="color:var(--blue);">63.6%</span>
+        </div>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div style="margin-top:14px;">
+        <div class="insight insight-red">
+          <h4>⚠ חטיבת הביניים — בעיה מבנית</h4>
+          <p>נוכחות חטיבה נמוכה משמעותית מהיסודי בכל שלוש הרשויות. קרית ים חריגה במיוחד: <strong>30% בלבד</strong> (400 תלמידים, רק 120 נוכחים). גם קרית ביאליק (46%) וקרית אתא (49%) מציגות נוכחות קרוב למחצית בלבד. ייתכן שמדובר בהשפעת אירועי ביטחון על גיל הנוער, חששות הורים, או תנועה לרשויות אחרות.</p>
+        </div>
+        <div class="insight insight-orange">
+          <h4>📉 ירידה ביום חמישי — תופעה עקבית</h4>
+          <p>כל שלוש הרשויות מציגות נוכחות נמוכה יותר ביום חמישי 12/03 לעומת שאר ימי השבוע. קרית ביאליק: ירידה מ-71% (ד') ל-62% (ה'). קרית אתא: חזרה ל-57% — שווה ליום ראשון. ייתכן שיש קשר ל"תופעת חמישי" או לאירוע ספציפי בתאריך זה.</p>
+        </div>
+        <div class="insight insight-green">
+          <h4>✓ חינוך מיוחד — קרית ביאליק מצטיינת</h4>
+          <p>חינוך מיוחד בקרית ביאליק: <strong>~100% נוכחות</strong> (103 מתוך 102 — ייתכן טעות דיווח קלה). מצביע על מסגרת אפקטיבית ומחויבות גבוהה של מוסדות חינוך מיוחד ברשות זו.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 4. CONSECUTIVE ABSENCE ═══════════════════════════════ -->
+  <div id="absence3" class="section">
+    <div class="section-title red-bg">⚠️ 4. היעדרות ממושכת — 3 ימים ברצף</div>
+    <div class="section-body">
+
+      <div class="grid-2">
+        <div>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th class="th-dark">תאריך</th>
+                <th class="th-blue">קרית אתא</th>
+                <th class="th-blue">קרית ביאליק</th>
+                <th class="th-blue">קרית ים</th>
+                <th class="th-blue">סה"כ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>08/03</td><td>2</td><td>0</td><td>0</td><td><strong>2</strong></td></tr>
+              <tr><td>09/03</td><td class="worst">168</td><td>89</td><td>140</td><td><strong>397</strong></td></tr>
+              <tr><td>10/03</td><td class="worst">159</td><td class="mid">115</td><td>160</td><td><strong>434</strong></td></tr>
+              <tr><td>11/03</td><td class="worst">202</td><td class="best">68</td><td>171</td><td><strong>441</strong></td></tr>
+              <tr style="font-weight:700;background:#fdf0ef;">
+                <td>12/03</td>
+                <td class="worst"><strong>244 ↑</strong></td>
+                <td class="best"><strong>97</strong></td>
+                <td class="mid"><strong>174</strong></td>
+                <td><strong>515</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;">מגמת היעדרות ממושכת — ויזואליזציה</div>
+
+          <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:4px;">קרית אתא (מגמה עולה ↑)</div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">09/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:69%;background:#e67e22;">168</div></div>
+          </div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">12/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:100%;background:var(--red);">244 ↑</div></div>
+          </div>
+
+          <div style="font-size:11px;font-weight:700;color:var(--gray);margin:8px 0 4px;">קרית ים (מגמה עולה ↑)</div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">09/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:80%;background:#e67e22;">140</div></div>
+          </div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">12/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:100%;background:#d35400;">174</div></div>
+          </div>
+
+          <div style="font-size:11px;font-weight:700;color:var(--gray);margin:8px 0 4px;">קרית ביאליק (יחסית יציב)</div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">09/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:77%;background:#2ecc71;">89</div></div>
+          </div>
+          <div class="trend-row" style="margin-bottom:2px;">
+            <span style="font-size:10px;width:45px;color:var(--gray);">12/03</span>
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:84%;background:var(--green);">97</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;" class="insight insight-red">
+        <h4>🚨 515 תלמידים נעדרים 3 ימים ברצף — קריאת אזהרה</h4>
+        <p>סה"כ <strong>515 תלמידים</strong> ב-3 הרשויות נעדרו 3 ימים ברצף נכון ל-12/03. קרית אתא מציגה עלייה מסוכנת מ-2 (ראשון) ל-<strong>244 (חמישי)</strong> — גידול פי 122. נדרש מעקב פרטני לאיתור תלמידים בסיכון, משפחות מפונות, ותלמידים בגיל חטיבה/תיכון שלא חוזרים.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 5. SHELTER ═══════════════════════════════ -->
+  <div id="shelter" class="section">
+    <div class="section-title green-bg">🛡️ 5. מצב מיגון — ניתוח השוואתי</div>
+    <div class="section-body">
+
+      <!-- SUMMARY TABLE -->
+      <table class="compare-table" style="margin-bottom:14px;">
+        <thead>
+          <tr>
+            <th class="th-dark">סוג מוסד</th>
+            <th class="th-dark">מדד</th>
+            <th class="th-blue">קרית אתא</th>
+            <th class="th-blue">קרית ביאליק</th>
+            <th class="th-blue">קרית ים</th>
+            <th class="th-blue">סה"כ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4">🌱 גנים</td>
+            <td>סה"כ מוסדות</td>
+            <td>96</td><td>79</td><td>53</td><td><strong>228</strong></td>
+          </tr>
+          <tr>
+            <td>מוגנים</td>
+            <td class="worst">36 (38%)</td>
+            <td class="mid">36 (46%)</td>
+            <td class="best">33 (62%)</td>
+            <td><strong>105 (46%)</strong></td>
+          </tr>
+          <tr>
+            <td>חסרי מיגון</td>
+            <td class="worst">60 (62%)</td>
+            <td class="mid">43 (54%)</td>
+            <td class="best">20 (38%)</td>
+            <td><strong>123 (54%)</strong></td>
+          </tr>
+          <tr>
+            <td>חוסר מ"ר</td>
+            <td class="worst">232 מ"ר</td>
+            <td>90 מ"ר</td>
+            <td>126 מ"ר</td>
+            <td><strong>448 מ"ר</strong></td>
+          </tr>
+          <tr>
+            <td rowspan="4">🏫 בתי"ס</td>
+            <td>סה"כ מוסדות</td>
+            <td>17</td><td>16</td><td>12</td><td><strong>45</strong></td>
+          </tr>
+          <tr>
+            <td>מוגנים</td>
+            <td class="mid">10 (59%)</td>
+            <td class="worst">8 (50%)</td>
+            <td class="best">10 (83%)</td>
+            <td><strong>28 (62%)</strong></td>
+          </tr>
+          <tr>
+            <td>חסרי מיגון</td>
+            <td class="mid">7 (41%)</td>
+            <td class="worst">8 (50%)</td>
+            <td class="best">2 (17%)</td>
+            <td><strong>17 (38%)</strong></td>
+          </tr>
+          <tr>
+            <td>חוסר מ"ר</td>
+            <td class="mid">522 מ"ר</td>
+            <td class="worst">1,234 מ"ר</td>
+            <td class="best">204 מ"ר</td>
+            <td><strong>1,960 מ"ר</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- VISUAL -->
+      <div class="grid-2">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;">% מוסדות מוגנים — גנים</div>
+          <div class="shelter-row">
+            <label><span>קרית אתא</span><span style="color:var(--red);">38%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:38%;background:var(--red);"></div></div>
+          </div>
+          <div class="shelter-row">
+            <label><span>קרית ביאליק</span><span style="color:var(--orange);">46%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:46%;background:var(--orange);"></div></div>
+          </div>
+          <div class="shelter-row">
+            <label><span>קרית ים</span><span style="color:var(--green);">62%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:62%;background:var(--green);"></div></div>
+          </div>
+          <div class="shelter-row" style="margin-top:8px;">
+            <label><span style="font-weight:700;color:var(--gray);">ממוצע 3 רשויות</span><span style="color:var(--orange);">46%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:46%;background:var(--orange);"></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;">% מוסדות מוגנים — בתי"ס</div>
+          <div class="shelter-row">
+            <label><span>קרית אתא</span><span style="color:var(--orange);">59%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:59%;background:var(--orange);"></div></div>
+          </div>
+          <div class="shelter-row">
+            <label><span>קרית ביאליק</span><span style="color:var(--red);">50%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:50%;background:var(--red);"></div></div>
+          </div>
+          <div class="shelter-row">
+            <label><span>קרית ים</span><span style="color:var(--green);">83%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:83%;background:var(--green);"></div></div>
+          </div>
+          <div class="shelter-row" style="margin-top:8px;">
+            <label><span style="font-weight:700;color:var(--gray);">ממוצע 3 רשויות</span><span style="color:var(--orange);">62%</span></label>
+            <div class="bar-bg"><div class="bar-fill" style="width:62%;background:var(--blue-light);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div style="margin-top:12px;">
+        <div class="insight insight-red">
+          <h4>🚨 קרית ביאליק — חוסר מיגון בבתי"ס: 1,234 מ"ר</h4>
+          <p>קרית ביאליק מציגה את הפער המיגוני הגדול ביותר בבתי"ס: <strong>1,234 מ"ר חסרים</strong> — פי 2.4 מקרית אתא ופי 6 מקרית ים. 50% מבתי"ס (8 מתוך 16) חסרי מיגון מספק. זהו ממצא קריטי הדורש תקצוב עדיפותי ופתרונות מיגון זמניים.</p>
+        </div>
+        <div class="insight insight-orange">
+          <h4>⚠ גנים — מצב חמור בכל הרשויות</h4>
+          <p><strong>123 מתוך 228 גנים</strong> (54%) חסרי מיגון ב-3 הרשויות. קרית אתא: 62% מהגנים ללא מיגון מספק עם חוסר של 232 מ"ר. סה"כ חוסר גנים: <strong>448 מ"ר</strong>. חשוב לזכור: לגנים אין דיווח מנהל — נתוני המיגון הם תשתיתיים בלבד.</p>
+        </div>
+        <div class="insight insight-green">
+          <h4>✓ קרית ים — מצטיינת במיגון</h4>
+          <p>קרית ים מציגה את הביצועים הטובים ביותר: 83% מבתי"ס מוגנים (10/12) ו-62% מהגנים מוגנים. חוסר בתי"ס: 204 מ"ר בלבד — הנמוך ביותר. הרשות מסומנת "עודף מיגון" כולל.</p>
+        </div>
+        <div class="insight insight-blue">
+          <h4>📊 תמונה כוללת: 1,960 מ"ר חסרים בבתי"ס + 448 מ"ר בגנים</h4>
+          <p>סה"כ חוסר מיגון ב-3 הרשויות: <strong>2,408 מ"ר</strong>. 17 מתוך 45 בתי"ס (38%) וכ-123 מתוך 228 גנים (54%) נמצאים בחוסר מיגון. נדרשת תכנית רב-שנתית לסגירת הפערים בעדיפות לקרית ביאליק ולגני קרית אתא.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 6. STAFF ═══════════════════════════════ -->
+  <div id="staff" class="section">
+    <div class="section-title purple-bg">⚔️ 6. כוח אדם — מגויסים ושוהים בחו"ל</div>
+    <div class="section-body">
+
+      <table class="compare-table" style="margin-bottom:14px;">
+        <thead>
+          <tr>
+            <th class="th-dark">מוסד</th>
+            <th class="th-dark">רשות</th>
+            <th class="th-blue">מנהל מגויס</th>
+            <th class="th-blue">3+ עובדי הוראה</th>
+            <th class="th-blue">שוהים בחו"ל</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ישיבת קרית אתא (מקיף)</td>
+            <td>קרית אתא</td>
+            <td style="color:var(--red);font-weight:700;">✗ כן</td>
+            <td style="color:var(--red);font-weight:700;">✗ כן</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>הצבי ישראל</td>
+            <td>קרית אתא</td>
+            <td style="color:var(--red);font-weight:700;">✗ כן</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>רוגוזין חט"ע</td>
+            <td>קרית אתא</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td style="color:var(--red);font-weight:700;">✗ כן</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>אורט ביאליק</td>
+            <td>קרית ביאליק</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td style="color:var(--red);font-weight:700;">✗ 3 מורים</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>הבונים</td>
+            <td>קרית ביאליק</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td style="color:var(--orange);">✗ מחנכת</td>
+            <td style="color:var(--orange);">כן (1)</td>
+          </tr>
+          <tr>
+            <td>צלילים</td>
+            <td>קרית ביאליק</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td style="color:var(--red);font-weight:700;">✗ כן</td>
+            <td style="color:var(--orange);">כן (1)</td>
+          </tr>
+          <tr>
+            <td>אלמוגים</td>
+            <td>קרית ים</td>
+            <td style="color:var(--green);">✓ לא</td>
+            <td style="color:var(--orange);">✗ 1 מורה</td>
+            <td style="color:var(--orange);">כן (1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-3">
+        <div class="kpi-box kpi-red">
+          <div class="num">2</div>
+          <div class="lbl">מנהלים מגויסים (קרית אתא)</div>
+        </div>
+        <div class="kpi-box kpi-orange">
+          <div class="num">7</div>
+          <div class="lbl">מוסדות עם שיבוש כוח אדם</div>
+        </div>
+        <div class="kpi-box kpi-orange">
+          <div class="num">3</div>
+          <div class="lbl">מוסדות עם עובדי הוראה בחו"ל</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <div class="insight insight-red">
+          <h4>🚨 קרית אתא — מנהלים מגויסים: פגיעה בניהול מוסדי</h4>
+          <p>שני מנהלים מגויסים בקרית אתא (ישיבת קרית אתא + הצבי ישראל). ישיבת קרית אתא — המצב החמור ביותר: גם מנהל מגויס וגם 3+ עובדי הוראה. יש לוודא מינוי ממלא מקום מוסמך ומעקב שוטף.</p>
+        </div>
+        <div class="insight insight-orange">
+          <h4>⚠ כפילות עומס — הבונים וצלילים</h4>
+          <p>מוסדות הבונים וצלילים (קרית ביאליק) סובלים ממגויסים ומשוהים בחו"ל במקביל — כפל עומס על שאר צוות ההוראה. נדרש חיזוק ממלאי מקום.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 7. FACILITIES ═══════════════════════════════ -->
+  <div id="facilities" class="section">
+    <div class="section-title orange-bg">🏠 7. פינוי מוסדות לטובת צה"ל ושמרטפייה</div>
+    <div class="section-body">
+
+      <div class="grid-2">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">מוסדות שפונו לטובת צה"ל</div>
+          <table>
+            <thead>
+              <tr><th class="th-dark">מוסד</th><th class="th-dark">רשות</th><th class="th-dark">סטטוס</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>פינסקר</td><td>קרית אתא</td><td><span class="flag flag-red">פונה</span></td></tr>
+              <tr><td>ירושלים</td><td>קרית אתא</td><td><span class="flag flag-red">פונה</span></td></tr>
+              <tr><td>סביונים</td><td>קרית ים</td><td><span class="flag flag-red">פונה</span></td></tr>
+              <tr><td>רבין</td><td>קרית ים</td><td><span class="flag flag-red">פונה</span></td></tr>
+              <tr><td>קרית ביאליק</td><td>קרית ביאליק</td><td><span class="flag flag-green">לא דווח</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px;">שמרטפייה / מרכזי פעילות (מפ"ל)</div>
+          <table>
+            <thead>
+              <tr><th class="th-dark">רשות</th><th class="th-dark">פעילות</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>קרית אתא</td><td><span class="flag flag-orange">לא דווח</span></td></tr>
+              <tr><td>קרית ביאליק</td><td><span class="flag flag-green">2 מרכזי פעילות פתוחים ✓</span></td></tr>
+              <tr><td>קרית ים</td><td><span class="flag flag-orange">לא דווח</span></td></tr>
+            </tbody>
+          </table>
+
+          <div class="insight insight-orange" style="margin-top:12px;">
+            <h4>⚠ 4 מוסדות פונו — 3 ב-2 רשויות</h4>
+            <p>2 מוסדות בקרית אתא ו-2 בקרית ים הועברו לשימוש צבאי. ייתכן שפינוי זה משפיע על קיבולת הלמידה ועל נוכחות התלמידים. קרית ביאליק — מצב נוח (ללא פינויים + 2 מרכזי מפ"ל פעילים).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 8. RISKS ═══════════════════════════════ -->
+  <div id="risks" class="section">
+    <div class="section-title red-bg">🚨 8. ממצאים בולטים וסיכונים</div>
+    <div class="section-body">
+
+      <table>
+        <thead>
+          <tr>
+            <th class="th-dark">#</th>
+            <th class="th-dark">ממצא</th>
+            <th class="th-dark">רשות</th>
+            <th class="th-dark">חומרה</th>
+            <th class="th-dark">מדד</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>חוסר מיגון בבתי"ס — 1,234 מ"ר</td>
+            <td>קרית ביאליק</td>
+            <td><span class="flag flag-red">קריטי</span></td>
+            <td>50% מבתי"ס ללא מיגון</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>היעדרות ממושכת עולה — 244 תלמידים</td>
+            <td>קרית אתא</td>
+            <td><span class="flag flag-red">גבוה</span></td>
+            <td>+121 מראשון עד חמישי</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>נוכחות חטיבה 30% בלבד</td>
+            <td>קרית ים</td>
+            <td><span class="flag flag-red">גבוה</span></td>
+            <td>120/400 תלמידים</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>מנהל + 3 עובדי הוראה מגויסים</td>
+            <td>קרית אתא — ישיבה</td>
+            <td><span class="flag flag-red">גבוה</span></td>
+            <td>שיבוש ניהולי מלא</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>62% מגנים ללא מיגון</td>
+            <td>קרית אתא</td>
+            <td><span class="flag flag-orange">בינוני-גבוה</span></td>
+            <td>60 גנים, חוסר 232 מ"ר</td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>4 מוסדות פונו לצה"ל (ללא פתרון מפ"ל)</td>
+            <td>קרית אתא + קרית ים</td>
+            <td><span class="flag flag-orange">בינוני</span></td>
+            <td>ייתכן השפעה על קיבולת</td>
+          </tr>
+          <tr>
+            <td><strong>7</strong></td>
+            <td>515 תלמידים — היעדרות ממושכת כוללת</td>
+            <td>3 רשויות</td>
+            <td><span class="flag flag-orange">בינוני</span></td>
+            <td>2% מסה"כ תלמידים</td>
+          </tr>
+          <tr>
+            <td><strong>8</strong></td>
+            <td>ירידת נוכחות ביום חמישי — תופעה עקבית</td>
+            <td>3 רשויות</td>
+            <td><span class="flag flag-orange">בינוני</span></td>
+            <td>-5 עד -9 נ"א לעומת יום ב'</td>
+          </tr>
+          <tr>
+            <td><strong>9</strong></td>
+            <td>עובדי הוראה בחו"ל במקביל למגויסים</td>
+            <td>קרית ביאליק — הבונים, צלילים</td>
+            <td><span class="flag flag-orange">בינוני</span></td>
+            <td>כפל עומס על צוות</td>
+          </tr>
+          <tr>
+            <td><strong>10</strong></td>
+            <td>% גבוה של גנים מיוחד (22%)</td>
+            <td>3 רשויות</td>
+            <td><span class="flag flag-blue">לתשומת לב</span></td>
+            <td>50 מתוך 228 גנים</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ 9. RECOMMENDATIONS ═══════════════════════════════ -->
+  <div id="recommendations" class="section">
+    <div class="section-title">💡 9. המלצות</div>
+    <div class="section-body">
+
+      <div class="insight insight-red">
+        <h4>🔴 עדיפות ראשונה — מיידי (תוך 2 שבועות)</h4>
+        <p>
+          <strong>א. קרית ביאליק — מיגון בתי"ס:</strong> הגשת תכנית חירום לסגירת 1,234 מ"ר חוסר. פתרונות זמניים: מרחבים מוגנים ניידים, שיתוף מוסדות סמוכים, עדכון נהלי פינוי לבתי"ס הבלתי מוגנים.<br>
+          <strong>ב. קרית אתא — ישיבת קרית אתא:</strong> מינוי ממלא מקום מנהל מוסמך + השלמת כוח הוראה חלופי לכיסוי המגויסים. דיווח שבועי ישיר למחוז.<br>
+          <strong>ג. קרית אתא — היעדרות ממושכת:</strong> הפעלת נוהל מעקב אחר 244 תלמידים. קשר עם יועצים ועובדים סוציאליים לאיתור תלמידים בסיכון.
+        </p>
+      </div>
+
+      <div class="insight insight-orange">
+        <h4>🟠 עדיפות שנייה — קצר טווח (תוך חודש)</h4>
+        <p>
+          <strong>א. קרית ים — חטיבת ביניים:</strong> חקירת הסיבות לנוכחות 30% (אירוע ספציפי? פחד? עזיבת עיר?). שיחות עם מנהלי 3 בתי חטיבה, יצירת קשר עם הורים.<br>
+          <strong>ב. גנים ללא מיגון:</strong> עדכון תכנית מיגון גנים ל-3 הרשויות. קרית אתא — 60 גנים ללא מיגון = 1,488 ילדים בסיכון.<br>
+          <strong>ג. קרית אתא + קרית ים — מוסדות פונים:</strong> לבחון פתרונות פתיחת שמרטפייה/מפ"ל (כמו בקרית ביאליק), לתעד מה קורה לתלמידי המוסדות שפונו.
+        </p>
+      </div>
+
+      <div class="insight insight-blue">
+        <h4>🔵 עדיפות שלישית — מעקב שוטף</h4>
+        <p>
+          <strong>א. ירידת נוכחות בחמישי:</strong> לבחון אם זו מגמה קבועה ולשקול פעולות מוטיבציה/נוכחות ייעודיות לסוף שבוע.<br>
+          <strong>ב. הבונים וצלילים:</strong> מעקב שוטף על כוח ההוראה — עומס כפול (מגויסים + חו"ל).<br>
+          <strong>ג. דיווח מלא:</strong> לצמצם "לא דווחו" — בקרית אתא 684 תלמידים לא דווחו ביום חמישי (שיעור גבוה).<br>
+          <strong>ד. גני מיוחד:</strong> 50 גנים מיוחד (22%) — לבחון נגישות ומיגון ייעודי לאוכלוסייה זו.
+        </p>
+      </div>
+
+      <div class="insight insight-green">
+        <h4>✅ מה עובד טוב — לשמר ולהפיץ</h4>
+        <p>
+          <strong>קרית ביאליק — חינוך מיוחד:</strong> ~100% נוכחות — מודל לחיקוי. לבחון מה מאפיין את המוסדות האלה ולהפיץ בשאר הרשויות.<br>
+          <strong>קרית ביאליק — 2 מרכזי מפ"ל:</strong> מענה יעיל לצרכי ילדים בחירום. קרית אתא וקרית ים לשקול הקמת מרכזים דומים בפרט לאזורים שמוסדותיהם פונו לצה"ל.<br>
+          <strong>קרית ים — מיגון בתי"ס:</strong> 83% — מדד הצלחה לכל הרשויות. לבחון מה הוביל לכך (השקעה? פעולה יזומה?) ולהפיץ לקחים.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background:var(--gray-light);border-radius:8px;padding:10px 16px;display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:8px;">
+    <span>משרד החינוך – מחוז חיפה | מרץ 2026</span>
+    <span>דוח אנליטי מורחב – קרייתות | בסיס נתונים: דף מידע ביקור שר 12/03/2026</span>
+    <span>סה"כ 3 רשויות | 273 מוסדות | 26,154 תלמידים</span>
+  </div>
+
+</div>
+</body>
+</html>

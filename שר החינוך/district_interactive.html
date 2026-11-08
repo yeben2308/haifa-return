@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>דוח מחוזי אינטראקטיבי — מחוז חיפה | מרץ 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --blue:#003F8A;--blue-l:#1a5ea8;--blue-pale:#e8f0fc;--blue-mid:#0056b3;
+      --gold:#C8972A;--green:#1a8a4a;--green-bg:#e6f4ed;
+      --red:#c0392b;--red-bg:#fdf0ef;--orange:#e67e22;--orange-bg:#fef3e2;
+      --gray:#6b7280;--gray-l:#f3f4f6;--border:#d1d5db;--text:#1f2937;
+      --filter-bg:#fff;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Heebo',Arial,sans-serif;background:#e9edf5;color:var(--text);font-size:12.5px;line-height:1.55}
+
+    /* ── STICKY HEADER ── */
+    .site-header{position:sticky;top:0;z-index:200;background:var(--blue);color:white;padding:8px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .site-header h1{font-size:15px;font-weight:800;flex:1}
+    .site-header .meta-tag{font-size:10px;opacity:.8;white-space:nowrap}
+
+    /* ── FILTER BAR ── */
+    .filter-bar{position:sticky;top:41px;z-index:190;background:#fff;border-bottom:2px solid var(--gold);padding:8px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+    .filter-bar label{font-size:10.5px;font-weight:700;color:var(--gray);white-space:nowrap}
+    .filter-bar input[type=text]{
+      height:30px;padding:0 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Heebo',Arial,sans-serif;min-width:140px;
+      transition:border-color .2s;
+    }
+    .filter-bar input[type=text]:focus{outline:none;border-color:var(--blue)}
+    .filter-bar select{
+      height:30px;padding:0 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Heebo',Arial,sans-serif;background:white;cursor:pointer;
+      transition:border-color .2s;
+    }
+    .filter-bar select:focus{outline:none;border-color:var(--blue)}
+    .filter-sep{width:1px;height:24px;background:var(--border)}
+    .btn-clear{height:30px;padding:0 12px;border:1px solid var(--border);border-radius:6px;font-size:11px;font-family:'Heebo',Arial,sans-serif;background:#f9fafb;cursor:pointer;color:var(--gray);font-weight:600;transition:all .2s}
+    .btn-clear:hover{background:#e5e7eb;color:var(--text)}
+    .filter-count{font-size:11px;font-weight:700;color:var(--blue);margin-right:auto;background:var(--blue-pale);padding:3px 10px;border-radius:12px;border:1px solid #c4d4ef}
+
+    /* ── ACTIVE FILTER CHIPS ── */
+    .chips{display:flex;gap:5px;flex-wrap:wrap;padding:4px 18px;background:#f0f4fb;border-bottom:1px solid #e0e7f5;min-height:0;transition:all .2s}
+    .chips:empty{display:none}
+    .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--blue-pale);border:1px solid #c4d4ef;border-radius:12px;font-size:10px;font-weight:600;color:var(--blue)}
+    .chip button{background:none;border:none;cursor:pointer;color:var(--blue);font-size:12px;line-height:1;padding:0 1px}
+
+    /* ── WRAP ── */
+    .wrap{max-width:1200px;margin:0 auto;padding:14px 14px}
+
+    /* ── HEADER CARD ── */
+    .hdr{background:var(--blue);color:white;border-radius:10px;padding:18px 24px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+    .hdr h2{font-size:22px;font-weight:800;line-height:1.2}
+    .hdr .sub{font-size:12px;opacity:.85;margin-top:3px}
+    .hdr .meta{text-align:left;font-size:12px;opacity:.85;line-height:2}
+    .hdr img{filter:brightness(0) invert(1);height:64px;width:auto;object-fit:contain;flex-shrink:0}
+    .gold-bar{height:4px;background:linear-gradient(90deg,var(--gold),#f0c44a,var(--gold));border-radius:2px;margin-bottom:12px}
+
+    /* ── TOC ── */
+    .toc{background:var(--gray-l);border-radius:8px;padding:8px 12px;margin-bottom:12px}
+    .toc ul{list-style:none;display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+    .toc a{font-size:11px;color:var(--blue);text-decoration:none;background:white;padding:3px 9px;border-radius:12px;border:1px solid #c4d4ef;font-weight:600;transition:all .15s}
+    .toc a:hover,.toc a.active{background:var(--blue);color:white;border-color:var(--blue)}
+    .toc h3{font-size:10.5px;font-weight:700;color:var(--gray)}
+
+    /* ── DYNAMIC KPI BANNER ── */
+    .kpi-banner{background:white;border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;transition:all .3s}
+    .kpi-banner-head{background:var(--blue-l);color:white;padding:7px 13px;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:space-between}
+    .kpi-banner-head .filter-note{font-size:10px;opacity:.85;font-weight:400}
+    .kpi-banner-body{padding:10px 13px}
+    .dkpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+    .dkpi{background:var(--blue-pale);border:1px solid #c4d4ef;border-radius:8px;padding:8px;text-align:center;transition:all .3s}
+    .dkpi .n{font-size:22px;font-weight:800;color:var(--blue);line-height:1.1;transition:color .3s}
+    .dkpi .l{font-size:10px;color:var(--gray);margin-top:2px}
+    .dkpi.r{background:var(--red-bg);border-color:#f5b7b1}.dkpi.r .n{color:var(--red)}
+    .dkpi.o{background:var(--orange-bg);border-color:#f5c98c}.dkpi.o .n{color:var(--orange)}
+    .dkpi.g{background:var(--green-bg);border-color:#a3d9b8}.dkpi.g .n{color:var(--green)}
+
+    /* ── SECTION ── */
+    .sec{background:white;border-radius:10px;border:1px solid var(--border);margin-bottom:12px;overflow:hidden}
+    .sec-title{background:var(--blue);color:white;padding:8px 13px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+    .sec-title.red{background:#8b1a1a}.sec-title.green{background:#2c5f2e}
+    .sec-title.orange{background:#7c3a00}.sec-title.dark{background:#1f2937}
+    .sec-body{padding:11px 13px}
+
+    /* ── KPI grid (static sections) ── */
+    .kpi-grid{display:grid;gap:9px;margin-bottom:12px}
+    .kpi-5{grid-template-columns:repeat(5,1fr)}.kpi-4{grid-template-columns:repeat(4,1fr)}.kpi-3{grid-template-columns:repeat(3,1fr)}
+    .kpi{background:var(--blue-pale);border:1px solid #c4d4ef;border-radius:8px;padding:9px;text-align:center}
+    .kpi .n{font-size:26px;font-weight:800;color:var(--blue);line-height:1.1}
+    .kpi .l{font-size:10px;color:var(--gray);margin-top:2px}
+    .kpi.r{background:var(--red-bg);border-color:#f5b7b1}.kpi.r .n{color:var(--red)}
+    .kpi.o{background:var(--orange-bg);border-color:#f5c98c}.kpi.o .n{color:var(--orange)}
+    .kpi.g{background:var(--green-bg);border-color:#a3d9b8}.kpi.g .n{color:var(--green)}
+
+    /* ── TABLE ── */
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:11.5px}
+    th{background:var(--gray-l);padding:6px 7px;text-align:right;font-weight:600;border-bottom:2px solid var(--border);white-space:nowrap}
+    td{padding:5px 7px;border-bottom:1px solid #f0f0f0;text-align:right;white-space:nowrap}
+    tr:last-child td{border-bottom:none}
+    .th-b{background:var(--blue);color:white}.th-d{background:#1f2937;color:white}
+    .th-r{background:#8b1a1a;color:white}.th-g{background:#2c5f2e;color:white}
+    td.c{text-align:center}th.c{text-align:center}
+    th.sortable{cursor:pointer;user-select:none;transition:background .15s}
+    th.sortable:hover{filter:brightness(1.15)}
+    th.sortable::after{content:' ⇅';opacity:.5;font-size:10px}
+    th.sort-asc::after{content:' ▲';opacity:1}
+    th.sort-desc::after{content:' ▼';opacity:1}
+
+    /* ── HEAT TABLE ── */
+    .heat{font-size:11px}
+    .h0{background:#fdf0ef;color:var(--red);font-weight:700}
+    .h1{background:#fef3e2;color:#a05000;font-weight:600}
+    .h2{background:#fefce8;color:#856404;font-weight:600}
+    .h3{background:#f0fdf4;color:var(--green);font-weight:700}
+    .h4{background:var(--green-bg);color:#166534;font-weight:700}
+
+    /* ── BAR ── */
+    .bc{display:flex;align-items:center;gap:4px}
+    .bb{flex:1;height:11px;background:#f0f0f0;border-radius:5px;overflow:hidden;min-width:50px}
+    .bf{height:100%;border-radius:5px;transition:width .4s}
+
+    /* ── FLAGS ── */
+    .fl{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+    .fl-r{background:var(--red-bg);color:var(--red);border:1px solid #f5b7b1}
+    .fl-o{background:var(--orange-bg);color:var(--orange);border:1px solid #f5c98c}
+    .fl-g{background:var(--green-bg);color:var(--green);border:1px solid #a3d9b8}
+    .fl-b{background:var(--blue-pale);color:var(--blue);border:1px solid #c4d4ef}
+
+    /* ── INSIGHT ── */
+    .ins{padding:8px 12px;border-radius:7px;margin-bottom:8px;border-right:4px solid}
+    .ins-r{background:var(--red-bg);border-color:var(--red)}.ins-o{background:var(--orange-bg);border-color:var(--orange)}
+    .ins-g{background:var(--green-bg);border-color:var(--green)}.ins-b{background:var(--blue-pale);border-color:var(--blue)}
+    .ins h4{font-size:11.5px;font-weight:700;margin-bottom:2px}.ins p{font-size:11px;line-height:1.5}
+
+    /* ── MISC ── */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .fn{font-size:10px;color:var(--gray);font-style:italic;margin-top:4px}
+    hr{border:none;border-top:1px solid var(--border);margin:9px 0}
+    .badge{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600}
+    .y-row td{background:#fff8e1}
+    .b-row td{background:#f0fdf4}
+    .r-row td{background:#fff5f5}
+    .sec-sub{font-size:11px;font-weight:700;color:var(--gray);margin:8px 0 5px;border-bottom:1px solid var(--border);padding-bottom:3px}
+
+    /* ── HIGHLIGHTED CITY ROW ── */
+    tr.city-highlight td{background:#fff3cd !important;outline:2px solid var(--gold)}
+    tr[data-hidden="true"]{display:none}
+
+    /* ── NO RESULTS ── */
+    .no-results{text-align:center;padding:20px;color:var(--gray);font-style:italic;display:none}
+
+    /* ── BACK TO TOP ── */
+    #back-top{position:fixed;bottom:18px;left:18px;z-index:300;background:var(--blue);color:white;border:none;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center}
+    #back-top.visible{opacity:1}
+
+    @media(max-width:700px){
+      .dkpi-grid{grid-template-columns:repeat(3,1fr)}
+      .g2{grid-template-columns:1fr}
+      .kpi-5,.kpi-4{grid-template-columns:repeat(2,1fr)}
+      .filter-bar{gap:6px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ STICKY SITE HEADER ═══ -->
+<div class="site-header">
+  <span>🏛️</span>
+  <h1>דוח מחוזי אינטראקטיבי — מחוז חיפה | מרץ 2026</h1>
+  <span class="meta-tag">30 רשויות | 184,829 תלמידים | שבוע 08–12/03/2026</span>
+</div>
+
+<!-- ═══ FILTER BAR ═══ -->
+<div class="filter-bar" id="filterBar">
+  <label>🔍</label>
+  <input type="text" id="searchCity" placeholder="חפש רשות..." oninput="applyFilters()">
+
+  <div class="filter-sep"></div>
+  <label>נוכחות שבועית:</label>
+  <select id="filterAtt" onchange="applyFilters()">
+    <option value="">כולן</option>
+    <option value="70">70%+ (מצוין)</option>
+    <option value="60">60–70% (טוב)</option>
+    <option value="50">50–60% (בינוני)</option>
+    <option value="40">40–50% (נמוך)</option>
+    <option value="0">מתחת 40% (קריטי)</option>
+  </select>
+
+  <div class="filter-sep"></div>
+  <label>מיגון:</label>
+  <select id="filterShelter" onchange="applyFilters()">
+    <option value="">כולן</option>
+    <option value="מוגן">מוגן ✅</option>
+    <option value="טוב">טוב 🟢</option>
+    <option value="בינוני">בינוני 🟡</option>
+    <option value="חלקי">חלקי 🟠</option>
+    <option value="קריטי">קריטי 🔴</option>
+  </select>
+
+  <div class="filter-sep"></div>
+  <label>מגזר:</label>
+  <select id="filterSector" onchange="applyFilters()">
+    <option value="">כולן</option>
+    <option value="יהודי">יהודי</option>
+    <option value="ערבי">ערבי</option>
+    <option value="דרוזי">דרוזי</option>
+  </select>
+
+  <button class="btn-clear" onclick="clearFilters()">✕ נקה סינון</button>
+  <span class="filter-count" id="filterCount">30 רשויות</span>
+</div>
+
+<!-- ═══ ACTIVE CHIPS ═══ -->
+<div class="chips" id="chipsBar"></div>
+
+<div class="wrap">
+
+<!-- HEADER CARD -->
+<div class="hdr">
+  <img src="lain.png" alt="סמל האריה" onerror="this.style.display='none'">
+  <div style="flex:1">
+    <h2>📊 דוח אנליטי מחוזי — מחוז חיפה</h2>
+    <div class="sub">30 רשויות | נוכחות שבוע 08–12/03/2026 + נתוני מיגון | <strong>אינטראקטיבי עם סינון ומיון</strong></div>
+    <div class="sub" style="margin-top:3px">בסיס: מוסדות-נוכחות.xlsx · מוסדות-מקלוט.xlsx · נתוני-מוסדות.xlsx</div>
+  </div>
+  <div class="meta">
+    <div>30 רשויות מקומיות</div>
+    <div>184,829 תלמידי בתי"ס</div>
+    <div>2,306 מוסדות</div>
+    <div>נתונים ל-12.03.2026</div>
+  </div>
+  <img src="haifa.png" alt="סמל מחוז חיפה" onerror="this.style.display='none'">
+</div>
+<div class="gold-bar"></div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>תוכן עניינים</h3>
+  <ul>
+    <li><a href="#dynamic-kpi">0. סיכום מסונן דינמי</a></li>
+    <li><a href="#overview">1. KPI מחוזי</a></li>
+    <li><a href="#weekly-trend">2. מגמה שבועית</a></li>
+    <li><a href="#by-stage">3. נוכחות לפי שלב × יום</a></li>
+    <li><a href="#by-reshut-week">4. נוכחות לפי רשות — שבוע ↕</a></li>
+    <li><a href="#by-reshut-day">5. נוכחות לפי רשות — 12/03 ↕</a></li>
+    <li><a href="#absence3">6. היעדרות ממושכת 3 ימים ↕</a></li>
+    <li><a href="#shelter">7. מיגון — כל הרשויות ↕</a></li>
+    <li><a href="#insights">8. תובנות והמלצות</a></li>
+  </ul>
+</div>
+
+<!-- ═══ 0. DYNAMIC KPI BANNER ═══ -->
+<div id="dynamic-kpi" class="kpi-banner">
+  <div class="kpi-banner-head">
+    🔢 סיכום דינמי — מתעדכן לפי סינון
+    <span class="filter-note" id="filterNote">כל 30 הרשויות מוצגות</span>
+  </div>
+  <div class="kpi-banner-body">
+    <div class="dkpi-grid">
+      <div class="dkpi"><div class="n" id="dk-count">30</div><div class="l">רשויות מסוננות</div></div>
+      <div class="dkpi"><div class="n" id="dk-students">184,829</div><div class="l">תלמידים בסך הכל</div></div>
+      <div class="dkpi o"><div class="n" id="dk-att-week">57%</div><div class="l">נוכחות שבועית ממוצעת (משוקלל)</div></div>
+      <div class="dkpi o"><div class="n" id="dk-att-day">55%</div><div class="l">נוכחות יום חמישי 12/03</div></div>
+      <div class="dkpi r"><div class="n" id="dk-abs3">7,206</div><div class="l">נעדרים ממושכים 3 ימים (12/03)</div></div>
+      <div class="dkpi r"><div class="n" id="dk-abs3pct">3.9%</div><div class="l">% נעדרים ממושכים</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 1. KPI ═══ -->
+<div id="overview" class="sec">
+  <div class="sec-title">🔢 1. מדדי מפתח מחוזיים — שבוע 08–12/03/2026</div>
+  <div class="sec-body">
+    <div class="kpi-grid kpi-5">
+      <div class="kpi"><div class="n">184,829</div><div class="l">תלמידי בתי"ס במחוז</div></div>
+      <div class="kpi o"><div class="n">55%</div><div class="l">נוכחות מלאה ביום חמישי 12/03</div></div>
+      <div class="kpi r"><div class="n">15%</div><div class="l">היעדרות מלאה ביום חמישי 12/03</div></div>
+      <div class="kpi r"><div class="n">7,206</div><div class="l">נעדרים 3 ימים ברצף ב-12/03</div></div>
+      <div class="kpi o"><div class="n">57%</div><div class="l">ממוצע נוכחות שבועי</div></div>
+    </div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi g"><div class="n">59%</div><div class="l">נוכחות יסודי (ממוצע שבועי)</div></div>
+      <div class="kpi o"><div class="n">53%</div><div class="l">נוכחות חטיבה (ממוצע שבועי)</div></div>
+      <div class="kpi o"><div class="n">52%</div><div class="l">נוכחות תיכון (ממוצע שבועי)</div></div>
+      <div class="kpi g"><div class="n">69%</div><div class="l">נוכחות ח"מ (ממוצע שבועי)</div></div>
+    </div>
+    <div class="ins ins-r">
+      <h4>🚨 מגמת הידרדרות: נוכחות יורדת לאורך השבוע</h4>
+      <p>יום ראשון 08/03: <strong>56%</strong> → יום חמישי 12/03: <strong>55%</strong>. חטיבה נפלה ל-<strong>49%</strong>, תיכון ל-<strong>50%</strong>. היעדרות ממושכת גדלה פי 2.8 תוך שבוע אחד.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 2. WEEKLY TREND ═══ -->
+<div id="weekly-trend" class="sec">
+  <div class="sec-title">📈 2. מגמה שבועית — מחוז כולו</div>
+  <div class="sec-body">
+    <div class="g2">
+      <div>
+        <div class="sec-sub">נוכחות מלאה ותנועות יומיות</div>
+        <table>
+          <thead><tr>
+            <th class="th-b">יום</th><th class="th-b">תאריך</th>
+            <th class="th-b">נוכחות מלאה</th><th class="th-b">%</th>
+            <th class="th-b">היעדרות מלאה</th><th class="th-b">%</th>
+            <th class="th-b">חלקית</th><th class="th-b">לא דווח</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>א'</td><td>08/03</td><td>103,309</td><td class="c"><span style="color:var(--orange);font-weight:700">56%</span></td><td>23,864</td><td class="c">13%</td><td>42,795</td><td>16,295</td></tr>
+            <tr><td>ב'</td><td>09/03</td><td>106,437</td><td class="c"><span style="color:var(--orange);font-weight:700">58%</span></td><td>25,325</td><td class="c">14%</td><td>41,590</td><td>12,840</td></tr>
+            <tr><td>ג'</td><td>10/03</td><td>106,130</td><td class="c"><span style="color:var(--orange);font-weight:700">57%</span></td><td>26,012</td><td class="c">14%</td><td>44,215</td><td>9,687</td></tr>
+            <tr><td>ד'</td><td>11/03</td><td>106,034</td><td class="c"><span style="color:var(--orange);font-weight:700">57%</span></td><td>25,946</td><td class="c">14%</td><td>42,782</td><td>11,335</td></tr>
+            <tr style="background:#fff5f5;font-weight:700"><td>ה'</td><td>12/03</td><td>102,145</td><td class="c"><span style="color:var(--red);font-weight:800">55%</span></td><td>28,583</td><td class="c" style="color:var(--red)">15%</td><td>38,459</td><td>16,754</td></tr>
+            <tr style="background:var(--blue-pale)"><td colspan="2"><strong>ממוצע שבועי</strong></td><td><strong>104,831</strong></td><td class="c"><strong>57%</strong></td><td><strong>25,946</strong></td><td class="c"><strong>14%</strong></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">היעדרות ממושכת 3 ימים ברצף — מגמה</div>
+        <table>
+          <thead><tr><th class="th-r">יום</th><th class="th-r">נעדרים 3 ימים</th><th class="th-r">שינוי</th><th class="th-r">ויזואל</th></tr></thead>
+          <tbody>
+            <tr><td>א' 08/03</td><td>2,597</td><td>—</td><td><div class="bc"><div class="bb"><div class="bf" style="width:36%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>ב' 09/03</td><td>5,727</td><td style="color:var(--red)">+3,130 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:79%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>ג' 10/03</td><td>6,385</td><td style="color:var(--red)">+658 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:89%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>ד' 11/03</td><td>6,798</td><td style="color:var(--red)">+413 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:94%;background:var(--red)"></div></div></div></td></tr>
+            <tr style="background:#fff5f5;font-weight:700"><td>ה' 12/03</td><td style="color:var(--red)">7,206</td><td style="color:var(--red)">+408 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:100%;background:#8b0000"></div></div></div></td></tr>
+          </tbody>
+        </table>
+        <p class="fn" style="margin-top:5px">7,206 = 3.9% מתלמידי המחוז | עלייה של 178% מראשון לחמישי</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 3. BY STAGE ═══ -->
+<div id="by-stage" class="sec">
+  <div class="sec-title">🎓 3. נוכחות לפי שלב חינוך × יום (מחוז כולו)</div>
+  <div class="sec-body">
+    <div class="sec-sub">לוח חום — % נוכחות מלאה לפי שלב × יום</div>
+    <table class="heat" style="margin-bottom:6px;text-align:center">
+      <thead><tr>
+        <th class="th-d" style="text-align:right">שלב חינוך</th>
+        <th class="th-d c">תלמידים</th>
+        <th class="th-d c">א' 08/03</th><th class="th-d c">ב' 09/03</th><th class="th-d c">ג' 10/03</th><th class="th-d c">ד' 11/03</th><th class="th-d c">ה' 12/03</th>
+        <th class="th-d c">ממוצע</th><th class="th-d c">מגמה</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>יסודי</strong></td><td class="c">101,725</td><td class="c h2">58%</td><td class="c h3">61%</td><td class="c h3">60%</td><td class="c h3">61%</td><td class="c h2">59%</td><td class="c h3"><strong>60%</strong></td><td class="c"><span style="color:var(--orange)">▼ -1</span></td></tr>
+        <tr><td><strong>חטיבה</strong></td><td class="c">12,967</td><td class="c h2">56%</td><td class="c h2">56%</td><td class="c h1">52%</td><td class="c h1">53%</td><td class="c h0">49%</td><td class="c h1"><strong>53%</strong></td><td class="c"><span style="color:var(--red);font-weight:700">▼▼ -7</span></td></tr>
+        <tr><td><strong>תיכון</strong></td><td class="c">65,259</td><td class="c h1">52%</td><td class="c h1">52%</td><td class="c h1">53%</td><td class="c h1">52%</td><td class="c h1">50%</td><td class="c h1"><strong>52%</strong></td><td class="c"><span style="color:var(--red)">▼ -2</span></td></tr>
+        <tr><td><strong>ח"מ</strong></td><td class="c">4,878</td><td class="c h3">67%</td><td class="c h3">70%</td><td class="c h3">69%</td><td class="c h3">70%</td><td class="c h3">69%</td><td class="c h3"><strong>69%</strong></td><td class="c"><span style="color:var(--green)">▲ +2</span></td></tr>
+        <tr style="background:var(--blue-pale);font-weight:700"><td>סה"כ מחוז</td><td class="c">184,829</td><td class="c">56%</td><td class="c">58%</td><td class="c">57%</td><td class="c">57%</td><td class="c" style="color:var(--red)">55%</td><td class="c"><strong>57%</strong></td><td class="c"><span style="color:var(--red)">▼ -1</span></td></tr>
+      </tbody>
+    </table>
+    <p class="fn">צבעוניות: 🔴 מתחת 50% | 🟠 50-55% | 🟡 55-60% | 🟢 60%+</p>
+
+    <div class="g2" style="margin-top:12px">
+      <div>
+        <div class="sec-sub">נוכחות לפי מגזר × יום</div>
+        <table class="heat" style="text-align:center">
+          <thead><tr><th class="th-d" style="text-align:right">מגזר</th><th class="th-d c">תלמידים</th><th class="th-d c">08/03</th><th class="th-d c">09/03</th><th class="th-d c">10/03</th><th class="th-d c">11/03</th><th class="th-d c">12/03</th><th class="th-d c">ממוצע</th></tr></thead>
+          <tbody>
+            <tr><td><strong>יהודי</strong></td><td class="c">127,183</td><td class="c h3">60%</td><td class="c h3">61%</td><td class="c h3">60%</td><td class="c h3">60%</td><td class="c h2">57%</td><td class="c h3"><strong>60%</strong></td></tr>
+            <tr><td><strong>ערבי</strong></td><td class="c">52,143</td><td class="c h0">44%</td><td class="c h1">51%</td><td class="c h1">51%</td><td class="c h1">50%</td><td class="c h1">50%</td><td class="c h0"><strong>49%</strong></td></tr>
+            <tr><td><strong>דרוזי</strong></td><td class="c">5,011</td><td class="c h3">65%</td><td class="c h3">60%</td><td class="c h3">63%</td><td class="c h3">64%</td><td class="c h3">62%</td><td class="c h3"><strong>63%</strong></td></tr>
+            <tr><td><strong>בדואי</strong></td><td class="c">492</td><td class="c h0">21%</td><td class="c h0">18%</td><td class="c h0">22%</td><td class="c h1">27%</td><td class="c h0">15%</td><td class="c h0"><strong>21%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">נוכחות לפי סוג פיקוח × יום</div>
+        <table class="heat" style="text-align:center">
+          <thead><tr><th class="th-d" style="text-align:right">פיקוח</th><th class="th-d c">תלמידים</th><th class="th-d c">08/03</th><th class="th-d c">09/03</th><th class="th-d c">10/03</th><th class="th-d c">11/03</th><th class="th-d c">12/03</th><th class="th-d c">ממוצע</th></tr></thead>
+          <tbody>
+            <tr><td><strong>מ"מ</strong></td><td class="c">164,118</td><td class="c h2">56%</td><td class="c h2">58%</td><td class="c h2">58%</td><td class="c h2">58%</td><td class="c h2">56%</td><td class="c h2"><strong>57%</strong></td></tr>
+            <tr><td><strong>חמ"ד</strong></td><td class="c">20,711</td><td class="c h2">54%</td><td class="c h1">53%</td><td class="c h1">53%</td><td class="c h1">52%</td><td class="c h0">49%</td><td class="c h1"><strong>52%</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="ins ins-o" style="margin-top:8px">
+          <h4>⚠ חטיבה + חמ"ד — שלבי הסיכון הגבוהים ביותר</h4>
+          <p>חטיבה: 49% ביום חמישי — ירידה -7 נ"א. חמ"ד: 49% ביום חמישי. בדואי: 21% ממוצע שבועי — שפל מחוזי.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. BY RESHUT WEEK ═══ -->
+<div id="by-reshut-week" class="sec">
+  <div class="sec-title dark">🏙️ 4. נוכחות לפי רשות — ממוצע שבועי <small style="font-weight:400;font-size:10px;opacity:.8">(לחץ כותרת למיון | סינון למעלה)</small></div>
+  <div class="sec-body">
+    <div class="tbl-wrap">
+      <table id="tbl-week">
+        <thead><tr>
+          <th class="th-b sortable" data-col="rank" data-tbl="week">#</th>
+          <th class="th-b sortable" data-col="name" data-tbl="week">רשות</th>
+          <th class="th-b sortable c" data-col="sector" data-tbl="week">מגזר</th>
+          <th class="th-b sortable c" data-col="students" data-tbl="week">תלמידים</th>
+          <th class="th-b sortable c" data-col="weeklyPct" data-tbl="week">נוכחות %</th>
+          <th class="th-b sortable c" data-col="weeklyFull" data-tbl="week">נוכחות מלאה</th>
+          <th class="th-b sortable c" data-col="weeklyAbsPct" data-tbl="week">היעדרות %</th>
+          <th class="th-b sortable c" data-col="weeklyAbs" data-tbl="week">היעדרות מלאה</th>
+          <th class="th-b" style="width:110px">ויזואל</th>
+        </tr></thead>
+        <tbody id="tbody-week"></tbody>
+      </table>
+      <div class="no-results" id="no-week">אין רשויות התואמות את הסינון הנוכחי</div>
+    </div>
+    <p class="fn">* ממוצע שבועי מחושב מ-5 ימי לימוד. לחץ על כותרת עמודה למיון.</p>
+  </div>
+</div>
+
+<!-- ═══ 5. BY RESHUT LAST DAY ═══ -->
+<div id="by-reshut-day" class="sec">
+  <div class="sec-title red">📅 5. נוכחות לפי רשות — יום חמישי 12/03/2026 <small style="font-weight:400;font-size:10px;opacity:.8">(לחץ כותרת למיון)</small></div>
+  <div class="sec-body">
+    <div class="tbl-wrap">
+      <table id="tbl-day">
+        <thead><tr>
+          <th class="th-r sortable" data-col="rank" data-tbl="day">#</th>
+          <th class="th-r sortable" data-col="name" data-tbl="day">רשות</th>
+          <th class="th-r sortable c" data-col="sector" data-tbl="day">מגזר</th>
+          <th class="th-r sortable c" data-col="students" data-tbl="day">תלמידים</th>
+          <th class="th-r sortable c" data-col="lastDayPct" data-tbl="day">נוכחות %</th>
+          <th class="th-r sortable c" data-col="lastDayFull" data-tbl="day">נוכחות מלאה</th>
+          <th class="th-r sortable c" data-col="lastDayAbsPct" data-tbl="day">היעדרות %</th>
+          <th class="th-r sortable c" data-col="lastDayAbs" data-tbl="day">היעדרות מלאה</th>
+          <th class="th-r sortable c" data-col="lastDayNoReport" data-tbl="day">לא דווח</th>
+          <th class="th-r sortable c" data-col="abs3days" data-tbl="day">נעד' 3 ימים</th>
+        </tr></thead>
+        <tbody id="tbody-day"></tbody>
+      </table>
+      <div class="no-results" id="no-day">אין רשויות התואמות את הסינון הנוכחי</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6. ABSENCE 3 DAYS ═══ -->
+<div id="absence3" class="sec">
+  <div class="sec-title red">⚠️ 6. היעדרות ממושכת — 3 ימים ברצף (12/03) <small style="font-weight:400;font-size:10px;opacity:.8">(לחץ כותרת למיון)</small></div>
+  <div class="sec-body">
+    <div class="kpi-grid kpi-4" style="margin-bottom:10px">
+      <div class="kpi r"><div class="n">7,206</div><div class="l">נעדרים ממושכים ב-12/03 (כלל המחוז)</div></div>
+      <div class="kpi r"><div class="n">3.9%</div><div class="l">מתלמידי המחוז</div></div>
+      <div class="kpi o"><div class="n">+178%</div><div class="l">גידול מראשון לחמישי</div></div>
+      <div class="kpi o"><div class="n">4,087</div><div class="l">נעדרים ממושכים — יסודי בלבד</div></div>
+    </div>
+    <div class="tbl-wrap">
+      <table id="tbl-abs">
+        <thead><tr>
+          <th class="th-r sortable" data-col="rank" data-tbl="abs">#</th>
+          <th class="th-r sortable" data-col="name" data-tbl="abs">רשות</th>
+          <th class="th-r sortable c" data-col="sector" data-tbl="abs">מגזר</th>
+          <th class="th-r sortable c" data-col="students" data-tbl="abs">תלמידים</th>
+          <th class="th-r sortable c" data-col="abs3days" data-tbl="abs">נעד' 3 ימים</th>
+          <th class="th-r sortable c" data-col="abs3daysPct" data-tbl="abs">% מתלמידים</th>
+          <th class="th-r" style="width:130px">ויזואל</th>
+        </tr></thead>
+        <tbody id="tbody-abs"></tbody>
+      </table>
+      <div class="no-results" id="no-abs">אין רשויות התואמות את הסינון הנוכחי</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7. SHELTER ═══ -->
+<div id="shelter" class="sec">
+  <div class="sec-title green">🛡️ 7. מיגון — כל הרשויות <small style="font-weight:400;font-size:10px;opacity:.8">(לחץ כותרת למיון)</small></div>
+  <div class="sec-body">
+    <div class="kpi-grid kpi-4" style="margin-bottom:10px">
+      <div class="kpi r"><div class="n">39%</div><div class="l">בתי"ס מוגנים במחוז (178/451)</div></div>
+      <div class="kpi r"><div class="n">34%</div><div class="l">גנים מוגנים במחוז (629/1,855)</div></div>
+      <div class="kpi r"><div class="n">32,227</div><div class="l">מ"ר חסרים בבתי"ס</div></div>
+      <div class="kpi r"><div class="n">4,941</div><div class="l">מ"ר חסרים בגנים</div></div>
+    </div>
+    <div class="tbl-wrap">
+      <table id="tbl-shelter">
+        <thead><tr>
+          <th class="th-g sortable" data-col="name" data-tbl="shelter">רשות</th>
+          <th class="th-g sortable c" data-col="sector" data-tbl="shelter">מגזר</th>
+          <th class="th-g sortable c" data-col="weeklyPct" data-tbl="shelter">נוכחות %</th>
+          <th class="th-g sortable c" data-col="schoolsProtected" data-tbl="shelter">בתי"ס מוגן/כלל</th>
+          <th class="th-g sortable c" data-col="schoolsPct" data-tbl="shelter">% מוגנים</th>
+          <th class="th-g sortable c" data-col="schoolsSqm" data-tbl="shelter">מ"ר חסר</th>
+          <th class="th-g sortable c" data-col="gardensProtected" data-tbl="shelter">גנים מוגן/כלל</th>
+          <th class="th-g sortable c" data-col="gardensPct" data-tbl="shelter">% מוגנים</th>
+          <th class="th-g sortable c" data-col="gardensSqm" data-tbl="shelter">מ"ר חסר</th>
+          <th class="th-g sortable c" data-col="shelterRatingNum" data-tbl="shelter">דירוג</th>
+        </tr></thead>
+        <tbody id="tbody-shelter"></tbody>
+      </table>
+      <div class="no-results" id="no-shelter">אין רשויות התואמות את הסינון הנוכחי</div>
+    </div>
+    <p class="fn">* מוגן = אחוז מיגון ≥ 100% | מ"ר חסר = סכום עמודה L (ערכים שליליים)</p>
+  </div>
+</div>
+
+<!-- ═══ 8. INSIGHTS ═══ -->
+<div id="insights" class="sec">
+  <div class="sec-title">💡 8. תובנות מרכזיות והמלצות</div>
+  <div class="sec-body">
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #1 — מגמת ירידה מובהקת לאורך השבוע</h4>
+      <p>56% ביום ראשון → <strong>55% ביום חמישי</strong>. חטיבה: מ-56% ל-<strong>49%</strong>. היעדרות ממושכת הכפילה עצמה פי 2.8 תוך 5 ימים. 15% מהתלמידים נעדרים מלאים ביום חמישי.</p>
+    </div>
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #2 — ג'סר א-זרקא, מעלה עירון, בסמ"ה, ג'ת: פחות מ-40% נוכחות</h4>
+      <p>4 רשויות עם נוכחות שבועית <strong>מתחת ל-42%</strong>. ג'ת: 27% היעדרות מלאה שבועית + 14.5% נעדרים ממושכים. ג'סר א-זרקא: 26% היעדרות מלאה ו-35% נוכחות ביום חמישי.</p>
+    </div>
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #3 — 7,206 תלמידים נעדרים ממושכים — פוטנציאל נשירה</h4>
+      <p>7,206 תלמידים נעדרו 3 ימים רצופים ביום חמישי. ג'ת: 14.5%, חוף הכרמל: 10.3%, ג'סר א-זרקא: 8.5%. נדרשת מערכת מעקב פרטנית.</p>
+    </div>
+    <div class="ins ins-o">
+      <h4>⚠ ממצא #4 — חטיבת ביניים: שלב הסיכון הגבוה ביותר</h4>
+      <p>חטיבה: <strong>49% נוכחות, 18% היעדרות</strong> — הגרוע מכל השלבים ביום חמישי. ירידה של 7 נ"א מראשון לחמישי.</p>
+    </div>
+    <div class="ins ins-o">
+      <h4>⚠ ממצא #5 — חיפה: מגדירה את הממוצע המחוזי עם מיגון קריטי</h4>
+      <p>חיפה: <strong>57% נוכחות</strong>, 0% גנים מוגנים, 19% בתי"ס מוגנים. 896 נעדרים ממושכים. 53% מתלמידי המחוז — שיפור בחיפה ישפיע דרמטית על הממוצע המחוזי.</p>
+    </div>
+    <div class="ins ins-g">
+      <h4>✅ ממצא #6 — מנשה, דאלית אל-כרמל, רכסים — רשויות מובילות</h4>
+      <p>מנשה: <strong>74% שבועי</strong>. דאלית: 72%. רכסים: 82% ביום חמישי. ללמוד מה מאפיין רשויות אלה ולהפיץ לקחים.</p>
+    </div>
+    <hr>
+    <div class="ins ins-b">
+      <h4>📋 המלצות לפעולה — מדורגות לפי דחיפות</h4>
+      <p>
+        <strong>1. מיידי — 4 הרשויות מתחת ל-42% (ג'סר, מעלה עירון, בסמ"ה, ג'ת):</strong> פגישת חירום, תכנית תמריצי נוכחות, מעקב יומי.<br><br>
+        <strong>2. מיידי — 7,206 נעדרים ממושכים:</strong> שיגור יועצים לאיתור תלמידים בסיכון. עדיפות: ג'ת (14.5%), חוף הכרמל (10.3%), ג'סר א-זרקא (8.5%).<br><br>
+        <strong>3. קצר-טווח — "תופעת חמישי":</strong> ניתוח האם קשורה להחמרת ביטחוני בסוף שבוע. שקילת פתרונות מוטיבציה ייחודיים.<br><br>
+        <strong>4. בינוני-טווח — מיגון (37,168 מ"ר חסרים):</strong> חיפה = 30% מהחוסר. תכנית רב-שנתית בתיאום עם משרד הביטחון. עדיפות: חיפה, חדרה, אום אל-פחם.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="background:var(--gray-l);border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:8px;flex-wrap:wrap;gap:4px">
+  <span>משרד החינוך – מחוז חיפה | מרץ 2026</span>
+  <span>בסיס: מוסדות-נוכחות.xlsx · מוסדות-מקלוט.xlsx · נתוני-מוסדות.xlsx</span>
+  <span>30 רשויות | 184,829 תלמידי בתי"ס | 2,306 מוסדות</span>
+</div>
+
+</div><!-- /wrap -->
+
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="חזור למעלה">↑</button>
+
+<script>
+// ════════════════════════════════════════════
+// DATA — כל 30 הרשויות
+// ════════════════════════════════════════════
+const CITIES = [
+  // name, sector, students (last day), weeklyPct, weeklyFull(per-day avg), weeklyAbsPct, weeklyAbs(per-day avg),
+  // lastDayPct, lastDayFull, lastDayAbsPct, lastDayAbs, lastDayPartial, lastDayNoReport, abs3days,
+  // schoolsProtected, schoolsTotal, schoolsPct, schoolsSqm, gardensProtected, gardensTotal, gardensPct, gardensSqm, shelterRating
+  {name:"רכסים",        sector:"יהודי",  students:90,    weeklyPct:82, weeklyFull:74,    weeklyAbsPct:3,  weeklyAbs:3,    lastDayPct:89, lastDayFull:80,    lastDayAbsPct:1,  lastDayAbs:1,    lastDayPartial:9,    lastDayNoReport:0,    abs3days:0,   abs3daysPct:0.0,  schoolsProtected:1,  schoolsTotal:1,  schoolsPct:100, schoolsSqm:0,    gardensProtected:0, gardensTotal:1,  gardensPct:0,  gardensSqm:10,  shelterRating:"בינוני"},
+  {name:"מנשה",         sector:"יהודי",  students:3102,  weeklyPct:74, weeklyFull:2296,  weeklyAbsPct:8,  weeklyAbs:246,  lastDayPct:71, lastDayFull:2208,  lastDayAbsPct:9,  lastDayAbs:275,  lastDayPartial:220,  lastDayNoReport:403,  abs3days:48,  abs3daysPct:1.5,  schoolsProtected:5,  schoolsTotal:10, schoolsPct:50,  schoolsSqm:439,  gardensProtected:26,gardensTotal:44, gardensPct:59, gardensSqm:134, shelterRating:"בינוני"},
+  {name:"דאלית אל-כרמל",sector:"דרוזי",  students:2571,  weeklyPct:72, weeklyFull:1840,  weeklyAbsPct:10, weeklyAbs:265,  lastDayPct:71, lastDayFull:1827,  lastDayAbsPct:12, lastDayAbs:313,  lastDayPartial:402,  lastDayNoReport:32,   abs3days:98,  abs3daysPct:3.8,  schoolsProtected:5,  schoolsTotal:7,  schoolsPct:71,  schoolsSqm:139,  gardensProtected:0, gardensTotal:31, gardensPct:0,  gardensSqm:216, shelterRating:"חלקי"},
+  {name:"קרית טבעון",   sector:"יהודי",  students:2981,  weeklyPct:67, weeklyFull:2005,  weeklyAbsPct:11, weeklyAbs:314,  lastDayPct:64, lastDayFull:1899,  lastDayAbsPct:12, lastDayAbs:364,  lastDayPartial:419,  lastDayNoReport:301,  abs3days:58,  abs3daysPct:1.9,  schoolsProtected:4,  schoolsTotal:7,  schoolsPct:57,  schoolsSqm:423,  gardensProtected:16,gardensTotal:27, gardensPct:59, gardensSqm:123, shelterRating:"טוב"},
+  {name:"קרית ביאליק",  sector:"יהודי",  students:7240,  weeklyPct:65, weeklyFull:4737,  weeklyAbsPct:9,  weeklyAbs:659,  lastDayPct:62, lastDayFull:4470,  lastDayAbsPct:14, lastDayAbs:991,  lastDayPartial:1373, lastDayNoReport:406,  abs3days:97,  abs3daysPct:1.3,  schoolsProtected:8,  schoolsTotal:16, schoolsPct:50,  schoolsSqm:1234, gardensProtected:36,gardensTotal:79, gardensPct:46, gardensSqm:94,  shelterRating:"בינוני"},
+  {name:"קרית מוצקין",  sector:"יהודי",  students:8381,  weeklyPct:65, weeklyFull:5442,  weeklyAbsPct:10, weeklyAbs:878,  lastDayPct:60, lastDayFull:5009,  lastDayAbsPct:12, lastDayAbs:968,  lastDayPartial:1427, lastDayNoReport:979,  abs3days:183, abs3daysPct:2.2,  schoolsProtected:5,  schoolsTotal:16, schoolsPct:31,  schoolsSqm:1068, gardensProtected:16,gardensTotal:80, gardensPct:20, gardensSqm:172, shelterRating:"חלקי"},
+  {name:"כפר קרע",      sector:"ערבי",   students:5074,  weeklyPct:62, weeklyFull:3161,  weeklyAbsPct:12, weeklyAbs:585,  lastDayPct:65, lastDayFull:3306,  lastDayAbsPct:11, lastDayAbs:552,  lastDayPartial:934,  lastDayNoReport:282,  abs3days:103, abs3daysPct:2.0,  schoolsProtected:6,  schoolsTotal:12, schoolsPct:50,  schoolsSqm:759,  gardensProtected:20,gardensTotal:48, gardensPct:42, gardensSqm:120, shelterRating:"בינוני"},
+  {name:"חדרה",         sector:"יהודי",  students:17278, weeklyPct:62, weeklyFull:10643, weeklyAbsPct:14, weeklyAbs:2493, lastDayPct:57, lastDayFull:9926,  lastDayAbsPct:16, lastDayAbs:2763, lastDayPartial:2602, lastDayNoReport:2864, abs3days:582, abs3daysPct:3.4,  schoolsProtected:11, schoolsTotal:39, schoolsPct:28,  schoolsSqm:3588, gardensProtected:79,gardensTotal:162,gardensPct:49, gardensSqm:416, shelterRating:"בינוני"},
+  {name:"קרית ים",      sector:"יהודי",  students:4981,  weeklyPct:63, weeklyFull:3155,  weeklyAbsPct:13, weeklyAbs:647,  lastDayPct:61, lastDayFull:3030,  lastDayAbsPct:16, lastDayAbs:789,  lastDayPartial:812,  lastDayNoReport:363,  abs3days:174, abs3daysPct:3.5,  schoolsProtected:10, schoolsTotal:12, schoolsPct:83,  schoolsSqm:204,  gardensProtected:33,gardensTotal:53, gardensPct:62, gardensSqm:126, shelterRating:"מוגן"},
+  {name:"קרית אתא",     sector:"יהודי",  students:8363,  weeklyPct:60, weeklyFull:4982,  weeklyAbsPct:11, weeklyAbs:922,  lastDayPct:57, lastDayFull:4793,  lastDayAbsPct:13, lastDayAbs:1074, lastDayPartial:1815, lastDayNoReport:684,  abs3days:244, abs3daysPct:2.9,  schoolsProtected:10, schoolsTotal:17, schoolsPct:59,  schoolsSqm:522,  gardensProtected:36,gardensTotal:96, gardensPct:38, gardensSqm:235, shelterRating:"בינוני"},
+  {name:"פרדס חנה-כרכור",sector:"יהודי", students:9140,  weeklyPct:60, weeklyFull:5444,  weeklyAbsPct:15, weeklyAbs:1396, lastDayPct:59, lastDayFull:5409,  lastDayAbsPct:17, lastDayAbs:1537, lastDayPartial:1123, lastDayNoReport:1092, abs3days:448, abs3daysPct:4.9,  schoolsProtected:8,  schoolsTotal:27, schoolsPct:30,  schoolsSqm:1837, gardensProtected:35,gardensTotal:88, gardensPct:40, gardensSqm:384, shelterRating:"חלקי"},
+  {name:"טירת כרמל",    sector:"ערבי",   students:4642,  weeklyPct:59, weeklyFull:2748,  weeklyAbsPct:15, weeklyAbs:697,  lastDayPct:54, lastDayFull:2511,  lastDayAbsPct:18, lastDayAbs:820,  lastDayPartial:966,  lastDayNoReport:347,  abs3days:261, abs3daysPct:5.6,  schoolsProtected:3,  schoolsTotal:11, schoolsPct:27,  schoolsSqm:764,  gardensProtected:14,gardensTotal:68, gardensPct:21, gardensSqm:280, shelterRating:"חלקי"},
+  {name:"אלונה",        sector:"יהודי",  students:295,   weeklyPct:58, weeklyFull:172,   weeklyAbsPct:19, weeklyAbs:56,   lastDayPct:73, lastDayFull:215,   lastDayAbsPct:25, lastDayAbs:75,   lastDayPartial:0,    lastDayNoReport:5,    abs3days:21,  abs3daysPct:7.1,  schoolsProtected:1,  schoolsTotal:1,  schoolsPct:100, schoolsSqm:0,    gardensProtected:3, gardensTotal:4,  gardensPct:75, gardensSqm:4,   shelterRating:"מוגן"},
+  {name:"נשר",          sector:"יהודי",  students:2520,  weeklyPct:58, weeklyFull:1451,  weeklyAbsPct:15, weeklyAbs:368,  lastDayPct:57, lastDayFull:1429,  lastDayAbsPct:19, lastDayAbs:468,  lastDayPartial:411,  lastDayNoReport:214,  abs3days:135, abs3daysPct:5.4,  schoolsProtected:3,  schoolsTotal:8,  schoolsPct:38,  schoolsSqm:210,  gardensProtected:7, gardensTotal:28, gardensPct:25, gardensSqm:142, shelterRating:"חלקי"},
+  {name:"בנימינה גבעת עדה",sector:"יהודי",students:3372, weeklyPct:57, weeklyFull:1920,  weeklyAbsPct:19, weeklyAbs:642,  lastDayPct:58, lastDayFull:1960,  lastDayAbsPct:17, lastDayAbs:587,  lastDayPartial:437,  lastDayNoReport:388,  abs3days:168, abs3daysPct:5.0,  schoolsProtected:2,  schoolsTotal:7,  schoolsPct:29,  schoolsSqm:449,  gardensProtected:19,gardensTotal:24, gardensPct:79, gardensSqm:4,   shelterRating:"בינוני"},
+  {name:"חיפה",         sector:"יהודי",  students:39133, weeklyPct:57, weeklyFull:22168, weeklyAbsPct:11, weeklyAbs:4113, lastDayPct:57, lastDayFull:22455, lastDayAbsPct:12, lastDayAbs:4836, lastDayPartial:9118, lastDayNoReport:2868, abs3days:896, abs3daysPct:2.3,  schoolsProtected:18, schoolsTotal:95, schoolsPct:19,  schoolsSqm:11151,gardensProtected:0, gardensTotal:346,gardensPct:0,  gardensSqm:338, shelterRating:"קריטי"},
+  {name:"זכרון יעקב",   sector:"יהודי",  students:4673,  weeklyPct:56, weeklyFull:2632,  weeklyAbsPct:14, weeklyAbs:654,  lastDayPct:50, lastDayFull:2332,  lastDayAbsPct:16, lastDayAbs:758,  lastDayPartial:1103, lastDayNoReport:497,  abs3days:152, abs3daysPct:3.3,  schoolsProtected:5,  schoolsTotal:12, schoolsPct:42,  schoolsSqm:506,  gardensProtected:16,gardensTotal:28, gardensPct:57, gardensSqm:89,  shelterRating:"בינוני"},
+  {name:"ערערה",        sector:"ערבי",   students:3971,  weeklyPct:57, weeklyFull:2265,  weeklyAbsPct:16, weeklyAbs:636,  lastDayPct:54, lastDayFull:2148,  lastDayAbsPct:14, lastDayAbs:575,  lastDayPartial:834,  lastDayNoReport:424,  abs3days:171, abs3daysPct:4.3,  schoolsProtected:6,  schoolsTotal:10, schoolsPct:60,  schoolsSqm:447,  gardensProtected:7, gardensTotal:39, gardensPct:18, gardensSqm:204, shelterRating:"בינוני"},
+  {name:"אור עקיבא",    sector:"יהודי",  students:4511,  weeklyPct:55, weeklyFull:2467,  weeklyAbsPct:15, weeklyAbs:662,  lastDayPct:51, lastDayFull:2294,  lastDayAbsPct:16, lastDayAbs:724,  lastDayPartial:798,  lastDayNoReport:693,  abs3days:183, abs3daysPct:4.1,  schoolsProtected:6,  schoolsTotal:10, schoolsPct:60,  schoolsSqm:442,  gardensProtected:21,gardensTotal:53, gardensPct:40, gardensSqm:109, shelterRating:"בינוני"},
+  {name:"עספיא",        sector:"דרוזי",  students:2440,  weeklyPct:53, weeklyFull:1304,  weeklyAbsPct:17, weeklyAbs:412,  lastDayPct:53, lastDayFull:1285,  lastDayAbsPct:17, lastDayAbs:405,  lastDayPartial:665,  lastDayNoReport:85,   abs3days:112, abs3daysPct:4.6,  schoolsProtected:3,  schoolsTotal:6,  schoolsPct:50,  schoolsSqm:597,  gardensProtected:12,gardensTotal:22, gardensPct:55, gardensSqm:111, shelterRating:"בינוני"},
+  {name:"זבולון",       sector:"יהודי",  students:2559,  weeklyPct:55, weeklyFull:1409,  weeklyAbsPct:15, weeklyAbs:372,  lastDayPct:49, lastDayFull:1248,  lastDayAbsPct:16, lastDayAbs:420,  lastDayPartial:601,  lastDayNoReport:291,  abs3days:117, abs3daysPct:4.6,  schoolsProtected:6,  schoolsTotal:13, schoolsPct:46,  schoolsSqm:426,  gardensProtected:17,gardensTotal:31, gardensPct:55, gardensSqm:22,  shelterRating:"בינוני"},
+  {name:'חוף הכרמל',    sector:"יהודי",  students:4112,  weeklyPct:54, weeklyFull:2207,  weeklyAbsPct:20, weeklyAbs:836,  lastDayPct:53, lastDayFull:2197,  lastDayAbsPct:22, lastDayAbs:921,  lastDayPartial:918,  lastDayNoReport:79,   abs3days:424, abs3daysPct:10.3, schoolsProtected:6,  schoolsTotal:11, schoolsPct:55,  schoolsSqm:334,  gardensProtected:49,gardensTotal:69, gardensPct:71, gardensSqm:208, shelterRating:"טוב"},
+  {name:"חריש",         sector:"יהודי",  students:7284,  weeklyPct:51, weeklyFull:3693,  weeklyAbsPct:20, weeklyAbs:1434, lastDayPct:48, lastDayFull:3504,  lastDayAbsPct:20, lastDayAbs:1441, lastDayPartial:669,  lastDayNoReport:1671, abs3days:362, abs3daysPct:5.0,  schoolsProtected:14, schoolsTotal:18, schoolsPct:78,  schoolsSqm:98,   gardensProtected:44,gardensTotal:109,gardensPct:40, gardensSqm:153, shelterRating:"טוב"},
+  {name:"אום אל-פחם",   sector:"ערבי",   students:13946, weeklyPct:50, weeklyFull:6971,  weeklyAbsPct:22, weeklyAbs:3030, lastDayPct:49, lastDayFull:6772,  lastDayAbsPct:23, lastDayAbs:3147, lastDayPartial:3137, lastDayNoReport:890,  abs3days:1055,abs3daysPct:7.6,  schoolsProtected:12, schoolsTotal:31, schoolsPct:39,  schoolsSqm:3116, gardensProtected:61,gardensTotal:126,gardensPct:48, gardensSqm:686, shelterRating:"בינוני"},
+  {name:"פוריידיס",     sector:"ערבי",   students:3276,  weeklyPct:47, weeklyFull:1552,  weeklyAbsPct:14, weeklyAbs:462,  lastDayPct:63, lastDayFull:2063,  lastDayAbsPct:7,  lastDayAbs:232,  lastDayPartial:724,  lastDayNoReport:257,  abs3days:41,  abs3daysPct:1.3,  schoolsProtected:3,  schoolsTotal:7,  schoolsPct:43,  schoolsSqm:335,  gardensProtected:12,gardensTotal:26, gardensPct:46, gardensSqm:62,  shelterRating:"בינוני"},
+  {name:"באקה אל-גרביה",sector:"ערבי",   students:6946,  weeklyPct:49, weeklyFull:3433,  weeklyAbsPct:12, weeklyAbs:816,  lastDayPct:47, lastDayFull:3291,  lastDayAbsPct:16, lastDayAbs:1091, lastDayPartial:2294, lastDayNoReport:271,  abs3days:177, abs3daysPct:2.5,  schoolsProtected:9,  schoolsTotal:17, schoolsPct:53,  schoolsSqm:1111, gardensProtected:5, gardensTotal:58, gardensPct:9,  gardensSqm:265, shelterRating:"חלקי"},
+  {name:"ג'ת",          sector:"ערבי",   students:2539,  weeklyPct:42, weeklyFull:1068,  weeklyAbsPct:27, weeklyAbs:682,  lastDayPct:39, lastDayFull:991,   lastDayAbsPct:31, lastDayAbs:796,  lastDayPartial:702,  lastDayNoReport:54,   abs3days:369, abs3daysPct:14.5, schoolsProtected:0,  schoolsTotal:6,  schoolsPct:0,   schoolsSqm:478,  gardensProtected:7, gardensTotal:27, gardensPct:26, gardensSqm:104, shelterRating:"קריטי"},
+  {name:'בסמ"ה',        sector:"ערבי",   students:2746,  weeklyPct:42, weeklyFull:1157,  weeklyAbsPct:12, weeklyAbs:334,  lastDayPct:39, lastDayFull:1064,  lastDayAbsPct:14, lastDayAbs:381,  lastDayPartial:1102, lastDayNoReport:199,  abs3days:80,  abs3daysPct:2.9,  schoolsProtected:5,  schoolsTotal:8,  schoolsPct:63,  schoolsSqm:80,   gardensProtected:8, gardensTotal:26, gardensPct:31, gardensSqm:69,  shelterRating:"בינוני"},
+  {name:"מעלה עירון",   sector:"ערבי",   students:3187,  weeklyPct:38, weeklyFull:1205,  weeklyAbsPct:13, weeklyAbs:418,  lastDayPct:36, lastDayFull:1161,  lastDayAbsPct:16, lastDayAbs:519,  lastDayPartial:1440, lastDayNoReport:70,   abs3days:152, abs3daysPct:4.8,  schoolsProtected:1,  schoolsTotal:8,  schoolsPct:13,  schoolsSqm:768,  gardensProtected:15,gardensTotal:29, gardensPct:52, gardensSqm:22,  shelterRating:"חלקי"},
+  {name:"ג'סר א-זרקא",  sector:"ערבי",   students:3476,  weeklyPct:35, weeklyFull:1210,  weeklyAbsPct:26, weeklyAbs:913,  lastDayPct:36, lastDayFull:1268,  lastDayAbsPct:22, lastDayAbs:760,  lastDayPartial:1404, lastDayNoReport:45,   abs3days:295, abs3daysPct:8.5,  schoolsProtected:2,  schoolsTotal:8,  schoolsPct:25,  schoolsSqm:702,  gardensProtected:15,gardensTotal:33, gardensPct:45, gardensSqm:39,  shelterRating:"בינוני"},
+];
+
+// Numeric rating for shelter (for sorting)
+const SHELTER_ORDER = {"מוגן":1,"טוב":2,"בינוני":3,"חלקי":4,"קריטי":5};
+CITIES.forEach(c => c.shelterRatingNum = SHELTER_ORDER[c.shelterRating] || 3);
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let filteredCities = [...CITIES];
+const sortState = {week:{col:'weeklyPct',dir:-1}, day:{col:'lastDayPct',dir:-1}, abs:{col:'abs3days',dir:-1}, shelter:{col:'shelterRatingNum',dir:1}};
+
+// ════════════════════════════════════════════
+// FILTER LOGIC
+// ════════════════════════════════════════════
+function applyFilters() {
+  const search = document.getElementById('searchCity').value.trim().toLowerCase();
+  const attVal = document.getElementById('filterAtt').value;
+  const shelter = document.getElementById('filterShelter').value;
+  const sector = document.getElementById('filterSector').value;
+
+  filteredCities = CITIES.filter(c => {
+    if (search && !c.name.includes(search)) return false;
+    if (shelter && c.shelterRating !== shelter) return false;
+    if (sector && c.sector !== sector) return false;
+    if (attVal !== '') {
+      const pct = c.weeklyPct;
+      const v = parseInt(attVal);
+      if (v === 70 && pct < 70) return false;
+      if (v === 60 && (pct < 60 || pct >= 70)) return false;
+      if (v === 50 && (pct < 50 || pct >= 60)) return false;
+      if (v === 40 && (pct < 40 || pct >= 50)) return false;
+      if (v === 0 && pct >= 40) return false;
+    }
+    return true;
+  });
+
+  renderAll();
+  updateDynamicKPI();
+  updateChips();
+  document.getElementById('filterCount').textContent = filteredCities.length + ' רשויות';
+}
+
+function clearFilters() {
+  document.getElementById('searchCity').value = '';
+  document.getElementById('filterAtt').value = '';
+  document.getElementById('filterShelter').value = '';
+  document.getElementById('filterSector').value = '';
+  filteredCities = [...CITIES];
+  renderAll();
+  updateDynamicKPI();
+  updateChips();
+  document.getElementById('filterCount').textContent = '30 רשויות';
+}
+
+// ════════════════════════════════════════════
+// CHIPS
+// ════════════════════════════════════════════
+function updateChips() {
+  const bar = document.getElementById('chipsBar');
+  bar.innerHTML = '';
+  const attSel = document.getElementById('filterAtt');
+  const attTxt = attSel.options[attSel.selectedIndex].text;
+  const search = document.getElementById('searchCity').value.trim();
+  const shelter = document.getElementById('filterShelter').value;
+  const sector = document.getElementById('filterSector').value;
+
+  if (search) addChip(bar, 'חיפוש: ' + search, () => { document.getElementById('searchCity').value=''; applyFilters(); });
+  if (attSel.value) addChip(bar, 'נוכחות: ' + attTxt, () => { document.getElementById('filterAtt').value=''; applyFilters(); });
+  if (shelter) addChip(bar, 'מיגון: ' + shelter, () => { document.getElementById('filterShelter').value=''; applyFilters(); });
+  if (sector) addChip(bar, 'מגזר: ' + sector, () => { document.getElementById('filterSector').value=''; applyFilters(); });
+}
+
+function addChip(bar, text, onRemove) {
+  const chip = document.createElement('div');
+  chip.className = 'chip';
+  chip.innerHTML = text + ' <button onclick="void(0)">✕</button>';
+  chip.querySelector('button').addEventListener('click', onRemove);
+  bar.appendChild(chip);
+}
+
+// ════════════════════════════════════════════
+// DYNAMIC KPI
+// ════════════════════════════════════════════
+function updateDynamicKPI() {
+  const cc = filteredCities;
+  const totalStudents = cc.reduce((s,c) => s + c.students, 0);
+  const totalFull = cc.reduce((s,c) => s + c.lastDayFull, 0);
+  const totalAbs3 = cc.reduce((s,c) => s + c.abs3days, 0);
+  const attDay = totalStudents > 0 ? Math.round(totalFull / totalStudents * 100) : 0;
+  const abs3pct = totalStudents > 0 ? (totalAbs3 / totalStudents * 100).toFixed(1) : '0.0';
+
+  // Weighted weekly pct
+  const totalWeeklyFull = cc.reduce((s,c) => s + c.weeklyFull * c.students / 100 * c.weeklyPct, 0);
+  const attWeek = totalStudents > 0 ? Math.round(cc.reduce((s,c) => s + c.weeklyPct * c.students, 0) / totalStudents) : 0;
+
+  document.getElementById('dk-count').textContent = cc.length;
+  document.getElementById('dk-students').textContent = totalStudents.toLocaleString('he-IL');
+  document.getElementById('dk-att-week').textContent = attWeek + '%';
+  document.getElementById('dk-att-day').textContent = attDay + '%';
+  document.getElementById('dk-abs3').textContent = totalAbs3.toLocaleString('he-IL');
+  document.getElementById('dk-abs3pct').textContent = abs3pct + '%';
+
+  const note = cc.length === 30 ? 'כל 30 הרשויות מוצגות' : cc.length + ' מתוך 30 רשויות (סינון פעיל)';
+  document.getElementById('filterNote').textContent = note;
+
+  // Color the KPIs dynamically
+  const dkAtt = document.querySelector('#dynamic-kpi .dkpi:nth-child(3)');
+  dkAtt.className = 'dkpi ' + (attWeek >= 60 ? 'g' : attWeek >= 50 ? 'o' : 'r');
+  document.getElementById('dk-att-week').style.color = '';
+  const dkDay = document.querySelector('#dynamic-kpi .dkpi:nth-child(4)');
+  dkDay.className = 'dkpi ' + (attDay >= 60 ? 'g' : attDay >= 50 ? 'o' : 'r');
+}
+
+// ════════════════════════════════════════════
+// RENDER TABLES
+// ════════════════════════════════════════════
+function colorPct(pct) {
+  if (pct >= 70) return 'color:var(--green);font-weight:700';
+  if (pct >= 60) return 'color:var(--green);font-weight:600';
+  if (pct >= 50) return 'color:var(--orange);font-weight:700';
+  if (pct >= 40) return 'color:var(--red);font-weight:700';
+  return 'color:#8b0000;font-weight:800';
+}
+function heatClass(pct) {
+  if (pct >= 65) return 'h3';
+  if (pct >= 58) return 'h2';
+  if (pct >= 50) return 'h1';
+  return 'h0';
+}
+function shelterBadge(r) {
+  const cls = {מוגן:'fl-g',טוב:'fl-g',בינוני:'fl-b',חלקי:'fl-o',קריטי:'fl-r'}[r] || 'fl-b';
+  return `<span class="fl ${cls}">${r}</span>`;
+}
+function sectorBadge(s) {
+  const cls = {יהודי:'fl-b',ערבי:'fl-o',דרוזי:'fl-g'}[s] || '';
+  return `<span class="fl ${cls}" style="padding:1px 5px;font-size:9px">${s}</span>`;
+}
+function numFmt(n) { return n.toLocaleString('he-IL'); }
+
+function bar(pct, color) {
+  return `<div class="bc"><div class="bb"><div class="bf" style="width:${Math.min(pct,100)}%;background:${color}"></div></div><span style="font-size:10px;min-width:28px;text-align:right">${pct}%</span></div>`;
+}
+
+function sortedCities(tbl) {
+  const {col, dir} = sortState[tbl];
+  return [...filteredCities].sort((a,b) => {
+    const va = a[col], vb = b[col];
+    if (typeof va === 'string') return dir * va.localeCompare(vb, 'he');
+    return dir * (va - vb);
+  });
+}
+
+function renderWeek() {
+  const sorted = sortedCities('week');
+  const tbody = document.getElementById('tbody-week');
+  if (sorted.length === 0) {
+    tbody.innerHTML = '';
+    document.getElementById('no-week').style.display = 'block';
+    return;
+  }
+  document.getElementById('no-week').style.display = 'none';
+  const barColor = pct => pct >= 60 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : 'var(--red)';
+  tbody.innerHTML = sorted.map((c,i) => `
+    <tr>
+      <td class="c">${i+1}</td>
+      <td><strong>${c.name}</strong></td>
+      <td class="c">${sectorBadge(c.sector)}</td>
+      <td class="c">${numFmt(c.students)}</td>
+      <td class="c ${heatClass(c.weeklyPct)}"><span style="${colorPct(c.weeklyPct)}">${c.weeklyPct}%</span></td>
+      <td class="c">${numFmt(c.weeklyFull)}</td>
+      <td class="c">${c.weeklyAbsPct}%</td>
+      <td class="c">${numFmt(c.weeklyAbs)}</td>
+      <td>${bar(c.weeklyPct, barColor(c.weeklyPct))}</td>
+    </tr>`).join('');
+  addTotalsRow('tbody-week', sorted, [
+    '', 'סה"כ (מסונן)', '',
+    numFmt(sorted.reduce((s,c)=>s+c.students,0)),
+    Math.round(sorted.reduce((s,c)=>s+c.weeklyPct*c.students,0)/Math.max(1,sorted.reduce((s,c)=>s+c.students,0)))+'%',
+    '', '', '', ''
+  ]);
+}
+
+function renderDay() {
+  const sorted = sortedCities('day');
+  const tbody = document.getElementById('tbody-day');
+  if (sorted.length === 0) {
+    tbody.innerHTML = '';
+    document.getElementById('no-day').style.display = 'block';
+    return;
+  }
+  document.getElementById('no-day').style.display = 'none';
+  tbody.innerHTML = sorted.map((c,i) => `
+    <tr>
+      <td class="c">${i+1}</td>
+      <td><strong>${c.name}</strong></td>
+      <td class="c">${sectorBadge(c.sector)}</td>
+      <td class="c">${numFmt(c.students)}</td>
+      <td class="c ${heatClass(c.lastDayPct)}"><span style="${colorPct(c.lastDayPct)}">${c.lastDayPct}%</span></td>
+      <td class="c">${numFmt(c.lastDayFull)}</td>
+      <td class="c">${c.lastDayAbsPct}%</td>
+      <td class="c">${numFmt(c.lastDayAbs)}</td>
+      <td class="c">${numFmt(c.lastDayNoReport)}</td>
+      <td class="c" style="${c.abs3days > 200 ? 'color:var(--red);font-weight:700' : ''}">${numFmt(c.abs3days)}</td>
+    </tr>`).join('');
+  const totStudents = sorted.reduce((s,c)=>s+c.students,0);
+  const totFull = sorted.reduce((s,c)=>s+c.lastDayFull,0);
+  const totAbs = sorted.reduce((s,c)=>s+c.lastDayAbs,0);
+  const totAbs3 = sorted.reduce((s,c)=>s+c.abs3days,0);
+  addTotalsRow('tbody-day', sorted, [
+    '', 'סה"כ (מסונן)', '',
+    numFmt(totStudents),
+    Math.round(totFull/Math.max(1,totStudents)*100)+'%',
+    numFmt(totFull),
+    Math.round(totAbs/Math.max(1,totStudents)*100)+'%',
+    numFmt(totAbs), '', numFmt(totAbs3)
+  ]);
+}
+
+function renderAbs() {
+  const sorted = sortedCities('abs');
+  const tbody = document.getElementById('tbody-abs');
+  if (sorted.length === 0) {
+    tbody.innerHTML = '';
+    document.getElementById('no-abs').style.display = 'block';
+    return;
+  }
+  document.getElementById('no-abs').style.display = 'none';
+  const maxAbs = Math.max(...sorted.map(c=>c.abs3days), 1);
+  tbody.innerHTML = sorted.map((c,i) => {
+    const pctColor = c.abs3daysPct >= 8 ? 'var(--red)' : c.abs3daysPct >= 4 ? 'var(--orange)' : 'var(--gray)';
+    const barColor = c.abs3daysPct >= 8 ? 'var(--red)' : c.abs3daysPct >= 4 ? 'var(--orange)' : '#6b7280';
+    return `<tr>
+      <td class="c">${i+1}</td>
+      <td><strong>${c.name}</strong></td>
+      <td class="c">${sectorBadge(c.sector)}</td>
+      <td class="c">${numFmt(c.students)}</td>
+      <td class="c" style="font-weight:700;color:${pctColor}">${numFmt(c.abs3days)}</td>
+      <td class="c" style="color:${pctColor};font-weight:700">${c.abs3daysPct}%</td>
+      <td><div class="bc"><div class="bb"><div class="bf" style="width:${Math.round(c.abs3days/maxAbs*100)}%;background:${barColor}"></div></div></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderShelter() {
+  const sorted = sortedCities('shelter');
+  const tbody = document.getElementById('tbody-shelter');
+  if (sorted.length === 0) {
+    tbody.innerHTML = '';
+    document.getElementById('no-shelter').style.display = 'block';
+    return;
+  }
+  document.getElementById('no-shelter').style.display = 'none';
+  tbody.innerHTML = sorted.map(c => {
+    const sc = c.schoolsPct >= 70 ? 'style="color:var(--green);font-weight:700"' : c.schoolsPct < 30 ? 'style="color:var(--red);font-weight:700"' : '';
+    const gc = c.gardensPct >= 70 ? 'style="color:var(--green);font-weight:700"' : c.gardensPct < 20 ? 'style="color:var(--red);font-weight:700"' : '';
+    const sqmSc = c.schoolsSqm > 1000 ? 'style="color:var(--red);font-weight:700"' : '';
+    const sqmGc = c.gardensSqm > 200 ? 'style="color:var(--orange)"' : '';
+    return `<tr>
+      <td><strong>${c.name}</strong></td>
+      <td class="c">${sectorBadge(c.sector)}</td>
+      <td class="c ${heatClass(c.weeklyPct)}"><span style="${colorPct(c.weeklyPct)}">${c.weeklyPct}%</span></td>
+      <td class="c">${c.schoolsProtected}/${c.schoolsTotal}</td>
+      <td class="c" ${sc}>${c.schoolsPct}%</td>
+      <td class="c" ${sqmSc}>${numFmt(c.schoolsSqm)}</td>
+      <td class="c">${c.gardensProtected}/${c.gardensTotal}</td>
+      <td class="c" ${gc}>${c.gardensPct}%</td>
+      <td class="c" ${sqmGc}>${numFmt(c.gardensSqm)}</td>
+      <td class="c">${shelterBadge(c.shelterRating)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function addTotalsRow(tbodyId, sorted, cells) {
+  const tr = document.createElement('tr');
+  tr.style.cssText = 'background:var(--blue-pale);font-weight:700';
+  tr.innerHTML = cells.map(c => `<td class="c">${c}</td>`).join('');
+  document.getElementById(tbodyId).appendChild(tr);
+}
+
+function renderAll() {
+  renderWeek();
+  renderDay();
+  renderAbs();
+  renderShelter();
+}
+
+// ════════════════════════════════════════════
+// SORT
+// ════════════════════════════════════════════
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const tbl = th.dataset.tbl;
+    const col = th.dataset.col;
+    if (sortState[tbl].col === col) {
+      sortState[tbl].dir *= -1;
+    } else {
+      sortState[tbl].col = col;
+      sortState[tbl].dir = (col === 'name' || col === 'sector') ? 1 : -1;
+    }
+    // Update header classes
+    th.closest('table').querySelectorAll('th.sortable').forEach(t => {
+      t.classList.remove('sort-asc','sort-desc');
+    });
+    th.classList.add(sortState[tbl].dir === 1 ? 'sort-asc' : 'sort-desc');
+    renderAll();
+  });
+});
+
+// ════════════════════════════════════════════
+// TOC ACTIVE HIGHLIGHT
+// ════════════════════════════════════════════
+const tocLinks = document.querySelectorAll('.toc a');
+const sections = document.querySelectorAll('.sec, .kpi-banner');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const id = entry.target.id;
+      const link = document.querySelector(`.toc a[href="#${id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, {threshold: 0.25, rootMargin: '-60px 0px -40% 0px'});
+
+sections.forEach(s => { if (s.id) observer.observe(s); });
+
+// ════════════════════════════════════════════
+// BACK TO TOP BUTTON
+// ════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('back-top').classList.toggle('visible', window.scrollY > 300);
+});
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+renderAll();
+updateDynamicKPI();
+
+// Set initial sort indicators
+document.querySelector('#tbl-week th[data-col="weeklyPct"]').classList.add('sort-desc');
+document.querySelector('#tbl-day th[data-col="lastDayPct"]').classList.add('sort-desc');
+document.querySelector('#tbl-abs th[data-col="abs3days"]').classList.add('sort-desc');
+document.querySelector('#tbl-shelter th[data-col="shelterRatingNum"]').classList.add('sort-asc');
+</script>
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>דוח אנליטי מחוזי — מחוז חיפה | מרץ 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --blue:#003F8A;--blue-l:#1a5ea8;--blue-pale:#e8f0fc;
+      --gold:#C8972A;--green:#1a8a4a;--green-bg:#e6f4ed;
+      --red:#c0392b;--red-bg:#fdf0ef;--orange:#e67e22;--orange-bg:#fef3e2;
+      --gray:#6b7280;--gray-l:#f3f4f6;--border:#d1d5db;--text:#1f2937;
+    }
+    body{font-family:'Heebo',Arial,sans-serif;background:#e9edf5;color:var(--text);font-size:12.5px;line-height:1.55}
+    .wrap{max-width:1200px;margin:0 auto;padding:20px 14px}
+
+    /* HEADER */
+    .hdr{background:var(--blue);color:white;border-radius:10px;padding:22px 28px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start}
+    .hdr h1{font-size:26px;font-weight:800;line-height:1.2}
+    .hdr .sub{font-size:13px;opacity:.85;margin-top:4px}
+    .hdr .meta{text-align:left;font-size:13px;opacity:.85;line-height:2.1}
+    .hdr img{filter:brightness(0) invert(1);}
+    .gold-bar{height:4px;background:linear-gradient(90deg,var(--gold),#f0c44a,var(--gold));border-radius:2px;margin-bottom:14px}
+
+    /* TOC */
+    .toc{background:var(--gray-l);border-radius:8px;padding:9px 13px;margin-bottom:13px}
+    .toc ul{list-style:none;display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+    .toc a{font-size:11px;color:var(--blue);text-decoration:none;background:white;padding:3px 9px;border-radius:12px;border:1px solid #c4d4ef;font-weight:600}
+    .toc h3{font-size:11px;font-weight:700;color:var(--gray)}
+
+    /* SECTION */
+    .sec{background:white;border-radius:10px;border:1px solid var(--border);margin-bottom:13px;overflow:hidden}
+    .sec-title{background:var(--blue);color:white;padding:8px 13px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+    .sec-title.red{background:#8b1a1a}.sec-title.green{background:#2c5f2e}
+    .sec-title.orange{background:#7c3a00}.sec-title.dark{background:#1f2937}
+    .sec-body{padding:11px 13px}
+
+    /* KPI */
+    .kpi-grid{display:grid;gap:9px;margin-bottom:12px}
+    .kpi-5{grid-template-columns:repeat(5,1fr)}.kpi-4{grid-template-columns:repeat(4,1fr)}.kpi-3{grid-template-columns:repeat(3,1fr)}
+    .kpi{background:var(--blue-pale);border:1px solid #c4d4ef;border-radius:8px;padding:9px;text-align:center}
+    .kpi .n{font-size:26px;font-weight:800;color:var(--blue);line-height:1.1}
+    .kpi .l{font-size:10px;color:var(--gray);margin-top:2px}
+    .kpi.r{background:var(--red-bg);border-color:#f5b7b1}.kpi.r .n{color:var(--red)}
+    .kpi.o{background:var(--orange-bg);border-color:#f5c98c}.kpi.o .n{color:var(--orange)}
+    .kpi.g{background:var(--green-bg);border-color:#a3d9b8}.kpi.g .n{color:var(--green)}
+
+    /* TABLE */
+    table{width:100%;border-collapse:collapse;font-size:11.5px}
+    th{background:var(--gray-l);padding:6px 7px;text-align:right;font-weight:600;border-bottom:2px solid var(--border)}
+    td{padding:5px 7px;border-bottom:1px solid #f0f0f0;text-align:right}
+    tr:last-child td{border-bottom:none}
+    .th-b{background:var(--blue);color:white}.th-d{background:#1f2937;color:white}
+    .th-r{background:#8b1a1a;color:white}.th-g{background:#2c5f2e;color:white}
+    td.c{text-align:center}th.c{text-align:center}
+
+    /* HEAT TABLE */
+    .heat{font-size:11px}
+    .h0{background:#fdf0ef;color:var(--red);font-weight:700}
+    .h1{background:#fef3e2;color:#a05000;font-weight:600}
+    .h2{background:#fefce8;color:#856404;font-weight:600}
+    .h3{background:#f0fdf4;color:var(--green);font-weight:700}
+    .h4{background:var(--green-bg);color:#166534;font-weight:700}
+
+    /* BAR */
+    .bc{display:flex;align-items:center;gap:4px}
+    .bb{flex:1;height:11px;background:#f0f0f0;border-radius:5px;overflow:hidden;min-width:50px}
+    .bf{height:100%;border-radius:5px}
+
+    /* FLAGS */
+    .fl{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+    .fl-r{background:var(--red-bg);color:var(--red);border:1px solid #f5b7b1}
+    .fl-o{background:var(--orange-bg);color:var(--orange);border:1px solid #f5c98c}
+    .fl-g{background:var(--green-bg);color:var(--green);border:1px solid #a3d9b8}
+    .fl-b{background:var(--blue-pale);color:var(--blue);border:1px solid #c4d4ef}
+
+    /* INSIGHT */
+    .ins{padding:8px 12px;border-radius:7px;margin-bottom:8px;border-right:4px solid}
+    .ins-r{background:var(--red-bg);border-color:var(--red)}.ins-o{background:var(--orange-bg);border-color:var(--orange)}
+    .ins-g{background:var(--green-bg);border-color:var(--green)}.ins-b{background:var(--blue-pale);border-color:var(--blue)}
+    .ins h4{font-size:11.5px;font-weight:700;margin-bottom:2px}.ins p{font-size:11px;line-height:1.5}
+
+    /* MISC */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .fn{font-size:10px;color:var(--gray);font-style:italic;margin-top:4px}
+    hr{border:none;border-top:1px solid var(--border);margin:9px 0}
+    .badge{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600}
+    .y-row td{background:#fff8e1}
+    .b-row td{background:#f0fdf4}
+    .r-row td{background:#fff5f5}
+    .sec-sub{font-size:11px;font-weight:700;color:var(--gray);margin:8px 0 5px;border-bottom:1px solid var(--border);padding-bottom:3px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr" style="align-items:center;">
+  <img src="lain.png" alt="סמל האריה" style="height:72px;width:auto;object-fit:contain;flex-shrink:0;">
+  <div style="flex:1;">
+    <h1>📊 דוח אנליטי מחוזי — מחוז חיפה</h1>
+    <div class="sub">30 רשויות | נוכחות שבוע 08–12/03/2026 + נתוני מיגון</div>
+    <div class="sub" style="margin-top:4px;">בסיס: מוסדות-נוכחות.xlsx · מוסדות-מקלוט.xlsx · נתוני-מוסדות.xlsx</div>
+  </div>
+  <div class="meta">
+    <div>30 רשויות מקומיות</div>
+    <div>184,829 תלמידי בתי"ס</div>
+    <div>2,306 מוסדות</div>
+    <div>נתונים ל-12.03.2026</div>
+  </div>
+  <img src="haifa.png" alt="סמל מחוז חיפה" style="height:72px;width:auto;object-fit:contain;flex-shrink:0;">
+</div>
+<div class="gold-bar"></div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>תוכן עניינים</h3>
+  <ul>
+    <li><a href="#overview">1. KPI מחוזי</a></li>
+    <li><a href="#weekly-trend">2. מגמה שבועית</a></li>
+    <li><a href="#by-stage">3. נוכחות לפי שלב × יום</a></li>
+    <li><a href="#by-reshut-week">4. נוכחות לפי רשות — שבוע</a></li>
+    <li><a href="#by-reshut-day">5. נוכחות לפי רשות — 12/03</a></li>
+    <li><a href="#absence3">6. היעדרות ממושכת 3 ימים</a></li>
+    <li><a href="#cross-stage-reshut">7. חיתוך שלב × רשות</a></li>
+    <li><a href="#shelter">8. מיגון — כל הרשויות</a></li>
+    <li><a href="#insights">9. תובנות והמלצות</a></li>
+  </ul>
+</div>
+
+<!-- ═══ 1. KPI ═══ -->
+<div id="overview" class="sec">
+  <div class="sec-title">🔢 1. מדדי מפתח מחוזיים — שבוע 08–12/03/2026</div>
+  <div class="sec-body">
+    <div class="kpi-grid kpi-5">
+      <div class="kpi"><div class="n">184,829</div><div class="l">תלמידי בתי"ס במחוז</div></div>
+      <div class="kpi o"><div class="n">55%</div><div class="l">נוכחות מלאה ביום חמישי 12/03</div></div>
+      <div class="kpi r"><div class="n">15%</div><div class="l">היעדרות מלאה ביום חמישי 12/03</div></div>
+      <div class="kpi r"><div class="n">7,206</div><div class="l">נעדרים 3 ימים ברצף ב-12/03</div></div>
+      <div class="kpi o"><div class="n">57%</div><div class="l">ממוצע נוכחות שבועי</div></div>
+    </div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi g"><div class="n">59%</div><div class="l">נוכחות יסודי (ממוצע שבועי)</div></div>
+      <div class="kpi o"><div class="n">53%</div><div class="l">נוכחות חטיבה (ממוצע שבועי)</div></div>
+      <div class="kpi o"><div class="n">52%</div><div class="l">נוכחות תיכון (ממוצע שבועי)</div></div>
+      <div class="kpi g"><div class="n">70%</div><div class="l">נוכחות רב-שלבי (ממוצע שבועי)</div></div>
+    </div>
+    <div class="ins ins-r">
+      <h4>🚨 מגמת הידרדרות: נוכחות יורדת לאורך השבוע</h4>
+      <p>יום ראשון 08/03: <strong>56%</strong> → יום חמישי 12/03: <strong>55%</strong>. הידרדרות מתמשכת בכל שלבי החינוך. ביום חמישי: נוכחות חטיבה נפלה ל-<strong>49%</strong> ותיכון ל-<strong>50%</strong>. היעדרות ממושכת 3 ימים ברצף עלתה מ-2,597 לראשון ל-<strong>7,206 לחמישי</strong> — גידול פי 2.8 תוך שבוע אחד.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 2. WEEKLY TREND ═══ -->
+<div id="weekly-trend" class="sec">
+  <div class="sec-title">📈 2. מגמה שבועית — מחוז כולו</div>
+  <div class="sec-body">
+    <div class="g2">
+      <div>
+        <div class="sec-sub">נוכחות מלאה ותנועות יומיות</div>
+        <table>
+          <thead><tr>
+            <th class="th-b">יום</th><th class="th-b">תאריך</th>
+            <th class="th-b">נוכחות מלאה</th><th class="th-b">%</th>
+            <th class="th-b">היעדרות מלאה</th><th class="th-b">%</th>
+            <th class="th-b">חלקית</th><th class="th-b">לא דווח</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>א'</td><td>08/03</td><td>103,309</td><td class="c"><span style="color:var(--orange);font-weight:700;">56%</span></td><td>23,864</td><td class="c">13%</td><td>42,795</td><td>16,295</td></tr>
+            <tr><td>ב'</td><td>09/03</td><td>106,437</td><td class="c"><span style="color:var(--orange);font-weight:700;">58%</span></td><td>25,325</td><td class="c">14%</td><td>41,590</td><td>12,840</td></tr>
+            <tr><td>ג'</td><td>10/03</td><td>106,130</td><td class="c"><span style="color:var(--orange);font-weight:700;">57%</span></td><td>26,012</td><td class="c">14%</td><td>44,215</td><td>9,687</td></tr>
+            <tr><td>ד'</td><td>11/03</td><td>106,034</td><td class="c"><span style="color:var(--orange);font-weight:700;">57%</span></td><td>25,946</td><td class="c">14%</td><td>42,782</td><td>11,335</td></tr>
+            <tr style="background:#fff5f5;font-weight:700;"><td>ה'</td><td>12/03</td><td>102,145</td><td class="c"><span style="color:var(--red);font-weight:800;">55%</span></td><td>28,583</td><td class="c" style="color:var(--red);">15%</td><td>38,459</td><td>16,754</td></tr>
+            <tr style="background:var(--blue-pale);"><td colspan="2"><strong>ממוצע שבועי</strong></td><td><strong>104,831</strong></td><td class="c"><strong>57%</strong></td><td><strong>25,946</strong></td><td class="c"><strong>14%</strong></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">היעדרות ממושכת 3 ימים ברצף — מגמה</div>
+        <table>
+          <thead><tr><th class="th-r">יום/תאריך</th><th class="th-r">נעדרים 3 ימים</th><th class="th-r">שינוי</th><th class="th-r">ויזואל</th></tr></thead>
+          <tbody>
+            <tr><td>א' 08/03</td><td>2,597</td><td>—</td><td><div class="bc"><div class="bb"><div class="bf" style="width:36%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>ב' 09/03</td><td>5,727</td><td style="color:var(--red);">+3,130 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:79%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>ג' 10/03</td><td>6,385</td><td style="color:var(--red);">+658 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:89%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>ד' 11/03</td><td>6,798</td><td style="color:var(--red);">+413 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:94%;background:var(--red)"></div></div></div></td></tr>
+            <tr style="background:#fff5f5;font-weight:700;"><td>ה' 12/03</td><td style="color:var(--red);">7,206</td><td style="color:var(--red);">+408 ↑</td><td><div class="bc"><div class="bb"><div class="bf" style="width:100%;background:#8b0000"></div></div></div></td></tr>
+          </tbody>
+        </table>
+        <p class="fn" style="margin-top:5px;">7,206 = 3.9% מתלמידי המחוז | עלייה של 178% מראשון לחמישי</p>
+
+        <div style="margin-top:10px;" class="sec-sub">ויזואל נוכחות יומית</div>
+        <div style="margin-top:4px;">
+          <div style="font-size:10px;display:flex;gap:4px;margin-bottom:4px;">
+            <span style="display:inline-block;width:12px;height:12px;background:var(--green-bg);border:1px solid var(--green);border-radius:2px;"></span><span style="font-size:10px;color:var(--gray);">נוכחות מלאה</span>
+            <span style="display:inline-block;width:12px;height:12px;background:var(--orange-bg);border:1px solid var(--orange);border-radius:2px;margin-right:4px;"></span><span style="font-size:10px;color:var(--gray);">חלקית</span>
+            <span style="display:inline-block;width:12px;height:12px;background:var(--red-bg);border:1px solid var(--red);border-radius:2px;margin-right:4px;"></span><span style="font-size:10px;color:var(--gray);">היעדרות</span>
+          </div>
+          <!-- Stacked bars per day -->
+          <div style="margin-bottom:4px;">
+            <div style="font-size:10px;color:var(--gray);margin-bottom:2px;">08/03</div>
+            <div style="height:14px;border-radius:7px;overflow:hidden;display:flex;background:#eee;">
+              <div style="width:56%;background:var(--green);" title="56% נוכחות"></div>
+              <div style="width:23%;background:var(--orange);" title="23% חלקית"></div>
+              <div style="width:13%;background:var(--red);" title="13% היעדרות"></div>
+              <div style="width:8%;background:#d1d5db;" title="8% לא דווח"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:10px;color:var(--gray);margin-bottom:2px;">09/03</div>
+            <div style="height:14px;border-radius:7px;overflow:hidden;display:flex;background:#eee;">
+              <div style="width:58%;background:var(--green);"></div>
+              <div style="width:22%;background:var(--orange);"></div>
+              <div style="width:14%;background:var(--red);"></div>
+              <div style="width:6%;background:#d1d5db;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:10px;color:var(--gray);margin-bottom:2px;">10/03</div>
+            <div style="height:14px;border-radius:7px;overflow:hidden;display:flex;background:#eee;">
+              <div style="width:57%;background:var(--green);"></div>
+              <div style="width:24%;background:var(--orange);"></div>
+              <div style="width:14%;background:var(--red);"></div>
+              <div style="width:5%;background:#d1d5db;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:10px;color:var(--gray);margin-bottom:2px;">11/03</div>
+            <div style="height:14px;border-radius:7px;overflow:hidden;display:flex;background:#eee;">
+              <div style="width:57%;background:var(--green);"></div>
+              <div style="width:23%;background:var(--orange);"></div>
+              <div style="width:14%;background:var(--red);"></div>
+              <div style="width:6%;background:#d1d5db;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:10px;color:var(--gray);margin-bottom:2px;font-weight:700;">12/03 ↓ שפל שבועי</div>
+            <div style="height:14px;border-radius:7px;overflow:hidden;display:flex;background:#eee;border:1px solid var(--red);">
+              <div style="width:55%;background:var(--green);"></div>
+              <div style="width:21%;background:var(--orange);"></div>
+              <div style="width:15%;background:var(--red);"></div>
+              <div style="width:9%;background:#d1d5db;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 3. BY STAGE ═══ -->
+<div id="by-stage" class="sec">
+  <div class="sec-title">🎓 3. נוכחות לפי שלב חינוך × יום (חיתוך מלא)</div>
+  <div class="sec-body">
+
+    <!-- ── 3א. שלב חינוך × יום ── -->
+    <div class="sec-sub">לוח חום — % נוכחות מלאה לפי שלב × יום</div>
+    <table class="heat" style="margin-bottom:6px;text-align:center;">
+      <thead>
+        <tr>
+          <th class="th-d" style="text-align:right;">שלב חינוך</th>
+          <th class="th-d c">תלמידים</th>
+          <th class="th-d c">א' 08/03</th><th class="th-d c">ב' 09/03</th><th class="th-d c">ג' 10/03</th><th class="th-d c">ד' 11/03</th><th class="th-d c">ה' 12/03</th>
+          <th class="th-d c">ממוצע</th><th class="th-d c">מגמה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>יסודי</strong></td><td class="c">101,725</td>
+          <td class="c h2">58%</td><td class="c h3">61%</td><td class="c h3">60%</td><td class="c h3">61%</td><td class="c h2">59%</td>
+          <td class="c h3"><strong>60%</strong></td><td class="c"><span style="color:var(--orange);">▼ -1</span></td>
+        </tr>
+        <tr>
+          <td><strong>חטיבה</strong></td><td class="c">12,967</td>
+          <td class="c h2">56%</td><td class="c h2">56%</td><td class="c h1">52%</td><td class="c h1">53%</td><td class="c h0">49%</td>
+          <td class="c h1"><strong>53%</strong></td><td class="c"><span style="color:var(--red);font-weight:700;">▼▼ -7</span></td>
+        </tr>
+        <tr>
+          <td><strong>תיכון</strong></td><td class="c">65,259</td>
+          <td class="c h1">52%</td><td class="c h1">52%</td><td class="c h1">53%</td><td class="c h1">52%</td><td class="c h1">50%</td>
+          <td class="c h1"><strong>52%</strong></td><td class="c"><span style="color:var(--red);">▼ -2</span></td>
+        </tr>
+        <tr>
+          <td><strong>חינוך מיוחד (ח"מ)</strong></td><td class="c">4,878</td>
+          <td class="c h3">67%</td><td class="c h3">70%</td><td class="c h3">69%</td><td class="c h3">70%</td><td class="c h3">69%</td>
+          <td class="c h3"><strong>69%</strong></td><td class="c"><span style="color:var(--green);">▲ +2</span></td>
+        </tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td>סה"כ מחוז</td><td class="c">184,829</td>
+          <td class="c">56%</td><td class="c">58%</td><td class="c">57%</td><td class="c">57%</td><td class="c" style="color:var(--red);">55%</td>
+          <td class="c"><strong>57%</strong></td><td class="c"><span style="color:var(--red);">▼ -1</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="fn">צבעוניות: 🔴 מתחת 50% | 🟠 50-55% | 🟡 55-60% | 🟢 60%+</p>
+
+    <div class="g2" style="margin-top:10px;">
+      <div>
+        <div class="sec-sub">היעדרות מלאה לפי שלב × יום (%)</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">שלב</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>יסודי</td><td class="c">13%</td><td class="c">13%</td><td class="c">14%</td><td class="c">14%</td><td class="c h1">15%</td></tr>
+            <tr><td>חטיבה</td><td class="c">13%</td><td class="c">14%</td><td class="c">13%</td><td class="c">15%</td><td class="c h0"><strong>18%</strong></td></tr>
+            <tr><td>תיכון</td><td class="c">13%</td><td class="c">15%</td><td class="c">14%</td><td class="c">15%</td><td class="c h1">16%</td></tr>
+            <tr><td>ח"מ</td><td class="c">14%</td><td class="c">14%</td><td class="c">14%</td><td class="c">13%</td><td class="c">14%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">היעדרות 3 ימים ברצף לפי שלב × יום</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">שלב</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>יסודי</td><td class="c">1,594</td><td class="c">3,067</td><td class="c">3,465</td><td class="c">3,718</td><td class="c">4,087</td></tr>
+            <tr><td>חטיבה</td><td class="c">305</td><td class="c">566</td><td class="c">653</td><td class="c">677</td><td class="c h0"><strong>677</strong></td></tr>
+            <tr><td>תיכון</td><td class="c">658</td><td class="c">1,913</td><td class="c">2,080</td><td class="c">2,177</td><td class="c">2,229</td></tr>
+            <tr><td>ח"מ</td><td class="c">40</td><td class="c">181</td><td class="c">187</td><td class="c">226</td><td class="c">213</td></tr>
+            <tr style="font-weight:700;background:#fff5f5;"><td>סה"כ</td><td class="c">2,597</td><td class="c">5,727</td><td class="c">6,385</td><td class="c">6,798</td><td class="c" style="color:var(--red);">7,206</td></tr>
+          </tbody>
+        </table>
+        <p class="fn">יסודי: 57% מנעדרים ממושכים | חטיבה: 677 = 5.2% מתלמידי חטיבה | ח"מ: יציב ≈200/יום</p>
+      </div>
+    </div>
+
+    <!-- ── 3ב. מגזר × יום ── -->
+    <div class="sec-sub" style="margin-top:16px;">לוח חום — % נוכחות מלאה לפי מגזר × יום</div>
+    <table class="heat" style="margin-bottom:6px;text-align:center;">
+      <thead>
+        <tr>
+          <th class="th-d" style="text-align:right;">מגזר</th>
+          <th class="th-d c">תלמידים</th>
+          <th class="th-d c">א' 08/03</th><th class="th-d c">ב' 09/03</th><th class="th-d c">ג' 10/03</th><th class="th-d c">ד' 11/03</th><th class="th-d c">ה' 12/03</th>
+          <th class="th-d c">ממוצע</th><th class="th-d c">מגמה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>יהודי</strong></td><td class="c">127,183</td>
+          <td class="c h3">60%</td><td class="c h3">61%</td><td class="c h3">60%</td><td class="c h3">60%</td><td class="c h2">57%</td>
+          <td class="c h3"><strong>60%</strong></td><td class="c"><span style="color:var(--red);">▼ -3</span></td>
+        </tr>
+        <tr>
+          <td><strong>ערבי</strong></td><td class="c">52,143</td>
+          <td class="c h0">44%</td><td class="c h1">51%</td><td class="c h1">51%</td><td class="c h1">50%</td><td class="c h1">50%</td>
+          <td class="c h0"><strong>49%</strong></td><td class="c"><span style="color:var(--green);">▲ +6</span></td>
+        </tr>
+        <tr>
+          <td><strong>דרוזי</strong></td><td class="c">5,011</td>
+          <td class="c h3">65%</td><td class="c h3">60%</td><td class="c h3">63%</td><td class="c h3">64%</td><td class="c h3">62%</td>
+          <td class="c h3"><strong>63%</strong></td><td class="c"><span style="color:var(--orange);">▼ -3</span></td>
+        </tr>
+        <tr>
+          <td><strong>בדואי</strong></td><td class="c">492</td>
+          <td class="c h0">21%</td><td class="c h0">18%</td><td class="c h0">22%</td><td class="c h1">27%</td><td class="c h0">15%</td>
+          <td class="c h0"><strong>21%</strong></td><td class="c"><span style="color:var(--red);">▼ -6</span></td>
+        </tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td>סה"כ מחוז</td><td class="c">184,829</td>
+          <td class="c">56%</td><td class="c">58%</td><td class="c">57%</td><td class="c">57%</td><td class="c" style="color:var(--red);">55%</td>
+          <td class="c"><strong>57%</strong></td><td class="c"><span style="color:var(--red);">▼ -1</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="g2" style="margin-top:8px;">
+      <div>
+        <div class="sec-sub">היעדרות מלאה לפי מגזר × יום (%)</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">מגזר</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>יהודי</td><td class="c">12%</td><td class="c">13%</td><td class="c">13%</td><td class="c">13%</td><td class="c h1">15%</td></tr>
+            <tr><td>ערבי</td><td class="c">15%</td><td class="c">16%</td><td class="c">16%</td><td class="c">17%</td><td class="c h1">17%</td></tr>
+            <tr><td>דרוזי</td><td class="c">11%</td><td class="c">16%</td><td class="c">14%</td><td class="c">13%</td><td class="c">14%</td></tr>
+            <tr><td>בדואי</td><td class="c h0"><strong>33%</strong></td><td class="c h0">29%</td><td class="c h0">35%</td><td class="c">25%</td><td class="c">22%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">נעדרים ממושכים לפי מגזר × יום</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">מגזר</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>יהודי</td><td class="c">17</td><td class="c">3,169</td><td class="c">3,612</td><td class="c">3,876</td><td class="c">4,313</td></tr>
+            <tr><td>ערבי</td><td class="c">2,390</td><td class="c">2,354</td><td class="c">2,513</td><td class="c">2,656</td><td class="c">2,623</td></tr>
+            <tr><td>דרוזי</td><td class="c">152</td><td class="c">172</td><td class="c">192</td><td class="c">221</td><td class="c">210</td></tr>
+            <tr><td>בדואי</td><td class="c">38</td><td class="c">32</td><td class="c">68</td><td class="c">45</td><td class="c">60</td></tr>
+            <tr style="font-weight:700;background:#fff5f5;"><td>סה"כ</td><td class="c">2,597</td><td class="c">5,727</td><td class="c">6,385</td><td class="c">6,798</td><td class="c" style="color:var(--red);">7,206</td></tr>
+          </tbody>
+        </table>
+        <p class="fn">ערבי: 2,390 נעדרים ממושכים כבר ביום ראשון — מבנה שונה מהמגזר היהודי (17 בלבד ביום ראשון)</p>
+      </div>
+    </div>
+
+    <!-- ── 3ג. סוג פיקוח × יום ── -->
+    <div class="sec-sub" style="margin-top:16px;">לוח חום — % נוכחות מלאה לפי סוג פיקוח × יום</div>
+    <table class="heat" style="margin-bottom:6px;text-align:center;">
+      <thead>
+        <tr>
+          <th class="th-d" style="text-align:right;">סוג פיקוח</th>
+          <th class="th-d c">תלמידים</th>
+          <th class="th-d c">א' 08/03</th><th class="th-d c">ב' 09/03</th><th class="th-d c">ג' 10/03</th><th class="th-d c">ד' 11/03</th><th class="th-d c">ה' 12/03</th>
+          <th class="th-d c">ממוצע</th><th class="th-d c">מגמה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ממלכתי (מ"מ)</strong></td><td class="c">164,118</td>
+          <td class="c h2">56%</td><td class="c h2">58%</td><td class="c h2">58%</td><td class="c h2">58%</td><td class="c h2">56%</td>
+          <td class="c h2"><strong>57%</strong></td><td class="c">= 0</td>
+        </tr>
+        <tr>
+          <td><strong>ממלכתי-דתי (חמ"ד)</strong></td><td class="c">20,711</td>
+          <td class="c h2">54%</td><td class="c h1">53%</td><td class="c h1">53%</td><td class="c h1">52%</td><td class="c h0">49%</td>
+          <td class="c h1"><strong>52%</strong></td><td class="c"><span style="color:var(--red);">▼ -5</span></td>
+        </tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td>סה"כ מחוז</td><td class="c">184,829</td>
+          <td class="c">56%</td><td class="c">58%</td><td class="c">57%</td><td class="c">57%</td><td class="c" style="color:var(--red);">55%</td>
+          <td class="c"><strong>57%</strong></td><td class="c"><span style="color:var(--red);">▼ -1</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="g2" style="margin-top:8px;">
+      <div>
+        <div class="sec-sub">היעדרות מלאה לפי פיקוח × יום (%)</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">פיקוח</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>מ"מ</td><td class="c">12%</td><td class="c">13%</td><td class="c">14%</td><td class="c">14%</td><td class="c h1">15%</td></tr>
+            <tr><td>חמ"ד</td><td class="c h0"><strong>18%</strong></td><td class="c h1">16%</td><td class="c h1">17%</td><td class="c h0">18%</td><td class="c h0"><strong>18%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">נעדרים ממושכים לפי פיקוח × יום</div>
+        <table class="heat" style="text-align:center;">
+          <thead><tr>
+            <th class="th-r" style="text-align:right;">פיקוח</th>
+            <th class="th-r c">08/03</th><th class="th-r c">09/03</th><th class="th-r c">10/03</th><th class="th-r c">11/03</th><th class="th-r c">12/03</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>מ"מ</td><td class="c">2,597</td><td class="c">4,934</td><td class="c">5,486</td><td class="c">5,836</td><td class="c">6,354</td></tr>
+            <tr><td>חמ"ד</td><td class="c">0</td><td class="c">793</td><td class="c">899</td><td class="c">962</td><td class="c">852</td></tr>
+            <tr style="font-weight:700;background:#fff5f5;"><td>סה"כ</td><td class="c">2,597</td><td class="c">5,727</td><td class="c">6,385</td><td class="c">6,798</td><td class="c" style="color:var(--red);">7,206</td></tr>
+          </tbody>
+        </table>
+        <p class="fn">חמ"ד: 0 נעדרים ממושכים ביום ראשון — כלל שבוע א' היה "ראשון בשבוע"</p>
+      </div>
+    </div>
+
+    <div class="ins ins-o" style="margin-top:12px;">
+      <h4>⚠ חטיבת הביניים — שלב הסיכון הגבוה ביותר | בדואי ו-חמ"ד — היעדרות גבוהה</h4>
+      <p>חטיבה: נוכחות <strong>49%</strong> ביום חמישי — הנמוכה ביותר, ירידה -7 נ"א. מגזר בדואי: <strong>21% נוכחות ממוצעת</strong>, היעדרות <strong>33%</strong> ביום ראשון — שפל מחוזי. מגזר ערבי: <strong>44% ביום ראשון</strong> ← עלה ל-50% עד חמישי — מגמה חיובית. חמ"ד: ירידה מ-54% ל-<strong>49%</strong> עד חמישי, היעדרות גבוהה 18% לאורך כל השבוע. חינוך מיוחד: <strong>69% נוכחות</strong> — הגבוהה ביותר מכל השלבים.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. BY RESHUT WEEK ═══ -->
+<div id="by-reshut-week" class="sec">
+  <div class="sec-title dark">🏙️ 4. נוכחות לפי רשות — ממוצע שבועי (כל 5 ימים)</div>
+  <div class="sec-body">
+    <div class="sec-sub">דירוג מהגבוה לנמוך — % נוכחות מלאה שבועי</div>
+    <table>
+      <thead><tr>
+        <th class="th-b">#</th><th class="th-b">רשות</th>
+        <th class="th-b">תלמידים</th>
+        <th class="th-b">נוכחות מלאה</th><th class="th-b">%</th>
+        <th class="th-b">היעדרות מלאה</th><th class="th-b">%</th>
+        <th class="th-b">חלקית</th>
+        <th class="th-b">לא דווח</th>
+        <th class="th-b" style="width:130px;">ויזואל</th>
+      </tr></thead>
+      <tbody>
+        <!-- Sorted by pctFull desc -->
+        <tr class="b-row"><td>1</td><td>רכסים</td><td>450</td><td>368</td><td style="color:var(--green);font-weight:700;">82%</td><td>15</td><td>3%</td><td>54</td><td>13</td><td><div class="bc"><div class="bb"><div class="bf" style="width:82%;background:var(--green)"></div></div></div></td></tr>
+        <tr class="b-row"><td>2</td><td>מנשה</td><td>15,510</td><td>11,480</td><td style="color:var(--green);font-weight:700;">74%</td><td>1,231</td><td>8%</td><td>1,358</td><td>1,459</td><td><div class="bc"><div class="bb"><div class="bf" style="width:74%;background:var(--green)"></div></div></div></td></tr>
+        <tr class="b-row"><td>3</td><td>דאלית אל-כרמל</td><td>12,855</td><td>9,200</td><td style="color:var(--green);font-weight:700;">72%</td><td>1,325</td><td>10%</td><td>2,245</td><td>100</td><td><div class="bc"><div class="bb"><div class="bf" style="width:72%;background:var(--green)"></div></div></div></td></tr>
+        <tr><td>4</td><td>קרית טבעון</td><td>14,905</td><td>10,026</td><td style="color:var(--green);font-weight:700;">67%</td><td>1,568</td><td>11%</td><td>2,498</td><td>831</td><td><div class="bc"><div class="bb"><div class="bf" style="width:67%;background:var(--green)"></div></div></div></td></tr>
+        <tr><td>5</td><td>קרית ביאליק</td><td>36,200</td><td>23,686</td><td style="color:var(--green);font-weight:700;">65%</td><td>3,295</td><td>9%</td><td>7,732</td><td>1,490</td><td><div class="bc"><div class="bb"><div class="bf" style="width:65%;background:var(--green)"></div></div></div></td></tr>
+        <tr><td>6</td><td>קרית מוצקין</td><td>41,905</td><td>27,212</td><td style="color:var(--green);font-weight:700;">65%</td><td>4,390</td><td>10%</td><td>8,316</td><td>2,224</td><td><div class="bc"><div class="bb"><div class="bf" style="width:65%;background:var(--green)"></div></div></div></td></tr>
+        <tr><td>7</td><td>כפר קרע</td><td>25,370</td><td>15,806</td><td style="color:var(--green);font-weight:700;">62%</td><td>2,927</td><td>12%</td><td>5,564</td><td>1,073</td><td><div class="bc"><div class="bb"><div class="bf" style="width:62%;background:var(--green)"></div></div></div></td></tr>
+        <tr><td>8</td><td>חדרה</td><td>86,390</td><td>53,216</td><td style="color:var(--orange);font-weight:700;">62%</td><td>12,463</td><td>14%</td><td>16,259</td><td>9,205</td><td><div class="bc"><div class="bb"><div class="bf" style="width:62%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>9</td><td>קרית ים</td><td>24,905</td><td>15,776</td><td style="color:var(--orange);font-weight:700;">63%</td><td>3,235</td><td>13%</td><td>4,981</td><td>973</td><td><div class="bc"><div class="bb"><div class="bf" style="width:63%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>10</td><td>קרית אתא</td><td>41,815</td><td>24,909</td><td style="color:var(--orange);font-weight:700;">60%</td><td>4,612</td><td>11%</td><td>10,251</td><td>2,115</td><td><div class="bc"><div class="bb"><div class="bf" style="width:60%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>11</td><td>פרדס חנה-כרכור</td><td>45,700</td><td>27,220</td><td style="color:var(--orange);font-weight:700;">60%</td><td>6,982</td><td>15%</td><td>6,365</td><td>5,240</td><td><div class="bc"><div class="bb"><div class="bf" style="width:60%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>12</td><td>טירת כרמל</td><td>23,210</td><td>13,739</td><td style="color:var(--orange);font-weight:700;">59%</td><td>3,483</td><td>15%</td><td>4,564</td><td>1,434</td><td><div class="bc"><div class="bb"><div class="bf" style="width:59%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>13</td><td>אלונה</td><td>1,475</td><td>860</td><td style="color:var(--orange);font-weight:700;">58%</td><td>280</td><td>19%</td><td>0</td><td>335</td><td><div class="bc"><div class="bb"><div class="bf" style="width:58%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>14</td><td>נשר</td><td>12,600</td><td>7,253</td><td style="color:var(--orange);font-weight:700;">58%</td><td>1,842</td><td>15%</td><td>2,812</td><td>701</td><td><div class="bc"><div class="bb"><div class="bf" style="width:58%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>15</td><td>בנימינה גבעת עדה</td><td>16,860</td><td>9,602</td><td style="color:var(--orange);font-weight:700;">57%</td><td>3,212</td><td>19%</td><td>2,444</td><td>1,602</td><td><div class="bc"><div class="bb"><div class="bf" style="width:57%;background:var(--orange)"></div></div></div></td></tr>
+        <tr class="y-row"><td>16</td><td>חיפה</td><td>195,665</td><td>110,838</td><td style="color:var(--orange);font-weight:700;">57%</td><td>20,566</td><td>11%</td><td>47,399</td><td>17,687</td><td><div class="bc"><div class="bb"><div class="bf" style="width:57%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>17</td><td>זכרון יעקב</td><td>23,365</td><td>13,160</td><td style="color:var(--orange);font-weight:700;">56%</td><td>3,268</td><td>14%</td><td>5,784</td><td>1,311</td><td><div class="bc"><div class="bb"><div class="bf" style="width:56%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>18</td><td>ערערה</td><td>19,855</td><td>11,325</td><td style="color:var(--orange);font-weight:700;">57%</td><td>3,180</td><td>16%</td><td>4,021</td><td>1,375</td><td><div class="bc"><div class="bb"><div class="bf" style="width:57%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>19</td><td>אור עקיבא</td><td>22,555</td><td>12,333</td><td style="color:var(--orange);font-weight:700;">55%</td><td>3,309</td><td>15%</td><td>5,000</td><td>1,903</td><td><div class="bc"><div class="bb"><div class="bf" style="width:55%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>20</td><td>עספיא</td><td>12,200</td><td>6,521</td><td style="color:var(--orange);font-weight:700;">53%</td><td>2,061</td><td>17%</td><td>3,235</td><td>383</td><td><div class="bc"><div class="bb"><div class="bf" style="width:53%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>21</td><td>זבולון</td><td>12,795</td><td>7,047</td><td style="color:var(--orange);font-weight:700;">55%</td><td>1,861</td><td>15%</td><td>3,047</td><td>844</td><td><div class="bc"><div class="bb"><div class="bf" style="width:55%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>22</td><td>חוף הכרמל</td><td>20,560</td><td>11,036</td><td style="color:var(--orange);font-weight:700;">54%</td><td>4,181</td><td>20%</td><td>4,782</td><td>573</td><td><div class="bc"><div class="bb"><div class="bf" style="width:54%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>23</td><td>חריש</td><td>36,420</td><td>18,465</td><td style="color:var(--orange);font-weight:700;">51%</td><td>7,168</td><td>20%</td><td>3,813</td><td>6,980</td><td><div class="bc"><div class="bb"><div class="bf" style="width:51%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>24</td><td>אום אל-פחם</td><td>69,730</td><td>34,853</td><td style="color:var(--orange);font-weight:700;">50%</td><td>15,148</td><td>22%</td><td>16,799</td><td>2,936</td><td><div class="bc"><div class="bb"><div class="bf" style="width:50%;background:var(--orange)"></div></div></div></td></tr>
+        <tr><td>25</td><td>פוריידיס</td><td>16,380</td><td>7,759</td><td style="color:var(--red);font-weight:700;">47%</td><td>2,309</td><td>14%</td><td>5,731</td><td>581</td><td><div class="bc"><div class="bb"><div class="bf" style="width:47%;background:var(--red)"></div></div></div></td></tr>
+        <tr><td>26</td><td>באקה אל-גרביה</td><td>34,730</td><td>17,166</td><td style="color:var(--red);font-weight:700;">49%</td><td>4,079</td><td>12%</td><td>12,028</td><td>1,461</td><td><div class="bc"><div class="bb"><div class="bf" style="width:49%;background:var(--red)"></div></div></div></td></tr>
+        <tr class="r-row"><td>27</td><td>ג'ת</td><td>12,695</td><td>5,340</td><td style="color:var(--red);font-weight:700;">42%</td><td>3,411</td><td>27%</td><td>3,843</td><td>121</td><td><div class="bc"><div class="bb"><div class="bf" style="width:42%;background:var(--red)"></div></div></div></td></tr>
+        <tr class="r-row"><td>28</td><td>בסמ"ה</td><td>13,730</td><td>5,784</td><td style="color:var(--red);font-weight:700;">42%</td><td>1,672</td><td>12%</td><td>5,671</td><td>603</td><td><div class="bc"><div class="bb"><div class="bf" style="width:42%;background:var(--red)"></div></div></div></td></tr>
+        <tr class="r-row"><td>29</td><td>מעלה עירון</td><td>15,935</td><td>6,026</td><td style="color:var(--red);font-weight:700;">38%</td><td>2,090</td><td>13%</td><td>7,549</td><td>285</td><td><div class="bc"><div class="bb"><div class="bf" style="width:38%;background:var(--red)"></div></div></div></td></tr>
+        <tr class="r-row"><td>30</td><td>ג'סר א-זרקא</td><td>17,380</td><td>6,049</td><td style="color:var(--red);font-weight:800;">35%</td><td>4,567</td><td>26%</td><td>5,696</td><td>1,073</td><td><div class="bc"><div class="bb"><div class="bf" style="width:35%;background:#8b0000"></div></div></div></td></tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td colspan="2">סה"כ מחוז</td><td>924,145</td><td>524,255</td><td>57%</td><td>129,730</td><td>14%</td><td>—</td><td>—</td><td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="fn">* ג'סר א-זרקא: 35% נוכחות — הנמוכה במחוז. מעלה עירון: 38%. בסמ"ה וג'ת: 42% כ"א. | ירוק = 60%+ | אדום = מתחת 50%</p>
+  </div>
+</div>
+
+<!-- ═══ 5. BY RESHUT LAST DAY ═══ -->
+<div id="by-reshut-day" class="sec">
+  <div class="sec-title red">📅 5. נוכחות לפי רשות — יום חמישי 12/03/2026</div>
+  <div class="sec-body">
+    <div class="g2">
+      <div>
+        <div class="sec-sub">10 הגבוהות — 12/03</div>
+        <table>
+          <thead><tr><th class="th-g">#</th><th class="th-g">רשות</th><th class="th-g">תלמידים</th><th class="th-g">%</th><th class="th-g">נעדרים 3י'</th></tr></thead>
+          <tbody>
+            <tr class="b-row"><td>1</td><td>רכסים</td><td>90</td><td style="color:var(--green);font-weight:700;">89%</td><td>0</td></tr>
+            <tr class="b-row"><td>2</td><td>אלונה</td><td>295</td><td style="color:var(--green);font-weight:700;">73%</td><td>21</td></tr>
+            <tr class="b-row"><td>3</td><td>מנשה</td><td>3,102</td><td style="color:var(--green);font-weight:700;">71%</td><td>48</td></tr>
+            <tr class="b-row"><td>4</td><td>דאלית אל-כרמל</td><td>2,571</td><td style="color:var(--green);font-weight:700;">71%</td><td>98</td></tr>
+            <tr><td>5</td><td>כפר קרע</td><td>5,074</td><td style="color:var(--green);font-weight:700;">65%</td><td>103</td></tr>
+            <tr><td>6</td><td>קרית טבעון</td><td>2,981</td><td style="color:var(--green);font-weight:700;">64%</td><td>58</td></tr>
+            <tr><td>7</td><td>פוריידיס</td><td>3,276</td><td style="color:var(--orange);font-weight:700;">63%</td><td>41</td></tr>
+            <tr><td>8</td><td>קרית ביאליק</td><td>7,240</td><td style="color:var(--orange);font-weight:700;">62%</td><td>97</td></tr>
+            <tr><td>9</td><td>קרית ים</td><td>4,981</td><td style="color:var(--orange);font-weight:700;">61%</td><td>174</td></tr>
+            <tr><td>10</td><td>קרית מוצקין</td><td>8,381</td><td style="color:var(--orange);font-weight:700;">60%</td><td>183</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">10 הנמוכות — 12/03 (מהגרוע)</div>
+        <table>
+          <thead><tr><th class="th-r">#</th><th class="th-r">רשות</th><th class="th-r">תלמידים</th><th class="th-r">%</th><th class="th-r">נעדרים 3י'</th></tr></thead>
+          <tbody>
+            <tr class="r-row"><td>30</td><td>מעלה עירון</td><td>3,187</td><td style="color:#8b0000;font-weight:800;">36%</td><td>152</td></tr>
+            <tr class="r-row"><td>29</td><td>ג'סר א-זרקא</td><td>3,476</td><td style="color:#8b0000;font-weight:800;">36%</td><td>295</td></tr>
+            <tr class="r-row"><td>28</td><td>בסמ"ה</td><td>2,746</td><td style="color:var(--red);font-weight:700;">39%</td><td>80</td></tr>
+            <tr class="r-row"><td>27</td><td>ג'ת</td><td>2,539</td><td style="color:var(--red);font-weight:700;">39%</td><td>369</td></tr>
+            <tr><td>26</td><td>חריש</td><td>7,284</td><td style="color:var(--red);font-weight:700;">48%</td><td>362</td></tr>
+            <tr><td>25</td><td>זבולון</td><td>2,559</td><td style="color:var(--red);font-weight:700;">49%</td><td>117</td></tr>
+            <tr><td>24</td><td>אום אל-פחם</td><td>13,946</td><td style="color:var(--red);font-weight:700;">49%</td><td>1,055</td></tr>
+            <tr><td>23</td><td>באקה אל-גרביה</td><td>6,946</td><td style="color:var(--red);font-weight:700;">47%</td><td>177</td></tr>
+            <tr><td>22</td><td>זכרון יעקב</td><td>4,673</td><td style="color:var(--orange);">50%</td><td>152</td></tr>
+            <tr><td>21</td><td>חוף הכרמל</td><td>4,112</td><td style="color:var(--orange);">53%</td><td>424</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Full list 12/03 -->
+    <div class="sec-sub" style="margin-top:12px;">כל הרשויות — יום חמישי 12/03 מדורגות</div>
+    <table>
+      <thead><tr>
+        <th class="th-b">#</th><th class="th-b">רשות</th>
+        <th class="th-b">תלמידים</th>
+        <th class="th-b">נוכחות מלאה</th><th class="th-b">%</th>
+        <th class="th-b">היעד' מלאה</th><th class="th-b">%</th>
+        <th class="th-b">חלקית</th>
+        <th class="th-b">לא דווח</th>
+        <th class="th-b">נעד' 3ימים</th>
+      </tr></thead>
+      <tbody>
+        <tr class="b-row"><td>1</td><td>רכסים</td><td>90</td><td>80</td><td style="color:var(--green);font-weight:700;">89%</td><td>1</td><td>1%</td><td>9</td><td>0</td><td>0</td></tr>
+        <tr class="b-row"><td>2</td><td>אלונה</td><td>295</td><td>215</td><td style="color:var(--green);font-weight:700;">73%</td><td>75</td><td>25%</td><td>0</td><td>5</td><td>21</td></tr>
+        <tr class="b-row"><td>3</td><td>מנשה</td><td>3,102</td><td>2,208</td><td style="color:var(--green);font-weight:700;">71%</td><td>275</td><td>9%</td><td>220</td><td>403</td><td>48</td></tr>
+        <tr class="b-row"><td>4</td><td>דאלית אל-כרמל</td><td>2,571</td><td>1,827</td><td style="color:var(--green);font-weight:700;">71%</td><td>313</td><td>12%</td><td>402</td><td>32</td><td>98</td></tr>
+        <tr><td>5</td><td>כפר קרע</td><td>5,074</td><td>3,306</td><td style="color:var(--green);font-weight:700;">65%</td><td>552</td><td>11%</td><td>934</td><td>282</td><td>103</td></tr>
+        <tr><td>6</td><td>קרית טבעון</td><td>2,981</td><td>1,899</td><td style="color:var(--green);font-weight:700;">64%</td><td>364</td><td>12%</td><td>419</td><td>301</td><td>58</td></tr>
+        <tr><td>7</td><td>פוריידיס</td><td>3,276</td><td>2,063</td><td style="color:var(--orange);font-weight:700;">63%</td><td>232</td><td>7%</td><td>724</td><td>257</td><td>41</td></tr>
+        <tr><td>8</td><td>קרית ביאליק</td><td>7,240</td><td>4,470</td><td style="color:var(--orange);font-weight:700;">62%</td><td>991</td><td>14%</td><td>1,373</td><td>406</td><td>97</td></tr>
+        <tr><td>9</td><td>קרית ים</td><td>4,981</td><td>3,030</td><td style="color:var(--orange);font-weight:700;">61%</td><td>789</td><td>16%</td><td>812</td><td>363</td><td>174</td></tr>
+        <tr><td>10</td><td>קרית מוצקין</td><td>8,381</td><td>5,009</td><td style="color:var(--orange);font-weight:700;">60%</td><td>968</td><td>12%</td><td>1,427</td><td>979</td><td>183</td></tr>
+        <tr><td>11</td><td>פרדס חנה-כרכור</td><td>9,140</td><td>5,409</td><td style="color:var(--orange);font-weight:700;">59%</td><td>1,537</td><td>17%</td><td>1,123</td><td>1,092</td><td>448</td></tr>
+        <tr><td>12</td><td>נשר</td><td>2,520</td><td>1,429</td><td style="color:var(--orange);">57%</td><td>468</td><td>19%</td><td>411</td><td>214</td><td>135</td></tr>
+        <tr><td>13</td><td>חדרה</td><td>17,278</td><td>9,926</td><td style="color:var(--orange);">57%</td><td>2,763</td><td>16%</td><td>2,602</td><td>2,864</td><td>582</td></tr>
+        <tr class="y-row"><td>14</td><td>חיפה</td><td>39,133</td><td>22,455</td><td style="color:var(--orange);">57%</td><td>4,836</td><td>12%</td><td>9,118</td><td>2,868</td><td>896</td></tr>
+        <tr><td>15</td><td>קרית אתא</td><td>8,363</td><td>4,793</td><td style="color:var(--orange);">57%</td><td>1,074</td><td>13%</td><td>1,815</td><td>684</td><td>244</td></tr>
+        <tr><td>16</td><td>טירת כרמל</td><td>4,642</td><td>2,511</td><td style="color:var(--orange);">54%</td><td>820</td><td>18%</td><td>966</td><td>347</td><td>261</td></tr>
+        <tr><td>17</td><td>ערערה</td><td>3,971</td><td>2,148</td><td style="color:var(--orange);">54%</td><td>575</td><td>14%</td><td>834</td><td>424</td><td>171</td></tr>
+        <tr><td>18</td><td>עספיא</td><td>2,440</td><td>1,285</td><td style="color:var(--orange);">53%</td><td>405</td><td>17%</td><td>665</td><td>85</td><td>112</td></tr>
+        <tr><td>19</td><td>חוף הכרמל</td><td>4,112</td><td>2,197</td><td style="color:var(--orange);">53%</td><td>921</td><td>22%</td><td>918</td><td>79</td><td>424</td></tr>
+        <tr><td>20</td><td>בנימינה גבעת עדה</td><td>3,372</td><td>1,960</td><td style="color:var(--orange);">58%</td><td>587</td><td>17%</td><td>437</td><td>388</td><td>168</td></tr>
+        <tr><td>21</td><td>זכרון יעקב</td><td>4,673</td><td>2,332</td><td style="color:var(--orange);">50%</td><td>758</td><td>16%</td><td>1,103</td><td>497</td><td>152</td></tr>
+        <tr><td>22</td><td>זבולון</td><td>2,559</td><td>1,248</td><td style="color:var(--red);">49%</td><td>420</td><td>16%</td><td>601</td><td>291</td><td>117</td></tr>
+        <tr><td>23</td><td>אום אל-פחם</td><td>13,946</td><td>6,772</td><td style="color:var(--red);">49%</td><td>3,147</td><td>23%</td><td>3,137</td><td>890</td><td>1,055</td></tr>
+        <tr><td>24</td><td>אור עקיבא</td><td>4,511</td><td>2,294</td><td style="color:var(--red);">51%</td><td>724</td><td>16%</td><td>798</td><td>693</td><td>183</td></tr>
+        <tr><td>25</td><td>באקה אל-גרביה</td><td>6,946</td><td>3,291</td><td style="color:var(--red);">47%</td><td>1,091</td><td>16%</td><td>2,294</td><td>271</td><td>177</td></tr>
+        <tr><td>26</td><td>חריש</td><td>7,284</td><td>3,504</td><td style="color:var(--red);">48%</td><td>1,441</td><td>20%</td><td>669</td><td>1,671</td><td>362</td></tr>
+        <tr class="r-row"><td>27</td><td>ג'ת</td><td>2,539</td><td>991</td><td style="color:var(--red);font-weight:700;">39%</td><td>796</td><td>31%</td><td>702</td><td>54</td><td>369</td></tr>
+        <tr class="r-row"><td>28</td><td>בסמ"ה</td><td>2,746</td><td>1,064</td><td style="color:var(--red);font-weight:700;">39%</td><td>381</td><td>14%</td><td>1,102</td><td>199</td><td>80</td></tr>
+        <tr class="r-row"><td>29</td><td>מעלה עירון</td><td>3,187</td><td>1,161</td><td style="color:var(--red);font-weight:700;">36%</td><td>519</td><td>16%</td><td>1,440</td><td>70</td><td>152</td></tr>
+        <tr class="r-row"><td>30</td><td>ג'סר א-זרקא</td><td>3,476</td><td>1,268</td><td style="color:#8b0000;font-weight:800;">36%</td><td>760</td><td>22%</td><td>1,404</td><td>45</td><td>295</td></tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td colspan="2">סה"כ מחוז</td><td>184,829</td><td>102,145</td><td>55%</td><td>28,583</td><td>15%</td><td>38,459</td><td>16,754</td><td>7,206</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="fn">שורת סה"כ כוללת 184,829 = תלמידים ייחודיים (לא כפל ימים) | חיפה מסומנת בצהוב כעיר הגדולה</p>
+  </div>
+</div>
+
+<!-- ═══ 6. ABSENCE 3 DAYS ═══ -->
+<div id="absence3" class="sec">
+  <div class="sec-title red">⚠️ 6. היעדרות ממושכת — 3 ימים ברצף (כל הרשויות)</div>
+  <div class="sec-body">
+    <div class="kpi-grid kpi-4" style="margin-bottom:10px;">
+      <div class="kpi r"><div class="n">7,206</div><div class="l">נעדרים ממושכים ב-12/03</div></div>
+      <div class="kpi r"><div class="n">3.9%</div><div class="l">מתלמידי המחוז</div></div>
+      <div class="kpi o"><div class="n">+178%</div><div class="l">גידול מראשון לחמישי</div></div>
+      <div class="kpi o"><div class="n">4,101</div><div class="l">נעדרים ממושכים — יסודי בלבד</div></div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <div class="sec-sub">10 הרשויות עם הכי הרבה נעדרים ממושכים — 12/03</div>
+        <table>
+          <thead><tr><th class="th-r">#</th><th class="th-r">רשות</th><th class="th-r">נעד' 3 ימים</th><th class="th-r">% מתלמידים</th><th class="th-r">ויזואל</th></tr></thead>
+          <tbody>
+            <tr class="r-row"><td>1</td><td>אום אל-פחם</td><td style="color:var(--red);font-weight:700;">1,055</td><td>7.6%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:100%;background:var(--red)"></div></div></div></td></tr>
+            <tr class="y-row"><td>2</td><td>חיפה</td><td style="color:var(--red);font-weight:700;">896</td><td>2.3%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:85%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>3</td><td>חדרה</td><td>582</td><td>3.4%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:55%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>4</td><td>פרדס חנה-כרכור</td><td>448</td><td>4.9%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:43%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>5</td><td>חוף הכרמל</td><td>424</td><td>10.3%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:40%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>6</td><td>ג'ת</td><td>369</td><td>14.5%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:35%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>7</td><td>חריש</td><td>362</td><td>5.0%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:34%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>8</td><td>קרית אתא</td><td>244</td><td>2.9%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:23%;background:var(--orange)"></div></div></div></td></tr>
+            <tr><td>9</td><td>ג'סר א-זרקא</td><td>295</td><td>8.5%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:28%;background:var(--red)"></div></div></div></td></tr>
+            <tr><td>10</td><td>קרית ים</td><td>174</td><td>3.5%</td><td><div class="bc"><div class="bb"><div class="bf" style="width:17%;background:var(--orange)"></div></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-sub">% נעדרים ממושכים מתוך תלמידי הרשות — 12/03 (דירוג)</div>
+        <table>
+          <thead><tr><th class="th-r">#</th><th class="th-r">רשות</th><th class="th-r">% נעד' ממושכים</th><th class="th-r">מספר</th></tr></thead>
+          <tbody>
+            <tr class="r-row"><td>1</td><td>ג'ת</td><td style="color:var(--red);font-weight:800;">14.5%</td><td>369</td></tr>
+            <tr class="r-row"><td>2</td><td>חוף הכרמל</td><td style="color:var(--red);font-weight:700;">10.3%</td><td>424</td></tr>
+            <tr class="r-row"><td>3</td><td>ג'סר א-זרקא</td><td style="color:var(--red);font-weight:700;">8.5%</td><td>295</td></tr>
+            <tr><td>4</td><td>אום אל-פחם</td><td style="color:var(--red);">7.6%</td><td>1,055</td></tr>
+            <tr><td>5</td><td>עספיא</td><td style="color:var(--orange);">4.6%</td><td>112</td></tr>
+            <tr><td>6</td><td>פרדס חנה-כרכור</td><td style="color:var(--orange);">4.9%</td><td>448</td></tr>
+            <tr><td>7</td><td>חריש</td><td style="color:var(--orange);">5.0%</td><td>362</td></tr>
+            <tr><td>8</td><td>חדרה</td><td style="color:var(--orange);">3.4%</td><td>582</td></tr>
+            <tr><td>9</td><td>קרית ים</td><td style="color:var(--orange);">3.5%</td><td>174</td></tr>
+            <tr><td>10</td><td>קרית אתא</td><td style="color:var(--orange);">2.9%</td><td>244</td></tr>
+          </tbody>
+        </table>
+        <div class="ins ins-r" style="margin-top:8px;">
+          <h4>🚨 ג'ת: 14.5% מהתלמידים נעדרים 3 ימים ברצף</h4>
+          <p>369 מתוך 2,539 תלמידי ג'ת = <strong>1 מכל 7 תלמידים</strong>. חוף הכרמל: 10.3%. ג'סר א-זרקא: 8.5%. אלה מחייבים מעקב פרטני.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7. CROSS STAGE × RESHUT ═══ -->
+<div id="cross-stage-reshut" class="sec">
+  <div class="sec-title dark">🔀 7. חיתוך שלב × רשות — יום חמישי 12/03</div>
+  <div class="sec-body">
+    <div class="sec-sub">% נוכחות מלאה לפי שלב חינוך ורשות — 12/03 (מחושב מנתוני המחוז)</div>
+    <table class="heat" style="font-size:11px;text-align:center;">
+      <thead>
+        <tr>
+          <th class="th-d" style="text-align:right;">שלב</th>
+          <th class="th-d c">תלמידים</th>
+          <th class="th-d c">נוכחות מלאה</th>
+          <th class="th-d c">%</th>
+          <th class="th-d c">היעדרות</th>
+          <th class="th-d c">%</th>
+          <th class="th-d c">לא דווח</th>
+          <th class="th-d c">נעד' 3ימים</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:right;font-weight:700;">יסודי</td>
+          <td>102,710</td><td>60,437</td>
+          <td class="h2"><strong>59%</strong></td>
+          <td>15,350</td><td class="h1">15%</td>
+          <td>7,959</td><td style="color:var(--red);">4,101</td>
+        </tr>
+        <tr>
+          <td style="text-align:right;font-weight:700;">חטיבת ביניים</td>
+          <td>12,967</td><td>6,386</td>
+          <td class="h0"><strong>49%</strong></td>
+          <td>2,386</td><td class="h0">18%</td>
+          <td>1,086</td><td>677</td>
+        </tr>
+        <tr>
+          <td style="text-align:right;font-weight:700;">תיכון (עליונה)</td>
+          <td>65,902</td><td>33,084</td>
+          <td class="h1"><strong>50%</strong></td>
+          <td>10,362</td><td class="h1">16%</td>
+          <td>7,477</td><td>2,255</td>
+        </tr>
+        <tr>
+          <td style="text-align:right;font-weight:700;">רב-שלבי</td>
+          <td>3,250</td><td>2,238</td>
+          <td class="h3"><strong>69%</strong></td>
+          <td>485</td><td>15%</td>
+          <td>232</td><td>173</td>
+        </tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td style="text-align:right;">סה"כ מחוז</td>
+          <td>184,829</td><td>102,145</td>
+          <td><strong>55%</strong></td>
+          <td>28,583</td><td>15%</td>
+          <td>16,754</td><td style="color:var(--red);">7,206</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Key cross insights -->
+    <div style="margin-top:10px;" class="g2">
+      <div class="ins ins-r">
+        <h4>🚨 חטיבה ותיכון — מתחת ל-50% ביום חמישי</h4>
+        <p>חטיבה: <strong>49%</strong> נוכחות, היעדרות <strong>18%</strong> — הגבוהה ביותר בין השלבים. תיכון: <strong>50%</strong>. גם יסודי: 59% — כשליש מתלמידי היסודי לא נוכחים מלאים. <strong>רק 1 מכל 2 תלמידי חטיבה ותיכון נכח ביום חמישי.</strong></p>
+      </div>
+      <div class="ins ins-o">
+        <h4>⚠ 16,754 תלמידים "לא דווחו" — 9% מהמחוז</h4>
+        <p>16,754 תלמידים ביום חמישי ללא דיווח — מספר גבוה משמעותית. התיכון לבדו: 7,477 ללא דיווח. זה מציין פגם בדיווח יום חמישי, ייתכן שחלק מהנוכחים לא דווחו כלל.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 8. SHELTER ═══ -->
+<div id="shelter" class="sec">
+  <div class="sec-title green">🛡️ 8. מיגון — כל 30 הרשויות (סיכום)</div>
+  <div class="sec-body">
+    <div class="sec-sub" style="margin-bottom:6px;">מוסד מוגן = אחוז מיגון (עמ' M) ≥ 100%. מ"ר חסר = סכום עמודה L (ערכים שליליים בלבד, ללא עודף מיגון).</div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi r"><div class="n">39%</div><div class="l">בתי"ס מוגנים במחוז (178/451)</div></div>
+      <div class="kpi r"><div class="n">34%</div><div class="l">גנים מוגנים במחוז (629/1,855)</div></div>
+      <div class="kpi r"><div class="n">32,227</div><div class="l">מ"ר חסרים בבתי"ס (עמ' L)</div></div>
+      <div class="kpi r"><div class="n">4,941</div><div class="l">מ"ר חסרים בגנים (עמ' L)</div></div>
+    </div>
+    <table>
+      <thead><tr>
+        <th class="th-b">רשות</th>
+        <th class="th-b">בתי"ס (מוגן/כלל)</th><th class="th-b">% מוגנים</th>
+        <th class="th-b">מ"ר חסר (L)</th>
+        <th class="th-b">גנים (מוגן/כלל)</th><th class="th-b">% מוגנים</th>
+        <th class="th-b">מ"ר חסר (L)</th>
+        <th class="th-b">דירוג</th>
+      </tr></thead>
+      <tbody>
+        <!-- מוגן -->
+        <tr class="b-row"><td>אלונה</td><td>1/1</td><td style="color:var(--green);">100%</td><td>0</td><td>3/4</td><td style="color:var(--green);">75%</td><td>4</td><td><span class="fl fl-g">מוגן</span></td></tr>
+        <tr class="b-row"><td>קרית ים</td><td>10/12</td><td style="color:var(--green);">83%</td><td>204</td><td>33/53</td><td style="color:var(--green);">62%</td><td>126</td><td><span class="fl fl-g">מוגן</span></td></tr>
+        <!-- טוב -->
+        <tr class="b-row"><td>חוף הכרמל</td><td>6/11</td><td>55%</td><td>334</td><td>49/69</td><td style="color:var(--green);">71%</td><td>208</td><td><span class="fl fl-g">טוב</span></td></tr>
+        <tr><td>חריש</td><td>14/18</td><td style="color:var(--green);">78%</td><td>98</td><td>44/109</td><td>40%</td><td>153</td><td><span class="fl fl-g">טוב</span></td></tr>
+        <tr><td>קרית טבעון</td><td>4/7</td><td>57%</td><td>423</td><td>16/27</td><td>59%</td><td>123</td><td><span class="fl fl-g">טוב</span></td></tr>
+        <!-- בינוני -->
+        <tr><td>אום אל-פחם</td><td>12/31</td><td>39%</td><td style="color:var(--red);">3,116</td><td>61/126</td><td>48%</td><td>686</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>אור עקיבא</td><td>6/10</td><td style="color:var(--green);">60%</td><td>442</td><td>21/53</td><td>40%</td><td>109</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>בנימינה גבעת עדה</td><td>2/7</td><td>29%</td><td>449</td><td>19/24</td><td style="color:var(--green);">79%</td><td>4</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>בסמ"ה</td><td>5/8</td><td style="color:var(--green);">63%</td><td>80</td><td>8/26</td><td>31%</td><td>69</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>ג'סר א-זרקא</td><td>2/8</td><td>25%</td><td>702</td><td>15/33</td><td>45%</td><td>39</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>זבולון</td><td>6/13</td><td>46%</td><td>426</td><td>17/31</td><td>55%</td><td>22</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>זכרון יעקב</td><td>5/12</td><td>42%</td><td>506</td><td>16/28</td><td>57%</td><td>89</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>חדרה</td><td>11/39</td><td>28%</td><td style="color:var(--red);">3,588</td><td>79/162</td><td>49%</td><td>416</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>כפר קרע</td><td>6/12</td><td>50%</td><td>759</td><td>20/48</td><td>42%</td><td>120</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>מנשה</td><td>5/10</td><td>50%</td><td>439</td><td>26/44</td><td>59%</td><td>134</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>ערערה</td><td>6/10</td><td style="color:var(--green);">60%</td><td>447</td><td>7/39</td><td style="color:var(--red);">18%</td><td>204</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>עספיא</td><td>3/6</td><td>50%</td><td>597</td><td>12/22</td><td>55%</td><td>111</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>פוריידיס</td><td>3/7</td><td>43%</td><td>335</td><td>12/26</td><td>46%</td><td>62</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>קרית אתא</td><td>10/17</td><td>59%</td><td>522</td><td>36/96</td><td>38%</td><td>235</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>קרית ביאליק</td><td>8/16</td><td>50%</td><td style="color:var(--red);">1,234</td><td>36/79</td><td>46%</td><td>94</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <tr><td>רכסים</td><td>1/1</td><td style="color:var(--green);">100%</td><td>0</td><td>0/1</td><td style="color:var(--red);">0%</td><td>10</td><td><span class="fl fl-b">בינוני</span></td></tr>
+        <!-- חלקי -->
+        <tr><td>באקה אל-גרביה</td><td>9/17</td><td>53%</td><td>1,111</td><td>5/58</td><td style="color:var(--red);">9%</td><td>265</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>דאלית אל-כרמל</td><td>5/7</td><td style="color:var(--green);">71%</td><td>139</td><td>0/31</td><td style="color:var(--red);font-weight:700;">0%</td><td>216</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>טירת כרמל</td><td>3/11</td><td>27%</td><td>764</td><td>14/68</td><td style="color:var(--red);">21%</td><td>280</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>מעלה עירון</td><td>1/8</td><td style="color:var(--red);">13%</td><td>768</td><td>15/29</td><td>52%</td><td>22</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>נשר</td><td>3/8</td><td>38%</td><td>210</td><td>7/28</td><td>25%</td><td>142</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>פרדס חנה-כרכור</td><td>8/27</td><td>30%</td><td style="color:var(--red);">1,837</td><td>35/88</td><td>40%</td><td>384</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <tr><td>קרית מוצקין</td><td>5/16</td><td>31%</td><td>1,068</td><td>16/80</td><td style="color:var(--red);">20%</td><td>172</td><td><span class="fl fl-o">חלקי</span></td></tr>
+        <!-- קריטי -->
+        <tr><td>ג'ת</td><td>0/6</td><td style="color:var(--red);font-weight:700;">0%</td><td>478</td><td>7/27</td><td>26%</td><td>104</td><td><span class="fl fl-r">קריטי</span></td></tr>
+        <tr class="y-row"><td><strong>חיפה</strong></td><td>18/95</td><td style="color:var(--red);font-weight:800;">19%</td><td style="color:#8b0000;font-weight:800;">11,151</td><td>0/346</td><td style="color:#8b0000;font-weight:800;">0%</td><td>338</td><td><span class="fl fl-r" style="background:#8b0000;color:white;">קריטי</span></td></tr>
+        <tr style="background:var(--blue-pale);font-weight:700;">
+          <td>סה"כ מחוז</td><td>178/451</td><td>39%</td><td>32,227</td><td>629/1,855</td><td>34%</td><td>4,941</td><td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ 9. INSIGHTS ═══ -->
+<div id="insights" class="sec">
+  <div class="sec-title">💡 9. תובנות מרכזיות והמלצות</div>
+  <div class="sec-body">
+
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #1 — מגמת ירידה מובהקת לאורך השבוע</h4>
+      <p>56% ביום ראשון → <strong>55% ביום חמישי</strong>. חטיבה: מ-56% ל-<strong>49%</strong>. היעדרות ממושכת הכפילה עצמה פי 2.8 תוך 5 ימים. <strong>15% מהתלמידים נעדרים מלאים</strong> ביום חמישי. יש לברר מה מניע ירידה זו — חשש ביטחוני מוגבר? אירועים ספציפיים? או "תופעת חמישי" מבנית.</p>
+    </div>
+
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #2 — ג'סר א-זרקא, מעלה עירון, בסמ"ה, ג'ת: פחות מ-40% נוכחות</h4>
+      <p>4 רשויות עם נוכחות שבועית <strong>מתחת ל-42%</strong> — כמחצית התלמידים לא מגיעים כלל. ג'ת: 27% היעדרות מלאה שבועית + 14.5% נעדרים ממושכים. ג'סר א-זרקא: 26% היעדרות מלאה ו-35% נוכחות ביום חמישי. נדרשת בדיקת שורשי הבעיה: האם מדובר בפחד, בגיוסים, בצרכים סוציו-אקונומיים?</p>
+    </div>
+
+    <div class="ins ins-r">
+      <h4>🚨 ממצא #3 — 7,206 תלמידים נעדרים ממושכים — פוטנציאל נשירה</h4>
+      <p>7,206 תלמידים נעדרו 3 ימים רצופים ביום חמישי. עם קצב ממושך זה, <strong>קיים סיכון לנשירה חינוכית</strong>. ג'ת: 14.5%, חוף הכרמל: 10.3%. נדרשת מערכת מעקב פרטנית ויצירת קשר עם הורים.</p>
+    </div>
+
+    <div class="ins ins-o">
+      <h4>⚠ ממצא #4 — חטיבת ביניים: שלב הסיכון הגבוה ביותר</h4>
+      <p>חטיבה: <strong>49% נוכחות, 18% היעדרות</strong> — הגרוע מכל השלבים ביום חמישי. ירידה של 7 נ"א מראשון לחמישי — הגדולה ביותר. קרית ים: <strong>30%</strong> בחטיבה — שפל קיצוני. יש לבחון מדוע גיל חטיבה פגיע יותר בתקופת חירום.</p>
+    </div>
+
+    <div class="ins ins-o">
+      <h4>⚠ ממצא #5 — מחלוקת נוכחות/מיגון: חיפה</h4>
+      <p>חיפה: <strong>57% נוכחות</strong> (ממוצע), 0% גנים מוגנים, 6% בתי"ס מוגנים. 896 נעדרים ממושכים. עם 184,829 תלמידים (53% מכלל תלמידי המחוז!), חיפה מגדירה את הממוצע המחוזי. שיפור בחיפה לבדה ישפיע דרמטית על כל הנתונים המחוזיים.</p>
+    </div>
+
+    <div class="ins ins-g">
+      <h4>✅ ממצא #6 — רשויות מובילות: מנשה, דאלית אל-כרמל, רכסים</h4>
+      <p>מנשה: <strong>74% נוכחות שבועית</strong>, 8% היעדרות. דאלית אל-כרמל: 72% — ושתיהן רשויות קטנות יחסית. רכסים: 82% ביום חמישי. יש ללמוד מה מאפיין רשויות אלה (גודל קהילה? מנהיגות חינוכית? מאפייני אוכלוסייה?) ולהפיץ לקחים.</p>
+    </div>
+
+    <hr>
+    <div class="ins ins-b">
+      <h4>📋 המלצות לפעולה — מדורגות לפי דחיפות</h4>
+      <p>
+        <strong>1. מיידי — 4 הרשויות מתחת ל-42% נוכחות (ג'סר, מעלה עירון, בסמ"ה, ג'ת):</strong> פגישת חירום עם ראשי ערים, מנהלי מוסדות, ומפקחים. הפעלת תכנית תמריצי נוכחות. מעקב יומי אחר 3 ימים ברצף.<br><br>
+        <strong>2. מיידי — 7,206 נעדרים ממושכים:</strong> שיגור יועצים ועובדים סוציאליים לאיתור תלמידים בסיכון. עדיפות: ג'ת (14.5%), חוף הכרמל (10.3%), ג'סר א-זרקא (8.5%).<br><br>
+        <strong>3. קצר-טווח — קרית ים חטיבה (30%):</strong> בדיקת שורש — האם ה-3 בתי החטיבה עם בעיות ספציפיות? האם יש פחד מוסדי? האם נמצאים בקרבת אזורים עם פגיעות גבוהה?<br><br>
+        <strong>4. קצר-טווח — ירידת חמישי:</strong> ניתוח האם "תופעת חמישי" קשורה להחמרת מצב ביטחוני בסוף שבוע. שקילת פתרונות מוטיבציה ייחודיים לחמישי.<br><br>
+        <strong>5. בינוני-טווח — מיגון (33,119 מ"ר חסרים):</strong> חיפה = 33% מהחוסר. תכנית רב-שנתית בתיאום עם משרד הביטחון. עדיפות: חיפה, חדרה, אום אל-פחם.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="background:var(--gray-l);border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:8px;flex-wrap:wrap;gap:4px;">
+  <span>משרד החינוך – מחוז חיפה | מרץ 2026</span>
+  <span>בסיס: מוסדות-נוכחות.xlsx · מוסדות-מקלוט.xlsx · נתוני-מוסדות.xlsx | מחוז תקשוב = חיפה</span>
+  <span>30 רשויות | 184,829 תלמידי בתי"ס | 2,306 מוסדות</span>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --bg:#f5f7fa; --card:#fff; --text:#1f2937; --muted:#6b7280; --ok:#15803d; --err:#b91c1c; --accent:#1d4ed8; }
+  body { margin:0; font-family: Arial, "Segoe UI", sans-serif; background:var(--bg); color:var(--text); }
+  .card { max-width:520px; margin:40px auto; background:var(--card); border-radius:12px; padding:24px 28px;
+          box-shadow:0 2px 10px rgba(0,0,0,.08); }
+  h1 { font-size:20px; margin:0 0 8px; }
+  p { color:var(--muted); line-height:1.6; margin:6px 0; }
+  #status { margin-top:16px; padding:12px 14px; border-radius:8px; background:#eef2ff; font-weight:bold; }
+  #status.ok { background:#dcfce7; color:var(--ok); }
+  #status.err { background:#fee2e2; color:var(--err); }
+  #tokenBox { display:none; margin-top:16px; }
+  input { width:100%; box-sizing:border-box; padding:10px; font-size:15px; border:1px solid #cbd5e1; border-radius:8px; direction:ltr; }
+  button { margin-top:10px; padding:10px 18px; font-size:15px; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; }
+  .small { font-size:12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>עדכון נתוני מוסדות מ"הכל אודות מוסד"</h1>
+  <p>הדף מקבל את הנתונים שנשלפו בלשונית האתר וכותב אותם ללשונית <b>מוסדות_אתר</b> בגיליון.
+     לשונית המקלוט של הקב"טים לא משתנה.</p>
+
+  <div id="tokenBox">
+    <p>פעם ראשונה בדפדפן הזה: יש להזין את מפתח העדכון (נמצא בקובץ <span class="small">Config.gs</span>).</p>
+    <input id="tokenInput" type="password" autocomplete="off" placeholder="מפתח עדכון">
+    <button id="tokenSave">שמירה</button>
+  </div>
+
+  <div id="status">ממתין לנתונים מלשונית האתר…</div>
+</div>
+
+<script>
+  const SOURCE_ORIGIN = 'https://infocenter.education.gov.il';
+  const KEY = 'maklotPushToken';
+  const statusEl = document.getElementById('status');
+  const setStatus = (t, cls) => { statusEl.textContent = t; statusEl.className = cls || ''; };
+
+  function getToken() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+  function setToken(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} }
+
+  // הודעה לחלון שפתח אותנו (לשונית האתר) שאנחנו מוכנים לקבל
+  // שני מקורות מורשים: "הכל אודות מוסד" ופיקוד העורף. הודעה למקור הלא נכון פשוט לא נמסרת
+  const OREF_ORIGIN = 'https://www.oref.org.il';
+  function announceReady() {
+    try {
+      const op = window.top.opener;
+      if (!op) throw new Error('no opener');
+      op.postMessage({ type: 'maklot-ready' }, SOURCE_ORIGIN);
+      op.postMessage({ type: 'maklot-ready' }, OREF_ORIGIN);
+    } catch (e) { setStatus('לא נמצאה לשונית האתר שפתחה את הדף. יש להפעיל את העדכון מתוך האתר.', 'err'); }
+  }
+
+  // פיקוד העורף: (1) הדף מבקש את רשימת הישובים, (2) שולח את המדיניות שנשלפה
+  window.addEventListener('message', ev => {
+    if (ev.origin !== OREF_ORIGIN || !ev.data) return;
+    const reply = (type, result) => ev.source.postMessage({ type, result }, ev.origin);
+    const fail = err => { setStatus('✗ ' + (err && err.message || err), 'err'); reply('oref-done', { ok: false, error: String(err && err.message || err) }); };
+    if (ev.data.type === 'oref-hello') {
+      setStatus('שולח לפיקוד העורף את רשימת הישובים…');
+      google.script.run.withSuccessHandler(r => {
+        if (!r.ok) { if (r.badToken) { setToken(''); askToken('המפתח שגוי — יש להזין שוב'); } return fail(r.error); }
+        setStatus(`נשלפת מדיניות ההתגוננות ל-${r.yishuvim.length} ישובים…`);
+        reply('oref-request', r);
+      }).withFailureHandler(fail).getOrefTargets(getToken());
+    }
+    if (ev.data.type === 'oref-data') {
+      if (busy) return; busy = true;
+      setStatus(`מתקבלת מדיניות ל-${(ev.data.payload.rows || []).length} ישובים — כותב לגיליון…`);
+      google.script.run.withSuccessHandler(r => {
+        busy = false;
+        if (r && r.ok) setStatus(`✓ עודכנו הנחיות פיקוד העורף ל-${r.rows} ישובים. אפשר לסגור את הדף.`, 'ok');
+        else setStatus('✗ ' + (r && r.error || 'שגיאה לא ידועה'), 'err');
+        reply('oref-done', r);
+      }).withFailureHandler(err => { busy = false; fail(err); }).saveOrefFromClient(ev.data.payload, getToken());
+    }
+  });
+
+  function askToken(msg) {
+    document.getElementById('tokenBox').style.display = 'block';
+    if (msg) setStatus(msg, 'err');
+  }
+  document.getElementById('tokenSave').onclick = () => {
+    const v = document.getElementById('tokenInput').value.trim();
+    if (!v) return;
+    setToken(v);
+    document.getElementById('tokenBox').style.display = 'none';
+    setStatus('ממתין לנתונים מלשונית האתר…');
+    announceReady();
+  };
+
+  let busy = false; // מתעלמים מנתונים נוספים בזמן שכתיבה רצה
+  window.addEventListener('message', ev => {
+    if (ev.origin !== SOURCE_ORIGIN || !ev.data || ev.data.type !== 'odot-data') return;
+    if (busy) return;
+    busy = true;
+    const payload = ev.data.payload;
+    const n = (payload.records || []).length;
+    setStatus(`מתקבלים ${n.toLocaleString('he-IL')} מוסדות — כותב לגיליון…`);
+    google.script.run
+      .withSuccessHandler(r => {
+        busy = false;
+        if (r && r.ok) {
+          setStatus(`✓ עודכנו ${r.rows.toLocaleString('he-IL')} מוסדות ו-${r.cols} שדות. אפשר לסגור את הדף.`, 'ok');
+        } else {
+          if (r && r.badToken) { setToken(''); askToken('המפתח שגוי — יש להזין שוב'); }
+          else setStatus('✗ ' + (r && r.error || 'שגיאה לא ידועה'), 'err');
+        }
+        ev.source.postMessage({ type: 'maklot-done', result: r }, ev.origin);
+      })
+      .withFailureHandler(err => {
+        busy = false;
+        setStatus('✗ ' + (err && err.message || err), 'err');
+        ev.source.postMessage({ type: 'maklot-done', result: { ok: false, error: String(err && err.message || err) } }, ev.origin);
+      })
+      .saveOdotFromClient(payload, getToken());
+  });
+
+  if (getToken()) announceReady(); else askToken();
+</script>
+</body>
+</html>

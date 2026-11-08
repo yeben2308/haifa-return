@@ -31,3 +31,9 @@ CLAUDE.md
 !index.html
 !.nojekyll
 !.gitignore
+# maklot-sync: secret key and pulled data - never commit
+maklot-sync/apps-script/Config.gs
+maklot-sync/apps-script/.clasp.json
+maklot-sync/data/
+maklot-sync/bookmarklet.txt
+maklot-sync/install_bookmarklet.html

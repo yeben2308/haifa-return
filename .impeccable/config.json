@@ -1,0 +1,41 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-07T20:43:36.162Z",
+        "reason": "Claude decision: Arial is a deliberate Hebrew-safe system font for a tiny internal Apps Script upload utility (HtmlService, no web fonts loaded)"
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "maklot-sync/apps-script/Dashboard.html"
+        ],
+        "createdAt": "2026-11-07T21:49:09.537Z",
+        "reason": "Claude decision: the only infinite animation is the indeterminate loading bar shown while dashboard data loads (a state, not decoration)"
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "maklot-sync/apps-script/Dashboard.html"
+        ],
+        "createdAt": "2026-11-07T21:49:09.722Z",
+        "reason": "Claude decision: diagonal hatch encodes 'no data' so it is distinguishable from 'critical' without color (direction contract + accessibility)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "maklot-sync/landing/og-card.html"
+        ],
+        "createdAt": "2026-11-07T23:03:18.098Z",
+        "reason": "Claude decision: static 1200x630 OG image source; band is a fixed 150px flex row with vertically centered text (no vertical padding by design) and was visually verified in the rendered og.png"
+      }
+    ]
+  }
+}

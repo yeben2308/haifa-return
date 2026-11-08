@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<title>דוח נוכחות — ג'סר א-זרקא</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box }
+body { font-family:'Heebo',Arial,sans-serif; background:#f0f4fb; color:#1a2340; font-size:12px; direction:rtl }
+.page { max-width:1200px; margin:0 auto; padding:14px }
+
+/* HEADER */
+.header {
+  background:linear-gradient(135deg,#003F8A 0%,#1358b0 100%);
+  color:white; padding:16px 22px; border-radius:12px 12px 0 0;
+  display:flex; align-items:center; gap:16px;
+}
+.header-title { font-size:22px; font-weight:900; flex:1 }
+.header-sub { font-size:11.5px; opacity:.8; margin-top:3px }
+.header-badge {
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3);
+  padding:7px 16px; border-radius:20px; font-size:11.5px; font-weight:700;
+  color:#f0c44a; white-space:nowrap;
+}
+
+/* KPI BAR */
+.kpi-bar {
+  display:grid; grid-template-columns:repeat(6,1fr);
+  background:white; border:1px solid #dbe3f0; border-top:none;
+  margin-bottom:14px; border-radius:0 0 10px 10px;
+}
+.kpi { padding:12px 10px; border-left:1px solid #e8edf5; text-align:center }
+.kpi:last-child { border-left:none }
+.kpi-val { font-size:24px; font-weight:900; font-family:monospace; color:#003F8A }
+.kpi-lbl { font-size:9.5px; color:#6b7280; font-weight:700; text-transform:uppercase; letter-spacing:.3px; margin-top:2px }
+
+/* SECTION TITLE */
+.section-title {
+  font-size:12.5px; font-weight:800; color:#003F8A;
+  padding:0 0 4px; margin-bottom:6px;
+  border-bottom:2px solid #003F8A; display:flex; align-items:center; gap:8px;
+}
+.section-title small { font-weight:400; color:#6b7280; font-size:10px }
+
+/* LEGEND */
+.legend {
+  font-size:10px; color:#6b7280; margin-bottom:7px;
+  padding:5px 10px; background:white; border-radius:6px;
+  display:inline-flex; align-items:center; gap:12px; border:1px solid #e8edf5;
+}
+.leg-item { display:flex; align-items:center; gap:4px; font-weight:600 }
+.dot { width:10px; height:10px; border-radius:50%; flex-shrink:0 }
+
+/* MAIN TABLE */
+table { width:100%; border-collapse:collapse; background:white; border-radius:8px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+thead tr th { background:#003F8A; color:white; padding:7px 5px; font-weight:700; white-space:nowrap; font-size:10.5px; text-align:center }
+thead tr th.name-th { text-align:right; padding-right:10px; min-width:130px }
+thead tr.sub-header th { background:#1358b0; font-size:9.5px; font-weight:600; padding:4px 5px }
+tr:nth-child(even) { background:#f8fafc }
+tr:hover { background:#eef4ff }
+td { padding:6px 5px; border-bottom:1px solid #e8edf5; text-align:center; vertical-align:middle; }
+td.name-cell { text-align:right; padding-right:10px }
+.inst-name { font-weight:700; color:#1a2340; font-size:11.5px }
+.inst-lvl { font-size:9.5px; color:#6b7280; margin-top:1px }
+.tag { display:inline-block; font-size:9px; font-weight:700; padding:1px 6px; border-radius:10px; margin-top:2px }
+.tag-regular { background:#e8f0fc; color:#1358b0 }
+.tag-special { background:#f3e8ff; color:#7c3aed }
+td.num-cell { font-weight:800; color:#003F8A; font-family:monospace; font-size:13px }
+td.att-cell { white-space:nowrap; font-size:11px; padding:5px 3px }
+.n { color:#166534; font-weight:700 }
+.c { color:#92400e; font-weight:700 }
+.f { color:#991b1b; font-weight:700 }
+td.no-rep { color:#9ca3af; font-style:italic; font-size:10px; background:#fafafa }
+td.empty-cell { color:#d1d5db }
+td.mgmt-cell { text-align:right; padding-right:8px; color:#374151; font-size:10.5px; max-width:85px }
+
+/* SEPARATOR ROW */
+tr.sep td { background:#f0f4fb; font-weight:700; font-size:10px; color:#003F8A; padding:4px 8px; text-align:right }
+
+/* SUMMARY TABLE */
+.summary-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px }
+.sum-card { background:white; border-radius:8px; padding:12px 14px; border:1px solid #dbe3f0; box-shadow:0 1px 4px rgba(0,0,0,.06) }
+.sum-card h4 { font-size:11.5px; font-weight:800; color:#003F8A; margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid #e8edf5 }
+.sum-table { width:100%; font-size:10.5px; border-collapse:collapse }
+.sum-table td { padding:4px 6px; border-bottom:1px solid #f0f2f5 }
+.sum-table td:last-child { text-align:left; font-family:monospace; font-weight:700; color:#1a2340 }
+.sum-table tr:last-child td { border-bottom:none }
+
+/* KG SECTION */
+.kg-info { background:white; border-radius:8px; padding:12px 14px; border:1px solid #dbe3f0; margin-top:12px }
+.kg-info h4 { font-size:11.5px; font-weight:800; color:#003F8A; margin-bottom:6px }
+.kg-stats { display:flex; gap:20px; align-items:center }
+.kg-stat { text-align:center }
+.kg-stat-val { font-size:22px; font-weight:900; color:#003F8A; font-family:monospace }
+.kg-stat-lbl { font-size:9.5px; color:#6b7280; font-weight:700 }
+
+/* FOOTER */
+.footer { margin-top:12px; font-size:10px; color:#9ca3af; text-align:center; padding:6px }
+
+@media print {
+  body { background:white }
+  .page { padding:6px; max-width:none }
+  table { font-size:9.5px }
+  th { font-size:9px }
+  .header { border-radius:6px 6px 0 0 }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div style="flex:1">
+    <div class="header-title">ג'סר א-זרקא — נוכחות תלמידים בחירום</div>
+    <div class="header-sub">מחוז חיפה | חינוך בחירום — מבצע חרבות ברזל | מגזר ערבי | פיקוח ממלכתי</div>
+  </div>
+  <div class="header-badge">עדכון אחרון: 23.3.2026</div>
+</div>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+  <div class="kpi"><div class="kpi-val">8</div><div class="kpi-lbl">בתי"ס</div></div>
+  <div class="kpi"><div class="kpi-val">33</div><div class="kpi-lbl">גני ילדים</div></div>
+  <div class="kpi"><div class="kpi-val">3,474</div><div class="kpi-lbl">תלמידים (בי"ס)</div></div>
+  <div class="kpi"><div class="kpi-val">873</div><div class="kpi-lbl">ילדים (גנים)</div></div>
+  <div class="kpi"><div class="kpi-val">4,347</div><div class="kpi-lbl">סה"כ במערכת</div></div>
+  <div class="kpi" style="background:#f0f7ff"><div class="kpi-val" style="color:#1358b0">16.3–23.3</div><div class="kpi-lbl">תקופה מדווחת</div></div>
+</div>
+
+<!-- WEEK 1: Mar 8-15 -->
+<div class="section-title">שבוע א׳ — 8.3–15.3.2026 <small>(נוכחות מלאה | היעדרות חלקית | היעדרות מלאה)</small></div>
+<div class="legend">
+  <div class="leg-item"><div class="dot" style="background:#166534"></div><span style="color:#166534">נוכחות מלאה</span></div>
+  <div class="leg-item"><div class="dot" style="background:#92400e"></div><span style="color:#92400e">היעדרות חלקית</span></div>
+  <div class="leg-item"><div class="dot" style="background:#991b1b"></div><span style="color:#991b1b">היעדרות מלאה</span></div>
+  <div class="leg-item"><span style="color:#9ca3af">■ לא דיווח</span></div>
+</div>
+<table>
+<thead>
+<tr>
+  <th class="name-th" rowspan="2">מוסד</th>
+  <th rowspan="2">תלמידים</th>
+  <th colspan="1">8.3 ראשון</th>
+  <th colspan="1">9.3 שני</th>
+  <th colspan="1">10.3 שלישי</th>
+  <th colspan="1">11.3 רביעי</th>
+  <th colspan="1">12.3 חמישי</th>
+  <th colspan="1">13.3 שישי</th>
+  <th colspan="1">15.3 ראשון</th>
+  <th rowspan="2">מנהל</th>
+  <th rowspan="2">מפקח</th>
+</tr>
+</thead>
+<tbody>
+<!-- אלואדי -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלואדי</span><div class="inst-lvl">גן ויסודי</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">503</td>
+  <td class="att-cell"><span class="n">351</span> | <span class="c">168</span> | <span class="f">63</span></td>
+  <td class="att-cell"><span class="n">182</span> | <span class="c">145</span> | <span class="f">0</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">356</span> | <span class="c">0</span> | <span class="f">11</span></td>
+  <td class="att-cell"><span class="n">75</span> | <span class="c">13</span> | <span class="f">2</span></td>
+  <td class="att-cell"><span class="n">153</span> | <span class="c">141</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">51</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">ג'ורבאן נג'ם</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- אלשאטאא -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלשאטאא</span><div class="inst-lvl">יסודי בלבד</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">502</td>
+  <td class="att-cell"><span class="n">223</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">454</span> | <span class="c">53</span> | <span class="f">113</span></td>
+  <td class="att-cell"><span class="n">82</span> | <span class="c">61</span> | <span class="f">30</span></td>
+  <td class="att-cell"><span class="n">302</span> | <span class="c">1</span> | <span class="f">76</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">51</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">גרבאן עבד</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- עומר -->
+<tr>
+  <td class="name-cell"><span class="inst-name">עומר אבן אלח'טאב</span><div class="inst-lvl">יסודי בלבד</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">517</td>
+  <td class="att-cell"><span class="n">158</span> | <span class="c">71</span> | <span class="f">127</span></td>
+  <td class="att-cell"><span class="n">78</span> | <span class="c">59</span> | <span class="f">47</span></td>
+  <td class="att-cell"><span class="n">185</span> | <span class="c">0</span> | <span class="f">16</span></td>
+  <td class="att-cell"><span class="n">245</span> | <span class="c">43</span> | <span class="f">146</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">355</span> | <span class="c">210</span> | <span class="f">102</span></td>
+  <td class="att-cell"><span class="n">28</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">זאיט אידה</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- מיוחד -->
+<tr>
+  <td class="name-cell"><span class="inst-name">מיוחד ג'סר אלזרקא</span><div class="inst-lvl">יסודי בלבד</div><span class="tag tag-special">חינוך מיוחד</span></td>
+  <td class="num-cell">44</td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">133</span> | <span class="c">183</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">208</span> | <span class="c">16</span> | <span class="f">17</span></td>
+  <td class="att-cell"><span class="n">317</span> | <span class="c">35</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">380</span> | <span class="c">70</span> | <span class="f">15</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">36</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">גרבאן מוחמד</td>
+  <td class="mgmt-cell">אימאן מחאג'נה</td>
+</tr>
+<!-- אלמנרה -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלמנרה</span><div class="inst-lvl">חט"ב וחט"ע</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">1,125</td>
+  <td class="att-cell"><span class="n">174</span> | <span class="c">49</span> | <span class="f">30</span></td>
+  <td class="att-cell"><span class="n">349</span> | <span class="c">112</span> | <span class="f">32</span></td>
+  <td class="att-cell"><span class="n">133</span> | <span class="c">140</span> | <span class="f">81</span></td>
+  <td class="att-cell"><span class="n">127</span> | <span class="c">39</span> | <span class="f">6</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">1</span> | <span class="c">219</span> | <span class="f">119</span></td>
+  <td class="att-cell"><span class="n">45</span> | <span class="c">1</span> | <span class="f">1</span></td>
+  <td class="mgmt-cell">גורבאן מרעי</td>
+  <td class="mgmt-cell">סאלח טאהא</td>
+</tr>
+<!-- אלקנדיל -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלקנדיל</span><div class="inst-lvl">יסודי בלבד</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">307</td>
+  <td class="att-cell"><span class="n">165</span> | <span class="c">23</span> | <span class="f">140</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">96</span> | <span class="c">79</span> | <span class="f">59</span></td>
+  <td class="att-cell"><span class="n">532</span> | <span class="c">56</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">100</span> | <span class="c">70</span> | <span class="f">4</span></td>
+  <td class="att-cell"><span class="n">28</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">58</span> | <span class="c">4</span> | <span class="f">15</span></td>
+  <td class="mgmt-cell">עמאש וסימה</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- מח"ט טומשין -->
+<tr>
+  <td class="name-cell"><span class="inst-name">מח"ט טומשין</span><div class="inst-lvl">חט"ע בלבד</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">177</td>
+  <td class="att-cell"><span class="n">335</span> | <span class="c">106</span> | <span class="f">37</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">205</span> | <span class="c">146</span> | <span class="f">51</span></td>
+  <td class="att-cell"><span class="n">259</span> | <span class="c">41</span> | <span class="f">108</span></td>
+  <td class="att-cell"><span class="n">202</span> | <span class="c">225</span> | <span class="f">77</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">82</span> | <span class="c">67</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">עמאש גומעה</td>
+  <td class="mgmt-cell">שחק סגל</td>
+</tr>
+<!-- אלסלאם -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלסלאם</span><div class="inst-lvl">חט"ב בלבד</div><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">299</td>
+  <td class="att-cell"><span class="n">165</span> | <span class="c">135</span> | <span class="f">67</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">329</span> | <span class="c">1</span> | <span class="f">1</span></td>
+  <td class="att-cell"><span class="n">470</span> | <span class="c">98</span> | <span class="f">30</span></td>
+  <td class="att-cell"><span class="n">122</span> | <span class="c">235</span> | <span class="f">148</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">23</span> | <span class="c">4</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">ג'רבאן בהא אל דין</td>
+  <td class="mgmt-cell">סאלח טאהא</td>
+</tr>
+</tbody>
+</table>
+
+<!-- WEEK 2: Mar 16-23 -->
+<div class="section-title" style="margin-top:16px">שבוע ב׳ — 16.3–23.3.2026 <small>(נוכחות מלאה | היעדרות חלקית | היעדרות מלאה)</small></div>
+<table>
+<thead>
+<tr>
+  <th class="name-th">מוסד</th>
+  <th>תלמידים</th>
+  <th>16.3 שני</th>
+  <th>17.3 שלישי</th>
+  <th>18.3 רביעי</th>
+  <th>19.3 חמישי</th>
+  <th>20.3 שישי</th>
+  <th>22.3 ראשון</th>
+  <th>23.3 שני</th>
+  <th>מנהל</th>
+  <th>מפקח</th>
+</tr>
+</thead>
+<tbody>
+<!-- אלואדי -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלואדי</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">503</td>
+  <td class="att-cell"><span class="n">665</span> | <span class="c">477</span> | <span class="f">119</span></td>
+  <td class="att-cell"><span class="n">149</span> | <span class="c">1</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">194</span> | <span class="c">176</span> | <span class="f">12</span></td>
+  <td class="att-cell"><span class="n">357</span> | <span class="c">264</span> | <span class="f">25</span></td>
+  <td class="att-cell"><span class="n">148</span> | <span class="c">43</span> | <span class="f">76</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">76</span> | <span class="c">1</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">ג'ורבאן נג'ם</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- אלשאטאא -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלשאטאא</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">502</td>
+  <td class="att-cell"><span class="n">175</span> | <span class="c">243</span> | <span class="f">151</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">292</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">55</span> | <span class="c">128</span> | <span class="f">127</span></td>
+  <td class="att-cell"><span class="n">45</span> | <span class="c">9</span> | <span class="f">7</span></td>
+  <td class="att-cell"><span class="n">298</span> | <span class="c">161</span> | <span class="f">57</span></td>
+  <td class="att-cell"><span class="n">65</span> | <span class="c">10</span> | <span class="f">2</span></td>
+  <td class="mgmt-cell">גרבאן עבד</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- עומר -->
+<tr>
+  <td class="name-cell"><span class="inst-name">עומר אבן אלח'טאב</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">517</td>
+  <td class="att-cell"><span class="n">79</span> | <span class="c">49</span> | <span class="f">137</span></td>
+  <td class="att-cell"><span class="n">367</span> | <span class="c">57</span> | <span class="f">163</span></td>
+  <td class="att-cell"><span class="n">109</span> | <span class="c">362</span> | <span class="f">110</span></td>
+  <td class="att-cell"><span class="n">163</span> | <span class="c">76</span> | <span class="f">69</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">37</span> | <span class="c">0</span> | <span class="f">8</span></td>
+  <td class="att-cell"><span class="n">81</span> | <span class="c">183</span> | <span class="f">180</span></td>
+  <td class="mgmt-cell">זאיט אידה</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- מיוחד -->
+<tr>
+  <td class="name-cell"><span class="inst-name">מיוחד ג'סר אלזרקא</span><span class="tag tag-special">חינוך מיוחד</span></td>
+  <td class="num-cell">44</td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">142</span> | <span class="c">53</span> | <span class="f">122</span></td>
+  <td class="att-cell"><span class="n">343</span> | <span class="c">140</span> | <span class="f">34</span></td>
+  <td class="att-cell"><span class="n">96</span> | <span class="c">123</span> | <span class="f">110</span></td>
+  <td class="att-cell"><span class="n">950</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">156</span> | <span class="c">12</span> | <span class="f">28</span></td>
+  <td class="att-cell"><span class="n">65</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">גרבאן מוחמד</td>
+  <td class="mgmt-cell">אימאן מחאג'נה</td>
+</tr>
+<!-- אלמנרה -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלמנרה</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">1,125</td>
+  <td class="att-cell"><span class="n">105</span> | <span class="c">127</span> | <span class="f">70</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">337</span> | <span class="c">151</span> | <span class="f">282</span></td>
+  <td class="att-cell"><span class="n">138</span> | <span class="c">14</span> | <span class="f">92</span></td>
+  <td class="att-cell"><span class="n">50</span> | <span class="c">2</span> | <span class="f">7</span></td>
+  <td class="att-cell"><span class="n">274</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">160</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">גורבאן מרעי</td>
+  <td class="mgmt-cell">סאלח טאהא</td>
+</tr>
+<!-- אלקנדיל -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלקנדיל</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">307</td>
+  <td class="att-cell"><span class="n">131</span> | <span class="c">99</span> | <span class="f">106</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">48</span> | <span class="c">0</span> | <span class="f">11</span></td>
+  <td class="att-cell"><span class="n">215</span> | <span class="c">122</span> | <span class="f">100</span></td>
+  <td class="att-cell"><span class="n">20</span> | <span class="c">0</span> | <span class="f">9</span></td>
+  <td class="att-cell"><span class="n">97</span> | <span class="c">55</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">עמאש וסימה</td>
+  <td class="mgmt-cell">אחמד כבהה</td>
+</tr>
+<!-- מח"ט טומשין -->
+<tr>
+  <td class="name-cell"><span class="inst-name">מח"ט טומשין</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">177</td>
+  <td class="att-cell"><span class="n">743</span> | <span class="c">519</span> | <span class="f">278</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">157</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">201</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">131</span> | <span class="c">76</span> | <span class="f">92</span></td>
+  <td class="att-cell"><span class="n">13</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">311</span> | <span class="c">147</span> | <span class="f">5</span></td>
+  <td class="mgmt-cell">עמאש גומעה</td>
+  <td class="mgmt-cell">שחק סגל</td>
+</tr>
+<!-- אלסלאם -->
+<tr>
+  <td class="name-cell"><span class="inst-name">אלסלאם</span><span class="tag tag-regular">רגיל</span></td>
+  <td class="num-cell">299</td>
+  <td class="att-cell"><span class="n">782</span> | <span class="c">610</span> | <span class="f">177</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">506</span> | <span class="c">10</span> | <span class="f">0</span></td>
+  <td class="att-cell"><span class="n">451</span> | <span class="c">297</span> | <span class="f">56</span></td>
+  <td class="att-cell"><span class="n">114</span> | <span class="c">80</span> | <span class="f">105</span></td>
+  <td class="no-rep">לא דיווח</td>
+  <td class="att-cell"><span class="n">33</span> | <span class="c">0</span> | <span class="f">0</span></td>
+  <td class="mgmt-cell">ג'רבאן בהא אל דין</td>
+  <td class="mgmt-cell">סאלח טאהא</td>
+</tr>
+</tbody>
+</table>
+
+<!-- KINDERGARTENS -->
+<div class="kg-info">
+  <h4>גני ילדים — ג'סר א-זרקא</h4>
+  <div class="kg-stats">
+    <div class="kg-stat"><div class="kg-stat-val">33</div><div class="kg-stat-lbl">גנים פעילים</div></div>
+    <div class="kg-stat"><div class="kg-stat-val">873</div><div class="kg-stat-lbl">ילדים רשומים</div></div>
+    <div style="flex:1; font-size:11px; color:#374151; padding-right:20px; border-right:1px solid #e8edf5">
+      <strong>מפקחת גנים יהודי:</strong> סונדוס סיף &nbsp;|&nbsp; <strong>מפקחת חינוך מיוחד:</strong> אימאן מחאג'נה<br>
+      <span style="font-size:10px; color:#6b7280">* גני ילדים אינם ממלאים שדה דיווח נוכחות — נתוני מיגון בלבד</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  מחוז חיפה — משרד החינוך &nbsp;|&nbsp; הופק: 16.4.2026 &nbsp;|&nbsp;
+  מקורות נתונים: מוסדות-נוכחות.xlsx + נתוני-מוסדות.xlsx &nbsp;|&nbsp;
+  כל הנתונים מדווחים מתוך מנגנון דיווח ארצי
+</div>
+
+</div>
+</body>
+</html>

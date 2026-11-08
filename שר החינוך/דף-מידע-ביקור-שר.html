@@ -1,0 +1,2426 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דף מידע – מחוז חיפה</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue:    #003F8A;
+      --blue-light: #1a5ea8;
+      --blue-pale: #e8f0fc;
+      --gold:    #C8972A;
+      --green:   #1a8a4a;
+      --green-bg:#e6f4ed;
+      --red:     #c0392b;
+      --red-bg:  #fdf0ef;
+      --orange:  #e67e22;
+      --orange-bg:#fef3e2;
+      --gray:    #6b7280;
+      --gray-light:#f3f4f6;
+      --border:  #d1d5db;
+      --text:    #1f2937;
+    }
+
+    body {
+      font-family: 'Heebo', 'Arial', sans-serif;
+      background: #e9edf5;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ===== PAGE ===== */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      background: white;
+      margin: 20px auto;
+      padding: 0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      background: var(--blue);
+      color: white;
+      padding: 13px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0; left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, #f0c44a 50%, var(--gold) 100%);
+    }
+    .header-logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-logo-area img {
+      height: 60px;
+      filter: brightness(0) invert(1);
+    }
+    .header-ministry {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.85;
+      line-height: 1.3;
+    }
+    .header-ministry strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .header-city-area {
+      text-align: left;
+    }
+    .header-city-label {
+      font-size: 10px;
+      opacity: 0.75;
+      font-weight: 400;
+    }
+    .header-city-name {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .header-date {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    .lain-logo {
+      height: 58px;
+      filter: brightness(0) invert(1);
+    }
+    .city-emblem {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    /* ===== BODY ===== */
+    .page {
+      display: flex;
+      flex-direction: column;
+    }
+    .page-body {
+      padding: 6px 8px 4px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto 1fr;
+      gap: 5px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+    .section-body {
+      flex: 1;
+    }
+    .section.full-width {
+      grid-column: 1 / -1;
+    }
+    .section-header {
+      background: var(--blue);
+      color: white;
+      padding: 5px 10px 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .section-icon {
+      font-size: 13px;
+      line-height: 1;
+    }
+    .section-body {
+      padding: 6px 9px;
+    }
+
+    /* ===== STAT CARDS ===== */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .stat-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .stat-card {
+      background: var(--blue-pale);
+      border-radius: 6px;
+      padding: 6px 8px;
+      text-align: center;
+      border: 1px solid #c4d4ef;
+    }
+    .stat-card .num {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+    .stat-card .lbl {
+      font-size: 9.5px;
+      color: var(--gray);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .stat-card.gold-card {
+      background: #fdf8ec;
+      border-color: #e8d08a;
+    }
+    .stat-card.gold-card .num { color: #8a6000; }
+
+    /* ===== STAGES TABLE ===== */
+    .stages-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .stages-table th {
+      background: var(--gray-light);
+      padding: 4px 6px;
+      text-align: right;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 2px solid var(--border);
+    }
+    .stages-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: right;
+    }
+    .stages-table tr:last-child td { border-bottom: none; }
+    .stages-table tr:hover td { background: #fafafa; }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .badge-blue { background: var(--blue-pale); color: var(--blue); }
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .badge-gold { background: #fdf8ec; color: #7a5a00; }
+    .badge-purple { background: #f3eafe; color: #6b21a8; }
+
+    /* ===== ATTENDANCE TABLE ===== */
+    .att-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+    }
+    .att-table th {
+      background: var(--blue);
+      color: white;
+      padding: 4px 5px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 10px;
+    }
+    .att-table th:first-child { text-align: right; border-radius: 0; }
+    .att-table td {
+      padding: 4px 5px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+    .att-table td:first-child { text-align: right; font-weight: 600; color: var(--blue); }
+    .att-table tr.last-row td { background: #f8f9ff; font-weight: 700; }
+    .att-table tr.last-row td:first-child { color: var(--blue); }
+
+    .pct-green { color: var(--green); font-weight: 700; }
+    .pct-red   { color: var(--red);   font-weight: 700; }
+    .pct-orange{ color: var(--orange); font-weight: 700; }
+
+    /* mini bar */
+    .mini-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+    }
+    .mini-bar {
+      height: 7px;
+      border-radius: 3px;
+      display: inline-block;
+      min-width: 2px;
+    }
+
+    /* ===== SHELTER ===== */
+    .shelter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .shelter-card {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .shelter-card .s-num {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .shelter-card .s-lbl {
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+    .shelter-card.green { background: var(--green-bg); border-color: #a3d9b8; }
+    .shelter-card.green .s-num { color: var(--green); }
+    .shelter-card.red { background: var(--red-bg); border-color: #f5b7b1; }
+    .shelter-card.red .s-num { color: var(--red); }
+    .shelter-card.blue { background: var(--blue-pale); border-color: #c4d4ef; }
+    .shelter-card.blue .s-num { color: var(--blue); }
+    .shelter-card.orange { background: var(--orange-bg); border-color: #f5c98c; }
+    .shelter-card.orange .s-num { color: var(--orange); }
+
+    .shelter-bar-wrap {
+      margin: 3px 0 1px;
+    }
+    .shelter-bar-bg {
+      height: 8px;
+      background: var(--red-bg);
+      border: 1px solid #f5b7b1;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .shelter-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.3s;
+    }
+    .shelter-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 3px;
+    }
+
+    /* ===== EVENT ITEMS ===== */
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 5px 7px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: #fafafa;
+    }
+    .event-item .e-icon {
+      font-size: 12px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .event-item .e-body { flex: 1; }
+    .event-item .e-name {
+      font-weight: 700;
+      font-size: 10.5px;
+      color: var(--text);
+    }
+    .event-item .e-meta {
+      font-size: 9.5px;
+      color: var(--gray);
+      margin-top: 1px;
+    }
+    .event-item .e-note {
+      font-size: 9.5px;
+      color: var(--orange);
+      margin-top: 1px;
+      font-style: italic;
+    }
+    .event-item.ev-red { border-color: #f5b7b1; background: var(--red-bg); }
+    .event-item.ev-orange { border-color: #f5c98c; background: var(--orange-bg); }
+    .event-item.ev-green { border-color: #a3d9b8; background: var(--green-bg); }
+    .event-item.ev-blue { border-color: #c4d4ef; background: var(--blue-pale); }
+
+    .no-data {
+      text-align: center;
+      color: var(--gray);
+      font-size: 11px;
+      padding: 10px;
+      font-style: italic;
+    }
+
+    /* ===== TAGS ===== */
+    .tag-yes { color: var(--red); font-weight: 700; }
+    .tag-no  { color: var(--green); font-weight: 600; }
+
+    /* ===== FOOTER ===== */
+    .page-footer {
+      background: var(--gray-light);
+      border-top: 1px solid var(--border);
+      padding: 4px 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--gray);
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      @page { margin: 0; size: A4; }
+      body { background: white; margin: 0; padding: 0; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    /* ===== NAV BAR ===== */
+    .nav-bar {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .nav-bar a {
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .nav-bar a:hover { background: rgba(255,255,255,0.15); }
+    .nav-bar .nav-title {
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: auto;
+      opacity: 0.85;
+    }
+    @media print { .nav-bar { display: none; } }
+    body { padding-top: 44px; }
+    @media print { body { padding-top: 0; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <a href="#krayot-ata">קרית אתא</a>
+  <a href="#krayot-bialik">קרית ביאליק</a>
+  <a href="#krayot-yam">קרית ים</a>
+  <span class="nav-title">מחוז חיפה | מרץ 2026</span>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 1 – קרית אתא
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="krayot-ata">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">קרית אתא</div>
+        <div class="header-date">נתונים ליום: 12.03.2026</div>
+      </div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Coat_of_arms_of_Kiryat_Ata.svg" alt="סמל קרית אתא" class="city-emblem">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים (full-width) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">113</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">10,560</div>
+            <div class="lbl">תלמידים</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">96</div>
+            <div class="lbl">גנים (2,231 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">17</div>
+            <div class="lbl">בתי ספר (8,329 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>96</strong> גנים · 2,231 ילדים</td>
+              <td><span style="color:var(--green);">74 רגיל</span> · <span style="color:var(--gray);">22 מיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>11</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">10 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד / חרדי</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבת ביניים</span></td>
+              <td><strong>4</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">4 רגיל</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">תיכון (חט"ע)</span></td>
+              <td><strong>5</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">4 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות (full-width, 2 inner cols) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-green">4,772 (57%)</span></td>
+                <td><span class="pct-red">895 (11%)</span></td>
+                <td>2,387 (29%)</td>
+                <td>335</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-green">5,324 (64%)</span></td>
+                <td><span class="pct-red">833 (10%)</span></td>
+                <td>1,716 (21%)</td>
+                <td>502</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-green">4,955 (59%)</span></td>
+                <td><span class="pct-red">933 (11%)</span></td>
+                <td>2,292 (27%)</td>
+                <td>206</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-green">5,065 (61%)</span></td>
+                <td><span class="pct-red">877 (10%)</span></td>
+                <td>2,041 (24%)</td>
+                <td>388</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-green">4,793 (57%)</span></td>
+                <td><span class="pct-red">1,074 (13%)</span></td>
+                <td>1,815 (22%)</td>
+                <td>684</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-green">5,134 (61%)</span></td>
+                <td><span class="pct-red">2,041 (24%)</span></td>
+                <td>777 (9%)</td>
+                <td>216</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-green">4,748 (57%)</span></td>
+                <td><span class="pct-red">2,199 (26%)</span></td>
+                <td>912 (11%)</td>
+                <td>221</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-green">4,872 (58%)</span></td>
+                <td><span class="pct-red">2,172 (26%)</span></td>
+                <td>908 (11%)</td>
+                <td>211</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-green">4,666 (56%)</span></td>
+                <td><span class="pct-red">2,113 (25%)</span></td>
+                <td>1,129 (14%)</td>
+                <td>240</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-orange">4,378 (52%)</span></td>
+                <td><span class="pct-red">1,706 (20%)</span></td>
+                <td>1,359 (16%)</td>
+                <td>226</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>4,600</td><td>3,016</td><td><span class="pct-green">66%</span></td></tr>
+              <tr><td>חטיבה</td><td>2,289</td><td>1,047</td><td><span class="pct-orange">46%</span></td></tr>
+              <tr><td>תיכון</td><td>1,474</td><td>807</td><td><span class="pct-orange">55%</span></td></tr>
+              <tr><td>חינוך מיוחד</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + סטטוס מקלוט -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>2</td></tr>
+            <tr><td>09/03</td><td>168</td></tr>
+            <tr><td>10/03</td><td>159</td></tr>
+            <tr><td>11/03</td><td>202</td></tr>
+            <tr><td>12/03</td><td class="pct-red">244</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>419</td></tr>
+            <tr><td>16/03</td><td class="pct-red">538</td></tr>
+            <tr><td>17/03</td><td>443</td></tr>
+            <tr><td>18/03</td><td>461</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">925</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#2c5f2e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (96 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:38%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 36 (38%)</span>
+            <span style="color:var(--red);">✗ חוסר: 60 (62%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>1,216 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>232 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (17 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:59%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 10 (59%)</span>
+            <span style="color:var(--red);">✗ חוסר: 7 (41%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>4,616 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>522 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>קרית אתא · מרץ 2026</span>
+    <span>1 / 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 2 – קרית ביאליק
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="krayot-bialik">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">קרית ביאליק</div>
+        <div class="header-date">נתונים ליום: 12.03.2026</div>
+      </div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Coat_of_arms_of_Kiryat_Bialik.svg" alt="סמל קרית ביאליק" class="city-emblem">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים (full-width) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">95</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">9,398</div>
+            <div class="lbl">תלמידים</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">79</div>
+            <div class="lbl">גנים (1,963 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">16</div>
+            <div class="lbl">בתי ספר (7,435 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>79</strong> גנים · 1,963 ילדים</td>
+              <td><span style="color:var(--green);">62 רגיל</span> · <span style="color:var(--gray);">17 מיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>10</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">9 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבת ביניים</span></td>
+              <td><strong>4</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">3 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">תיכון (חט"ע)</span></td>
+              <td><strong>4</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">3 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות (full-width, 2 inner cols) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-green">4,747 (66%)</span></td>
+                <td><span class="pct-red">627 (9%)</span></td>
+                <td>1,603 (22%)</td>
+                <td>263</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-green">4,717 (65%)</span></td>
+                <td><span class="pct-red">642 (9%)</span></td>
+                <td>1,400 (19%)</td>
+                <td>481</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-green">4,613 (64%)</span></td>
+                <td><span class="pct-red">615 (8%)</span></td>
+                <td>1,808 (25%)</td>
+                <td>205</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-green">5,139 (71%)</span></td>
+                <td><span class="pct-red">420 (6%)</span></td>
+                <td>1,548 (21%)</td>
+                <td>135</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-green">4,470 (62%)</span></td>
+                <td><span class="pct-red">991 (14%)</span></td>
+                <td>1,373 (19%)</td>
+                <td>406</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-green">4,794 (66%)</span></td>
+                <td><span class="pct-red">1,515 (21%)</span></td>
+                <td>673 (9%)</td>
+                <td>106</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-green">4,425 (61%)</span></td>
+                <td><span class="pct-red">1,896 (26%)</span></td>
+                <td>803 (11%)</td>
+                <td>201</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-green">4,473 (62%)</span></td>
+                <td><span class="pct-red">1,728 (24%)</span></td>
+                <td>868 (12%)</td>
+                <td>178</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-green">4,284 (59%)</span></td>
+                <td><span class="pct-red">1,890 (26%)</span></td>
+                <td>902 (12%)</td>
+                <td>212</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-orange">3,895 (54%)</span></td>
+                <td><span class="pct-red">1,556 (21%)</span></td>
+                <td>1,208 (17%)</td>
+                <td>252</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>3,921</td><td>2,878</td><td><span class="pct-green">73%</span></td></tr>
+              <tr><td>חטיבה</td><td>1,788</td><td>854</td><td><span class="pct-orange">48%</span></td></tr>
+              <tr><td>תיכון</td><td>1,532</td><td>824</td><td><span class="pct-orange">54%</span></td></tr>
+              <tr><td>חינוך מיוחד</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + סטטוס מקלוט -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>0</td></tr>
+            <tr><td>09/03</td><td>89</td></tr>
+            <tr><td>10/03</td><td class="pct-orange">115</td></tr>
+            <tr><td>11/03</td><td>68</td></tr>
+            <tr><td>12/03</td><td class="pct-red">97</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>259</td></tr>
+            <tr><td>16/03</td><td>119</td></tr>
+            <tr><td>17/03</td><td>174</td></tr>
+            <tr><td>18/03</td><td>166</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">581</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#7c1a1a;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+        <span style="margin-right:auto;font-size:10px;background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:4px;">⚠ חוסר מיגון</span>
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (79 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:46%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 36 (46%)</span>
+            <span style="color:var(--red);">✗ חוסר: 43 (54%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>1,060 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>90 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (16 מוסדות) <span style="color:var(--red);">⚠</span></div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:50%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 8 (50%)</span>
+            <span style="color:var(--red);">✗ חוסר: 8 (50%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>4,094 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>1,234 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>קרית ביאליק · מרץ 2026</span>
+    <span>2 / 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 3 – קרית ים
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="krayot-yam">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">קרית ים</div>
+        <div class="header-date">נתונים ליום: 12.03.2026</div>
+      </div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Kiryat_Yam_COA.png" alt="סמל קרית ים" class="city-emblem">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים (full-width) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">65</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">6,196</div>
+            <div class="lbl">תלמידים</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">53</div>
+            <div class="lbl">גנים (1,241 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">12</div>
+            <div class="lbl">בתי ספר (4,955 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>53</strong> גנים · 1,241 ילדים</td>
+              <td><span style="color:var(--green);">42 רגיל</span> · <span style="color:var(--gray);">11 מיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>9</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">8 רגיל</span> · <span style="color:var(--gray);">1 מיוחד</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבת ביניים</span></td>
+              <td><strong>3</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">3 רגיל</span></td>
+              <td>מ"מ</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">תיכון (חט"ע)</span></td>
+              <td><strong>2</strong> בתי ספר</td>
+              <td><span style="color:var(--green);">2 רגיל</span></td>
+              <td>מ"מ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות (full-width, 2 inner cols) -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-green">3,123 (63%)</span></td>
+                <td><span class="pct-red">624 (13%)</span></td>
+                <td>1,164 (23%)</td>
+                <td>83</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-green">3,265 (66%)</span></td>
+                <td><span class="pct-red">661 (13%)</span></td>
+                <td>807 (16%)</td>
+                <td>256</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-green">3,143 (63%)</span></td>
+                <td><span class="pct-red">577 (12%)</span></td>
+                <td>1,144 (23%)</td>
+                <td>130</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-green">3,215 (65%)</span></td>
+                <td><span class="pct-red">584 (12%)</span></td>
+                <td>1,054 (21%)</td>
+                <td>141</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-green">3,030 (61%)</span></td>
+                <td><span class="pct-red">789 (16%)</span></td>
+                <td>812 (16%)</td>
+                <td>363</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-green">3,047 (61%)</span></td>
+                <td><span class="pct-red">1,418 (28%)</span></td>
+                <td>429 (9%)</td>
+                <td>162</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-green">2,998 (60%)</span></td>
+                <td><span class="pct-red">1,377 (28%)</span></td>
+                <td>448 (9%)</td>
+                <td>116</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-orange">2,953 (59%)</span></td>
+                <td><span class="pct-red">1,405 (28%)</span></td>
+                <td>449 (9%)</td>
+                <td>106</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-orange">2,862 (57%)</span></td>
+                <td><span class="pct-red">1,485 (30%)</span></td>
+                <td>459 (9%)</td>
+                <td>96</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-orange">2,897 (58%)</span></td>
+                <td><span class="pct-red">960 (19%)</span></td>
+                <td>694 (14%)</td>
+                <td>126</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>2,616</td><td>1,940</td><td><span class="pct-green">74%</span></td></tr>
+              <tr><td>חטיבה</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>תיכון</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>חינוך מיוחד</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + סטטוס מקלוט -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>0</td></tr>
+            <tr><td>09/03</td><td>140</td></tr>
+            <tr><td>10/03</td><td>160</td></tr>
+            <tr><td>11/03</td><td class="pct-orange">171</td></tr>
+            <tr><td>12/03</td><td class="pct-red">174</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>97</td></tr>
+            <tr><td>16/03</td><td>169</td></tr>
+            <tr><td>17/03</td><td>183</td></tr>
+            <tr><td>18/03</td><td>185</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">440</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#2c5f2e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+        <span style="margin-right:auto;font-size:10px;background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:4px;">✓ עודף מיגון</span>
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (53 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:62%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 33 (62%)</span>
+            <span style="color:var(--red);">✗ חוסר: 20 (38%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>680 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>126 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (12 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:83%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 10 (83%)</span>
+            <span style="color:var(--red);">✗ חוסר: 2 (17%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>2,768 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>204 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>קרית ים · מרץ 2026</span>
+    <span>3 / 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 4 – חיפה
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="haifa">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">חיפה</div>
+        <div class="header-date">נתונים ליום: 19.03.2026</div>
+      </div>
+      <img src="חיפה.svg" alt="סמל חיפה" class="city-emblem">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">441</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">39,277</div>
+            <div class="lbl">תלמידים (בתי"ס)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">346</div>
+            <div class="lbl">גנים (7,767 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">95</div>
+            <div class="lbl">בתי ספר (39,277 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>346</strong> גנים · 7,767 ילדים</td>
+              <td><span style="color:var(--green);">רגיל ומיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>54</strong> בתי ספר · 20,719 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / חרדי / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבת ביניים</span></td>
+              <td><strong>16</strong> בתי ספר · 11,493 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">תיכון / רב-שלבי</span></td>
+              <td><strong>13</strong> בתי ספר · 5,979 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#7c3aed;">חינוך מיוחד</span></td>
+              <td><strong>12</strong> בתי ספר · 1,086 תל'</td>
+              <td><span style="color:var(--gray);">מיוחד</span></td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-orange">19,975 (51%)</span></td>
+                <td><span class="pct-red">8,799 (22%)</span></td>
+                <td>3,317 (8%)</td>
+                <td>7,264</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-green">22,925 (59%)</span></td>
+                <td><span class="pct-red">9,173 (23%)</span></td>
+                <td>4,373 (11%)</td>
+                <td>2,830</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-green">22,565 (58%)</span></td>
+                <td><span class="pct-red">10,537 (27%)</span></td>
+                <td>3,950 (10%)</td>
+                <td>2,218</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-green">22,918 (59%)</span></td>
+                <td><span class="pct-red">9,772 (25%)</span></td>
+                <td>4,090 (10%)</td>
+                <td>2,507</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-green">22,455 (57%)</span></td>
+                <td><span class="pct-red">9,118 (23%)</span></td>
+                <td>4,836 (12%)</td>
+                <td>2,868</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-orange">20,292 (52%)</span></td>
+                <td><span class="pct-red">9,253 (24%)</span></td>
+                <td>3,303 (8%)</td>
+                <td>660</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-green">22,803 (58%)</span></td>
+                <td><span class="pct-red">10,972 (28%)</span></td>
+                <td>4,144 (11%)</td>
+                <td>714</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-green">22,884 (58%)</span></td>
+                <td><span class="pct-red">10,477 (27%)</span></td>
+                <td>4,332 (11%)</td>
+                <td>831</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-green">22,381 (57%)</span></td>
+                <td><span class="pct-red">10,335 (26%)</span></td>
+                <td>4,387 (11%)</td>
+                <td>1,036</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-green">22,010 (56%)</span></td>
+                <td><span class="pct-red">7,681 (20%)</span></td>
+                <td>4,814 (12%)</td>
+                <td>838</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>20,764</td><td>12,630</td><td><span class="pct-green">61%</span></td></tr>
+              <tr><td>חטיבה</td><td>11,460</td><td>5,601</td><td><span class="pct-orange">49%</span></td></tr>
+              <tr><td>תיכון</td><td>5,812</td><td>3,170</td><td><span class="pct-orange">55%</span></td></tr>
+              <tr><td>חינוך מיוחד</td><td>1,096</td><td>720</td><td><span class="pct-green">66%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + מיגון -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>3</td></tr>
+            <tr><td>09/03</td><td>724</td></tr>
+            <tr><td>10/03</td><td>708</td></tr>
+            <tr><td>11/03</td><td>950</td></tr>
+            <tr><td>12/03</td><td class="pct-red">896</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">6,491</td></tr>
+            <tr><td>16/03</td><td>1,363</td></tr>
+            <tr><td>17/03</td><td>1,561</td></tr>
+            <tr><td>18/03</td><td>2,101</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">4,717</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#2c5f2e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (346 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:89%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 308 (89%)</span>
+            <span style="color:var(--red);">✗ חוסר: 38 (11%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>4,221 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>54 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (95 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:31%;background:var(--red);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 29 (31%)</span>
+            <span style="color:var(--red);">✗ חוסר: 66 (69%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>21,922 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>7,310 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>חיפה · מרץ 2026</span>
+    <span>4 / 7</span>
+  </div>
+</div>
+
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 5 – חדרה
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="hadera">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">חדרה</div>
+        <div class="header-date">נתונים ליום: 19.03.2026</div>
+      </div>
+      <img src="לוגו-עיריית-חדרה-רקע-שקוף.jpg" alt="סמל חדרה" class="city-emblem" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">201</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">17,128</div>
+            <div class="lbl">תלמידים (בתי"ס)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">162</div>
+            <div class="lbl">גנים (4,253 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">39</div>
+            <div class="lbl">בתי ספר (17,128 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>162</strong> גנים · 4,253 ילדים</td>
+              <td><span style="color:var(--green);">רגיל ומיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>22</strong> בתי ספר · 8,723 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / חרדי / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבה / שש-שנתי</span></td>
+              <td><strong>11</strong> בתי ספר · 7,858 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#7c3aed;">חינוך מיוחד</span></td>
+              <td><strong>6</strong> בתי ספר · 547 תל'</td>
+              <td><span style="color:var(--gray);">מיוחד</span></td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-orange">10,768 (62%)</span></td>
+                <td><span class="pct-red">3,737 (22%)</span></td>
+                <td>2,350 (14%)</td>
+                <td>1,443</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-orange">10,864 (63%)</span></td>
+                <td><span class="pct-red">3,495 (20%)</span></td>
+                <td>2,318 (13%)</td>
+                <td>1,594</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-orange">10,790 (62%)</span></td>
+                <td><span class="pct-red">3,109 (18%)</span></td>
+                <td>2,663 (15%)</td>
+                <td>1,617</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-orange">10,868 (63%)</span></td>
+                <td><span class="pct-red">3,316 (19%)</span></td>
+                <td>2,369 (14%)</td>
+                <td>1,687</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-orange">9,926 (57%)</span></td>
+                <td><span class="pct-orange">2,602 (15%)</span></td>
+                <td>2,763 (16%)</td>
+                <td>2,864</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-green">11,558 (67%)</span></td>
+                <td><span class="pct-red">3,498 (20%)</span></td>
+                <td>2,219 (13%)</td>
+                <td>488</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-orange">10,652 (62%)</span></td>
+                <td><span class="pct-red">3,514 (20%)</span></td>
+                <td>2,417 (14%)</td>
+                <td>531</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-green">11,138 (64%)</span></td>
+                <td><span class="pct-red">3,287 (19%)</span></td>
+                <td>2,467 (14%)</td>
+                <td>585</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-orange">10,335 (60%)</span></td>
+                <td><span class="pct-orange">2,732 (16%)</span></td>
+                <td>2,939 (17%)</td>
+                <td>659</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-orange">10,137 (59%)</span></td>
+                <td><span class="pct-orange">2,429 (14%)</span></td>
+                <td>2,937 (17%)</td>
+                <td>726</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>8,754</td><td>6,031</td><td><span class="pct-green">69%</span></td></tr>
+              <tr><td>חטיבה / תיכון</td><td>7,969</td><td>4,380</td><td><span class="pct-orange">55%</span></td></tr>
+              <tr><td>חינוך מיוחד</td><td>556</td><td>293</td><td><span class="pct-orange">53%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + מיגון -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>11</td></tr>
+            <tr><td>09/03</td><td>512</td></tr>
+            <tr><td>10/03</td><td>579</td></tr>
+            <tr><td>11/03</td><td>510</td></tr>
+            <tr><td>12/03</td><td>582</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>759</td></tr>
+            <tr><td>16/03</td><td class="pct-orange">1,426</td></tr>
+            <tr><td>17/03</td><td>1,109</td></tr>
+            <tr><td>18/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">1,997</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">2,340</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#2c5f2e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (162 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg">
+            <div class="shelter-bar-fill" style="width:75%;background:var(--green);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 121 (75%)</span>
+            <span style="color:var(--red);">✗ חוסר: 41 (25%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>2,299 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>95 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (39 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fef3e2;border-color:#f5d8a0;">
+            <div class="shelter-bar-fill" style="width:51%;background:var(--orange);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 20 (51%)</span>
+            <span style="color:var(--red);">✗ חוסר: 19 (49%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>9,505 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>3,001 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>חדרה · מרץ 2026</span>
+    <span>5 / 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 6 – טירת כרמל
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="tirat-karmel">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">טירת כרמל</div>
+        <div class="header-date">נתונים ליום: 19.03.2026</div>
+      </div>
+      <img src="טירת כרמל.png" alt="סמל טירת כרמל" class="city-emblem" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Row 1: נתונים כלליים -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">79</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">4,628</div>
+            <div class="lbl">תלמידים (בתי"ס)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">68</div>
+            <div class="lbl">גנים (1,610 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">11</div>
+            <div class="lbl">בתי ספר (4,628 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>68</strong> גנים · 1,610 ילדים</td>
+              <td><span style="color:var(--green);">רגיל ומיוחד</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>7</strong> בתי ספר · 2,914 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבה / תיכון</span></td>
+              <td><strong>3</strong> בתי ספר · 1,685 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד / ערבי</td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:#7c3aed;">חינוך מיוחד</span></td>
+              <td><strong>1</strong> בית ספר · 29 תל'</td>
+              <td><span style="color:var(--gray);">מיוחד</span></td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-orange">2,835 (61%)</span></td>
+                <td><span class="pct-red">1,003 (22%)</span></td>
+                <td>609 (13%)</td>
+                <td>197</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-orange">2,762 (60%)</span></td>
+                <td><span class="pct-orange">824 (18%)</span></td>
+                <td>723 (16%)</td>
+                <td>335</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-orange">2,885 (62%)</span></td>
+                <td><span class="pct-orange">892 (19%)</span></td>
+                <td>628 (14%)</td>
+                <td>239</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-orange">2,746 (59%)</span></td>
+                <td><span class="pct-orange">879 (19%)</span></td>
+                <td>703 (15%)</td>
+                <td>316</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-red">2,511 (54%)</span></td>
+                <td><span class="pct-red">966 (21%)</span></td>
+                <td>820 (18%)</td>
+                <td>347</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-orange">2,654 (57%)</span></td>
+                <td><span class="pct-red">1,059 (23%)</span></td>
+                <td>640 (14%)</td>
+                <td>299</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-orange">2,600 (56%)</span></td>
+                <td><span class="pct-red">1,068 (23%)</span></td>
+                <td>698 (15%)</td>
+                <td>258</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-orange">2,660 (57%)</span></td>
+                <td><span class="pct-red">1,041 (22%)</span></td>
+                <td>707 (15%)</td>
+                <td>267</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-orange">2,606 (56%)</span></td>
+                <td><span class="pct-orange">938 (20%)</span></td>
+                <td>800 (17%)</td>
+                <td>312</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-red">2,407 (52%)</span></td>
+                <td><span class="pct-orange">802 (17%)</span></td>
+                <td>963 (21%)</td>
+                <td>310</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>2,927</td><td>1,918</td><td><span class="pct-green">66%</span></td></tr>
+              <tr><td>חטיבה / תיכון</td><td>1,686</td><td>726</td><td><span class="pct-orange">43%</span></td></tr>
+              <tr><td>חינוך מיוחד</td><td>29</td><td>22</td><td><span class="pct-green">77%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + מיגון -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>0</td></tr>
+            <tr><td>09/03</td><td>231</td></tr>
+            <tr><td>10/03</td><td>255</td></tr>
+            <tr><td>11/03</td><td>261</td></tr>
+            <tr><td>12/03</td><td>261</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>291</td></tr>
+            <tr><td>16/03</td><td>277</td></tr>
+            <tr><td>17/03</td><td>235</td></tr>
+            <tr><td>18/03</td><td class="pct-orange">299</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">471</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#7a3a1e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+        <span style="margin-right:auto;font-size:10px;background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:4px;">⚠️ חוסר מיגון</span>
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (68 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:44%;background:var(--red);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 30 (44%)</span>
+            <span style="color:var(--red);">✗ חוסר: 38 (56%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>881 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>195 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (11 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:36%;background:var(--red);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 4 (36%)</span>
+            <span style="color:var(--red);">✗ חוסר: 7 (64%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>2,573 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>760 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>טירת כרמל · מרץ 2026</span>
+    <span>6 / 7</span>
+  </div>
+</div>
+
+
+<div class="page" id="nesher" style="display:flex;flex-direction:column;">
+
+  <div class="page-header">
+    <div class="header-logo-area">
+      <img src="haifa.png" alt="משרד החינוך מחוז חיפה">
+      <div class="header-ministry">
+        <strong>משרד החינוך</strong>
+        מחוז חיפה
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+      <img src="lain.png" alt="שאגת הארי" class="lain-logo">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-city-area">
+        <div class="header-city-label">רשות מקומית</div>
+        <div class="header-city-name">נשר</div>
+        <div class="header-date">נתונים ליום: 19.03.2026</div>
+      </div>
+      <img src="נשר.svg" alt="סמל נשר" class="city-emblem" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <div class="page-body" style="grid-template-rows: auto 1fr 1fr;">
+
+    <!-- Row 1: נתונים כלליים -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">🏫</span>
+        נתונים כלליים על הרשות
+      </div>
+      <div class="section-body">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">36</div>
+            <div class="lbl">סה"כ מוסדות</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">2,521</div>
+            <div class="lbl">תלמידים (בתי"ס)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">28</div>
+            <div class="lbl">גנים (618 ילדים)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">8</div>
+            <div class="lbl">בתי ספר (2,521 תל')</div>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-top:6px;">
+          <thead>
+            <tr>
+              <th>שלב חינוך</th>
+              <th>מוסדות</th>
+              <th>סוג חינוך</th>
+              <th>פיקוח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">גן ילדים</span></td>
+              <td><strong>28</strong> גנים · 618 ילדים</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">יסודי</span></td>
+              <td><strong>5</strong> בתי ספר · 1,324 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold">חטיבה</span></td>
+              <td><strong>3</strong> בתי ספר · 1,197 תל'</td>
+              <td><span style="color:var(--green);">רגיל</span></td>
+              <td>מ"מ / ממ"ד</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 2: נוכחות -->
+    <div class="section full-width">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        נוכחות תלמידים – שבועות אחרונים (08–19/03)
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <table class="att-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>נוכחות מלאה</th>
+                <th>היעדרות מלאה</th>
+                <th>היעדרות חלקית</th>
+                <th>לא דווחו</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>א' 08/03</td>
+                <td><span class="pct-orange">1,460 (58%)</span></td>
+                <td><span class="pct-red">634 (25%)</span></td>
+                <td>263 (10%)</td>
+                <td>164</td>
+              </tr>
+              <tr>
+                <td>ב' 09/03</td>
+                <td><span class="pct-orange">1,474 (58%)</span></td>
+                <td><span class="pct-red">523 (21%)</span></td>
+                <td>361 (14%)</td>
+                <td>164</td>
+              </tr>
+              <tr>
+                <td>ג' 10/03</td>
+                <td><span class="pct-orange">1,452 (58%)</span></td>
+                <td><span class="pct-red">605 (24%)</span></td>
+                <td>396 (16%)</td>
+                <td>69</td>
+              </tr>
+              <tr>
+                <td>ד' 11/03</td>
+                <td><span class="pct-orange">1,438 (57%)</span></td>
+                <td><span class="pct-red">639 (25%)</span></td>
+                <td>354 (14%)</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td>ה' 12/03</td>
+                <td><span class="pct-orange">1,429 (57%)</span></td>
+                <td><span class="pct-orange">411 (16%)</span></td>
+                <td>468 (19%)</td>
+                <td>214</td>
+              </tr>
+              <tr><td colspan="5" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳: 15–19/03 ──</td></tr>
+              <tr>
+                <td>א' 15/03</td>
+                <td><span class="pct-red">1,291 (51%)</span></td>
+                <td><span class="pct-red">646 (26%)</span></td>
+                <td>324 (13%)</td>
+                <td>116</td>
+              </tr>
+              <tr>
+                <td>ב' 16/03</td>
+                <td><span class="pct-red">1,131 (45%)</span></td>
+                <td><span class="pct-red">745 (30%)</span></td>
+                <td>377 (15%)</td>
+                <td>96</td>
+              </tr>
+              <tr>
+                <td>ג' 17/03</td>
+                <td><span class="pct-red">1,195 (47%)</span></td>
+                <td><span class="pct-red">668 (27%)</span></td>
+                <td>462 (18%)</td>
+                <td>93</td>
+              </tr>
+              <tr>
+                <td>ד' 18/03</td>
+                <td><span class="pct-red">1,201 (48%)</span></td>
+                <td><span class="pct-red">670 (27%)</span></td>
+                <td>477 (19%)</td>
+                <td>107</td>
+              </tr>
+              <tr class="last-row">
+                <td>ה' 19/03</td>
+                <td><span class="pct-red">1,140 (45%)</span></td>
+                <td><span class="pct-red">578 (23%)</span></td>
+                <td>555 (22%)</td>
+                <td>124</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">ממוצע לפי שלב חינוך – 08–19/03 (10 ימים, בתי"ס)</div>
+          <table class="att-table" style="font-size:9.5px;">
+            <thead><tr><th>שלב</th><th>ממוצע תל'</th><th>ממוצע נוכחות</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>יסודי</td><td>1,324</td><td>671</td><td><span class="pct-red">51%</span></td></tr>
+              <tr><td>חטיבה</td><td>1,197</td><td>650</td><td><span class="pct-orange">54%</span></td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:9px;color:var(--gray);margin-top:6px;">* ממוצע על 10 ימי לימוד (08–12/03 ו-15–19/03)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: היעדרות 3 ימים + מיגון -->
+    <div class="section">
+      <div class="section-header" style="background:#8b1a1a;">
+        <span class="section-icon">⚠️</span>
+        היעדרות 3 ימים ברצף
+      </div>
+      <div class="section-body">
+        <table class="att-table">
+          <thead>
+            <tr><th>תאריך</th><th>נעדרים 3 ימים ברצף</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08/03</td><td>0</td></tr>
+            <tr><td>09/03</td><td>51</td></tr>
+            <tr><td>10/03</td><td>72</td></tr>
+            <tr><td>11/03</td><td>104</td></tr>
+            <tr><td>12/03</td><td>135</td></tr>
+            <tr><td colspan="2" style="text-align:center;font-size:9.5px;color:white;padding:2px 5px;background:var(--blue);font-weight:600;">── שבוע ב׳ ──</td></tr>
+            <tr><td>15/03</td><td>261</td></tr>
+            <tr><td>16/03</td><td>267</td></tr>
+            <tr><td>17/03</td><td>195</td></tr>
+            <tr><td>18/03</td><td>172</td></tr>
+            <tr class="last-row"><td>19/03</td><td class="pct-red" style="color:#ff4444;font-weight:700;">247</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header" style="background:#7a3a1e;">
+        <span class="section-icon">🛡️</span>
+        סטטוס מקלוט ברשות
+      </div>
+      <div class="section-body">
+
+        <!-- גנים -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🌱 גנים (28 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:39%;background:var(--red);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 11 (39%)</span>
+            <span style="color:var(--red);">✗ חוסר: 17 (61%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="margin-bottom:5px;font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>341 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בגנים עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>142 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+
+        <!-- בתי ספר -->
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:3px;border-bottom:1px solid var(--border);padding-bottom:2px;">🏫 בתי ספר (8 מוסדות)</div>
+        <div class="shelter-bar-wrap" style="margin-bottom:2px;">
+          <div class="shelter-bar-bg" style="background:#fdf0ef;border-color:#f5b7b1;">
+            <div class="shelter-bar-fill" style="width:25%;background:var(--red);"></div>
+          </div>
+          <div class="shelter-bar-label">
+            <span style="color:var(--green);">✓ מוגנים: 2 (25%)</span>
+            <span style="color:var(--red);">✗ חוסר: 6 (75%)</span>
+          </div>
+        </div>
+        <table class="stages-table" style="font-size:10px;">
+          <tbody>
+            <tr><td>נדרש</td><td><strong>1,412 מ"ר</strong></td></tr>
+            <tr><td colspan="2">מרחב חסר (בבתי"ס עם חוסר)</td><td colspan="2" style="color:var(--red);"><strong>210 מ"ר</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>משרד החינוך – מחוז חיפה</span>
+    <span>נשר · מרץ 2026</span>
+    <span>7 / 7</span>
+  </div>
+</div>
+
+</body>
+</html>
